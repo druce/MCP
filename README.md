@@ -24,7 +24,7 @@ While it's not a fully autonomous agent and at an early POC level, it shows the 
 
 - **FastMCP server** – `server.py` exposes a few MCP *tools* to get market data, news, charts, SEC filings, fundamental, technical data, research from public web sites, subscription services, and REST APIs.
 
-- **Market data**=
+- **Market data**
   - `yfinance`
   - `OpenBB`. via the OpenBB platform API, we can call just about any market data REST API via a unified API.
 

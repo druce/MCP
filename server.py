@@ -152,9 +152,21 @@ def trimmed_href(link):
     else:
         return s
 
-# could use mcp-server-playwright - making our own playwright browsercontext is probably not needed
+# could use mcp-server-playwright - making our own playwright browser context is probably not needed
 # assuming we can point that server to a profile with saved credentials, or provide credentials in the tool call
 # mcp-server-readability - Combines fetching with content extraction
+
+# maybe add tool for income statement, balance sheet
+# systematically add tools via openbb, get everything via openbb and remove yfinance, fmp, alphavantage which are crufty
+
+# get a better page fetcher/scraper, reference fetch from anthropic
+# a sankey graph of income statement would be nice
+# write an autonomous client workflow to generate a report with deep research
+# - stock chart like the plotly chart here
+# - technical indicator table
+# - sankey chart
+# - go through a structured flow to bring stuff into the context
+# - I don't think claude api supports deep research but openai does ... make a tool to call openai deep research from claude desktop? dogs and cats living together?
 
 
 class StockDataExtractor:
