@@ -1,20 +1,20 @@
 # MCP Securities Analysis
 
-A Python-based flow for securities analysis using the **Model Context Protocol (MCP)**.  The repository bundles market data, parsing, analytics and visualisation tools behind a FastMCP server so that they can be consumed locally or remotely by any MCP-aware client (e.g. Claude Desktop, LangChain, OpenAI-Function calling, etc.).
+A Python-based flow for securities analysis using the **Model Context Protocol (MCP)**.  The repository bundles market data, parsing, analytics and visualisation tools behind a FastMCP server so that they can be consumed locally or remotely by any MCP-aware client (e.g. Claude Desktop, LangChain).
 
 [Example deep research report for Tesla](https://claude.ai/public/artifacts/2f1df8b6-ffbc-40ca-a2d9-6d068bdb01a9).
 
 This was generated semi-autonomously by the following steps:
 
-- connect `server.py` MCP server to Claude Desktop
+- connect MCP tools to Claude Desktop, including web search, Perplexity, Wikipedia. (see 'claude_desktop_config.json' for details). You can think of the Wikipedia tool as inviting a friend into the chat conversation who knows how to search and navigate Wikipedia, and bring articles, sections, summaries into the chat context, for further discussion with the user and AI.
 
-- connect other MCP tools to Claude Desktop, including web search, Perplexity, Wikipedia, in addition to the market data tools in server.py for fundamental, technical analysis, and news search.
+- connect `server.py` MCP server to Claude Desktop. Think of this as writing your own bots in Python that can bring stuff into the chat context: market data, SEC filings, or anything else you can retrieve or compute.
 
-- prompt Claude Desktop to query Perplexity, Wikipedia, and the 10-K to write a profile of Tesla
+- prompt Claude Desktop to query Perplexity, Wikipedia, and the 10-K to bring information about Tesla into the context.
 
-- prompt Claude Desktop to query each tool for info on Tesla
+- prompt Claude Desktop to query market data tools for up-to-dateinfo on Tesla
 
-- finally, enable deep research and prompt Claude Desktop to write a deep report in 8 sections with details on what each section should cover, using the information retrieved from the tools.
+- finally, enable deep research and prompt Claude Desktop to write a deep report in 8 sections with details on what each section should cover, using the information retrieved from the chat context, additional web searches and tool calls.
 
 - see `prompts.txt` for prompts used in the example.
 
@@ -26,15 +26,15 @@ While it's not a fully autonomous agent and at an early POC level, it shows the 
 
 - **Market data** –
   - `yfinance`
-  - `OpenBB`. via OpenBB platform can call just about any market data REST API via a unified API.
+  - `OpenBB`. via the OpenBB platform API, we can call just about any market data REST API via a unified API.
 
-- **SEC filings** – tool gets 10-K Item 1 via `sec_downloader` and parses it with `sec_parser`.
+- **SEC filings** – a tool gets 10-K Item 1 via `sec_downloader` and parses it with `sec_parser`.
 
 - **Technical analysis** – computes a few technical indicators with `pandas_ta` & `TA-Lib`.
 
 - **Interactive plots** – Make a plot with plotly
 
-- **News & Social sentiment** – Reddit scraping utilities. At startup we launch a browser context and keep it open for the duration of the session. By pointing at your profile, you can access saved credentials. Then you can open any URL and scrape the links or text or full HTML.
+- **News & Social sentiment** – Reddit scraping utilities. At startup we launch a browser context and keep it open for the duration of the session. By pointing at your profile, you can access saved credentials. Then you can open any URL and scrape the links or text or full HTML by prompting the LLM to generate the appropriate tool call.
 
 ---
 
@@ -76,14 +76,14 @@ git clone https://github.com/modelcontextprotocol/servers/tree/main/src/filesyst
 Yahoo Finance MCP (no API key required)
 git clone https://github.com/Alex2Yang97/yahoo-finance-mcp.git
 
-FMP MCP (API key required)
+FMP MCP (API key required -  https://site.financialmodelingprep.com/developer/docs/stable )
 git clone https://github.com/cdtait/fmp-mcp-server
 
-Alpha Vantage MCP (API key required)
+Alpha Vantage MCP (API key required - https://www.alphavantage.co/documentation/)
 git clone https://github.com/calvernaz/alphavantage.git
 # see alphavantage.patches for edits to alphavantage/src/alphavantage_mcp_server/server.py
 
-Brave Search MCP (API key required)
+Brave Search MCP (API key required https://brave.com/search/api/ )
 npm install -g @modelcontextprotocol/server-brave-search
 
 Perplexity Ask MCP (API key, Docker required)

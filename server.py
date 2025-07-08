@@ -152,6 +152,10 @@ def trimmed_href(link):
     else:
         return s
 
+# could use mcp-server-playwright - making our own playwright browsercontext is probably not needed
+# assuming we can point that server to a profile with saved credentials, or provide credentials in the tool call
+# mcp-server-readability - Combines fetching with content extraction
+
 
 class StockDataExtractor:
     """Stock data extractor for web scraping."""
