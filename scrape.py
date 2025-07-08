@@ -7,13 +7,17 @@ Scrape text from a given URL using Playwright and Trafilatura.
 import random
 import time
 import re
+import os
 from pathlib import Path
 
 from bs4 import BeautifulSoup
 
 from trafilatura import extract
 
-FIREFOX_PROFILE_PATH = '/Users/drucev/Library/Application Support/Firefox/Profiles/j6cl7lzz.playwright'
+from dotenv import load_dotenv
+load_dotenv()
+
+FIREFOX_PROFILE_PATH = os.getenv("FIREFOX_PROFILE_PATH")
 
 
 async def get_browser(playwright):

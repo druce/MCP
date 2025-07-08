@@ -6,7 +6,9 @@ A Python-based flow for securities analysis using the **Model Context Protocol (
 
 This was generated semi-autonomously by the following steps:
 
-- connect MCP tools to Claude Desktop, including web search, Perplexity, Wikipedia, in addition to the market data tools in server.py for fundamental, technical analysis, and news search.
+- connect `server.py` MCP server to Claude Desktop
+
+- connect other MCP tools to Claude Desktop, including web search, Perplexity, Wikipedia, in addition to the market data tools in server.py for fundamental, technical analysis, and news search.
 
 - prompt Claude Desktop to query Perplexity, Wikipedia, and the 10-K to write a profile of Tesla
 
@@ -14,27 +16,25 @@ This was generated semi-autonomously by the following steps:
 
 - finally, enable deep research and prompt Claude Desktop to write a deep report in 8 sections with details on what each section should cover, using the information retrieved from the tools.
 
-While it's not a fully autonomous agent and at an early POC level, it shows the way toward a fully autonomous agent. Create an MCP client that goes through the steps above and generates a deep report on Tesla in a structured format with graphs and tables. And then create an even more advanced [multi-agent workflow](https://www.anthropic.com/engineering/built-multi-agent-research-system) with a set of parallel agents for each section, and a critic-optimizer workflow, and a final report generator.
+- see `prompts.txt` for prompts used in the example.
 
----
+While it's not a fully autonomous agent and at an early POC level, it shows the way toward a fully autonomous agent. Create an MCP client that goes through the steps above and generates a deep report on Tesla in a structured format with graphs and tables. Or create an even more advanced [multi-agent workflow](https://www.anthropic.com/engineering/built-multi-agent-research-system) with a set of parallel agents for each section, and a critic-optimizer workflow, and a final report generator.
 
-## Features
+## server.py Features
 
-- **FastMCP server** – exposes a few MCP *tools* to get market data, news, charts, SEC filings, fundamental, technical data, research from public web sites, subscription services, and REST APIs.
+- **FastMCP server** – `server.py` exposes a few MCP *tools* to get market data, news, charts, SEC filings, fundamental, technical data, research from public web sites, subscription services, and REST APIs.
 
-- **Market data** – real-time and historical OHLCV data via `yfinance` & `OpenBB`.
+- **Market data** –
+  - `yfinance`
+  - `OpenBB`. via OpenBB platform can call just about any market data REST API via a unified API.
 
-- **Fundamental data** – automatic downloading of SEC filings (`sec_downloader`) and rich XBRL/HTML parsing through `sec_parser`.
+- **SEC filings** – tool gets 10-K Item 1 via `sec_downloader` and parses it with `sec_parser`.
 
-- **News & Social sentiment** – headlines with `newsapi-python` plus Reddit scraping utilities.
+- **Technical analysis** – computes a few technical indicators with `pandas_ta` & `TA-Lib`.
 
-- **Technical analysis** – hundreds of indicators with `pandas_ta` & `TA-Lib`.
+- **Interactive plots** – Make a plot with plotly
 
-- **Interactive plots** – high-quality Plotly charts exported server-side (static PNG or interactive HTML).
-
-- **Async-first design** – built on `asyncio`, `aiohttp`, `httpx` & Playwright for maximum throughput.
-
-This section AI-generated so beware of hype. New project, would like to share and get comments, not extensively tested. Use it as a starting point, at your own risk.
+- **News & Social sentiment** – Reddit scraping utilities. At startup we launch a browser context and keep it open for the duration of the session. By pointing at your profile, you can access saved credentials. Then you can open any URL and scrape the links or text or full HTML.
 
 ---
 
