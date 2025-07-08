@@ -14,7 +14,7 @@ This was generated semi-autonomously by the following steps:
 
 - finally, enable deep research and prompt Claude Desktop to write a deep report in 8 sections with details on what each section should cover, using the information retrieved from the tools.
 
-While it's not a fully autonomous agent and at an early POC level, it shows clear path toward a fully autonomous agent. Create an MCP client that goes through the steps above and generates a deep report on Tesla in a structured format with graphs and tables. And then create an even more advanced [multi-agent workflow](https://www.anthropic.com/engineering/built-multi-agent-research-system) with a set of parallel agents for each section, and a critic-optimizer workflow, and a final report generator.
+While it's not a fully autonomous agent and at an early POC level, it shows the way toward a fully autonomous agent. Create an MCP client that goes through the steps above and generates a deep report on Tesla in a structured format with graphs and tables. And then create an even more advanced [multi-agent workflow](https://www.anthropic.com/engineering/built-multi-agent-research-system) with a set of parallel agents for each section, and a critic-optimizer workflow, and a final report generator.
 
 ---
 
@@ -41,8 +41,8 @@ This section AI-generated so beware of hype. New project, would like to share an
 ## Quick Start
 
 ```bash
-# 1. Clone and enter the project
-$ git clone https://github.com/<your-org>/MCP.git
+# 1. Clone and enter the project (or fork and clone your own if you want to commit changes)
+$ git clone https://github.com/druce/MCP.git
 $ cd MCP
 
 # 2. Create & activate a virtualenv (recommended)
