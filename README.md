@@ -6,35 +6,35 @@ A Python-based flow for securities analysis using the **Model Context Protocol (
 
 This was generated semi-autonomously by the following steps:
 
-- connect MCP tools to Claude Desktop, including web search, Perplexity, Wikipedia. (see 'claude_desktop_config.json' for details). You can think of the Wikipedia tool as inviting a friend into the chat conversation who knows how to search and navigate Wikipedia, and bring articles, sections, summaries into the chat context, for further discussion with the user and AI.
+- connect MCP tools to Claude Desktop, including web search, Perplexity, Wikipedia. (see `claude_desktop_config.json` for details). You can think of the Wikipedia tool as a friend you invite into the chat conversation who knows how to search and navigate Wikipedia, and bring articles, sections, summaries into the chat context, for further discussion with the user and the AI.
 
 - connect `server.py` MCP server to Claude Desktop. Think of this as writing your own bots in Python that can bring stuff into the chat context: market data, SEC filings, or anything else you can retrieve or compute.
 
 - prompt Claude Desktop to query Perplexity, Wikipedia, and the 10-K to bring information about Tesla into the context.
 
-- prompt Claude Desktop to query market data tools for up-to-dateinfo on Tesla
+- prompt Claude Desktop to query market data tools for up-to-date info on Tesla
 
 - finally, enable deep research and prompt Claude Desktop to write a deep report in 8 sections with details on what each section should cover, using the information retrieved from the chat context, additional web searches and tool calls.
 
 - see `prompts.txt` for prompts used in the example.
 
-While it's not a fully autonomous agent and at an early POC level, it shows the way toward a fully autonomous agent. Create an MCP client that goes through the steps above and generates a deep report on Tesla in a structured format with graphs and tables. Or create an even more advanced [multi-agent workflow](https://www.anthropic.com/engineering/built-multi-agent-research-system) with a set of parallel agents for each section, and a critic-optimizer workflow, and a final report generator.
+While it's not a fully autonomous agent and at an early POC level, it shows the way toward a fully autonomous agent. Create an MCP client that autonomously goes through the steps above and generates a deep report on Tesla in a structured format with graphs and tables. Or create an even more advanced [multi-agent workflow](https://www.anthropic.com/engineering/built-multi-agent-research-system) with a set of parallel agents for each section, and a critic-optimizer workflow, and a final report generator.
 
 ## server.py Features
 
 - **FastMCP server** – `server.py` exposes a few MCP *tools* to get market data, news, charts, SEC filings, fundamental, technical data, research from public web sites, subscription services, and REST APIs.
 
-- **Market data** –
+- **Market data**=
   - `yfinance`
   - `OpenBB`. via the OpenBB platform API, we can call just about any market data REST API via a unified API.
 
-- **SEC filings** – a tool gets 10-K Item 1 via `sec_downloader` and parses it with `sec_parser`.
+- **SEC filings** - a tool gets 10-K Item 1 via `sec_downloader` and parses it with `sec_parser`.
 
-- **Technical analysis** – computes a few technical indicators with `pandas_ta` & `TA-Lib`.
+- **Technical analysis** - computes a few technical indicators with `pandas_ta` & `TA-Lib`.
 
-- **Interactive plots** – Make a plot with plotly
+- **Interactive plots** - Make a plot with plotly
 
-- **News & Social sentiment** – Reddit scraping utilities. At startup we launch a browser context and keep it open for the duration of the session. By pointing at your profile, you can access saved credentials. Then you can open any URL and scrape the links or text or full HTML by prompting the LLM to generate the appropriate tool call.
+- **News & Social sentiment** - Reddit scraping utilities. At startup we launch a browser context and keep it open for the duration of the session. By pointing the browser at your profile, you can access saved credentials. Then you can open any URL and scrape the links or text or full HTML by prompting the LLM to generate the appropriate tool call.
 
 ---
 
