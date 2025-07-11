@@ -4,7 +4,7 @@ A Python-based flow for securities analysis using the **Model Context Protocol (
 
 [Example deep research report for Tesla](https://claude.ai/public/artifacts/2f1df8b6-ffbc-40ca-a2d9-6d068bdb01a9).
 
-This was generated semi-autonomously by the following steps:
+This report was generated semi-autonomously by the following steps:
 
 - connect MCP tools to Claude Desktop, including web search, Perplexity, Wikipedia. (see `claude_desktop_config.json` for details). You can think of the Wikipedia tool as a friend you invite into the chat conversation who knows how to search and navigate Wikipedia, and bring articles, sections, summaries into the chat context, for further discussion with the user and the AI.
 

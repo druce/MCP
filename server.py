@@ -160,6 +160,7 @@ def trimmed_href(link):
 # systematically add tools via openbb, get everything via openbb and remove yfinance, fmp, alphavantage which are crufty
 
 # get a better page fetcher/scraper, reference fetch from anthropic
+# there is also Bright Data and Apify, paid scraping services, claim to be able to scrape any website including CAPTCHAs
 # a sankey graph of income statement would be nice
 # write an autonomous client workflow to generate a report with deep research
 # - stock chart like the plotly chart here
