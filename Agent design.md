@@ -3,6 +3,8 @@
 
 ## Report format, 8 sections:
 
+prompt: write a report in these sections, using the tools to find the information.
+
 1. Profile
 
 	1. history with origin story and key historical milestones
@@ -77,6 +79,9 @@
 
 ## multi-agent algorithm
 
+bring data into the a knowledge store, vector store, and knowledge graph, like mem0
+prompt ai to write the report or individual sections using the tools to find the information.
+
 1. tell the user, enter a stock to analyze
 
 2. user enters a stock,
@@ -89,7 +94,7 @@
 
 3. launch orchestrator
 
-4. orchestrator manages tasks / sub-agents and via a queue, (with dependencies so it represents a directed acyclic graph). loop:
+4. orchestrator manages tasks / sub-agents via a queue, (with dependencies so it represents a directed acyclic graph). loop:
 
 	1. insert initial tasks into queue of tasks/sub-agents data structure
 
@@ -145,13 +150,14 @@
 
 	7. search sell-side research like morningstar
 
-	8. review tearsheet you made before and extract info, also review jeff emanuel's large universal mcp server	6. extractor
+	8. review tearsheet you made before and extract info, also review jeff emanuel's large universal mcp server
+
+
+	9. most of these steps should be an mcp tool eg search for news, research, call extractor
 
 		1. for each sentence, extract knowledge, ask if it looks relevant/nontrivial, put in knowledge graph
 
 		2. put each paragraph in vector store
-
-	9. most of these steps should be an mcp tool eg search for news, research
 
 6. section_agent - writes a section, has an initial retrieval , prompt, critic and rewrite - put into queue with all evergreen tasks as dependencies, updating the prompt
 
