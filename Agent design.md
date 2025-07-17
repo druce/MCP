@@ -1,7 +1,7 @@
 
-proof of concept deep research agent to analyze a stock.
+# proof of concept deep research agent to analyze a stock.
 
-Report format, 8 sections:
+## Report format, 8 sections:
 
 1. Profile
 
@@ -75,7 +75,7 @@ Report format, 8 sections:
 
 ---
 
-multi-agent algorithm
+## multi-agent algorithm
 
 1. tell the user, enter a stock to analyze
 
@@ -174,7 +174,9 @@ multi-agent algorithm
 8. rewrite and final polish: rewrite for narrative clarity, style, no duplication
 
 
-some web sites and scratch notes
+## some web sites and scratch notes
+
+https://www.anthropic.com/engineering/built-multi-agent-research-system
 
 https://github.com/Marktechpost/AI-Notebooks/blob/main/GraphAIAgent_LangGraph_Gemini_Workflow_Marktechpost.ipynb
 
