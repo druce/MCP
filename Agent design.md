@@ -79,8 +79,8 @@ prompt: write a report in these sections, using the tools to find the informatio
 
 ## multi-agent algorithm
 
-bring data into the a knowledge store, vector store, and knowledge graph, like mem0
-prompt ai to write the report or individual sections using the tools to find the information.
+bring data into a vector store, and knowledge graph, like mem0.
+prompt ai to write individual sections using the tools to find the information. use critic-optimizer to improve the sections. finally combine the sections into a report and do a final polish.
 
 1. tell the user, enter a stock to analyze
 
@@ -92,11 +92,9 @@ prompt ai to write the report or individual sections using the tools to find the
 
 	3. edit the outline, show the updated outline, repeat until OK
 
-3. launch orchestrator
+3. launch orchestrator. orchestrator manages tasks / sub-agents via a queue, (with dependencies so it represents a directed acyclic graph). loop:
 
-4. orchestrator manages tasks / sub-agents via a queue, (with dependencies so it represents a directed acyclic graph). loop:
-
-	1. insert initial tasks into queue of tasks/sub-agents data structure
+	1. insert initial tasks into queue of tasks/sub-agents data structure as follows:
 
 		1. name
 
@@ -163,13 +161,13 @@ prompt ai to write the report or individual sections using the tools to find the
 
 		1. retrieve relevant info
 
-		2. write initial draft using the prompt
+		2. write initial section draft using the prompt
 
-		3. reflection and gap analysis.  you are a sophisticated analyst, what other question should you ask. if no gaps, or iterations / token buget exceeded, return
+		3. reflection and gap analysis/critic eval.  you are a sophisticated analyst, what other question should you ask. if no gaps, or iterations / token buget exceeded, return
 
-		4. generates a **search plan**, what are the gaps, additional stuff to look for? Decide to call multiple tools, local lookup, market data source, web search until you find the right answer
+		4. based on crtic eval, generate a **search plan**, what are the gaps, additional stuff to look for? Decide to call multiple tools, local lookup, market data source, web search until you find the right answer
 
-		5. run the search plan steps until you find right data
+		5. run the search plan steps until you find all the right data
 
 		6. rewrite the section
 
