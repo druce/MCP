@@ -89,9 +89,9 @@ multi-agent algorithm
 
 3. launch orchestrator
 
-4. orchestrator creates tasks and puts them into queue (with dependencies so it represents a directed acyclic graph). then loop:
+4. orchestrator manages tasks / sub-agents and via a queue, (with dependencies so it represents a directed acyclic graph). loop:
 
-	1. queue of tasks/sub-=agents
+	1. insert initial tasks into queue of tasks/sub-agents data structure
 
 		1. name
 
@@ -105,13 +105,15 @@ multi-agent algorithm
 
 		6. optional critic prompt
 
-		7. optional optimizer prompt , improve initial based on prompt
+		7. optional optimizer prompt , improve initial response based on critic eval
 
 		8. optional test if complete
 
 		9. budget , iterations or tokens
 
 		10. dependencies
+
+		11. status (not started, running, waiting, complete)
 
 	2. identify all tasks with no missing dependencies
 
@@ -129,7 +131,7 @@ multi-agent algorithm
 
 5. evergreen tasks, always put into queue at start , all sections dependent on them
 
-	1. get company profile from: 10-l item 1, a couple of web sites like yahoo
+	1. get company profile from: 10-k item 1, a couple of web sites like yahoo
 
 	2. stuff that comes back, look at it, store facts in mem0 knowledge graph, text chunks in vector store
 
@@ -165,7 +167,7 @@ multi-agent algorithm
 
 		6. rewrite the section
 
-		7. loop until ok or sectionbudget exceeded
+		7. loop until ok or section budget exceeded
 
 7. synthesis, depends on all sections complete
 
@@ -246,10 +248,3 @@ https://github.com/robertjakob/rigorous
 https://github.com/assafelovic/gpt-researcher
 
 https://github.com/SakanaAI/AI-Scientist
-
-curious
-
-DE Shaw
-Norwegian soverei
-HG Capital
-New York Life
