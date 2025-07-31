@@ -13,6 +13,16 @@
         "wikipedia": {
             "command": "/opt/anaconda3/envs/mcp/bin/wikipedia-mcp"
         },
+        "sec-edgar-mcp": {
+            "command": "docker",
+            "args": [
+                "run",
+                "-e",
+                "SEC_EDGAR_USER_AGENT=Your Name (your.email@domain.com)",
+                "stefanoamorelli/sec-edgar-mcp:latest"
+            ],
+            "env": {}
+        },
         "stock-symbol-server": {
             "command": "/opt/anaconda3/envs/mcp/bin/python",
             "args": [

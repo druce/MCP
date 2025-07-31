@@ -1,12 +1,16 @@
 
 # https://sethhobson.com/2025/01/building-a-stock-analysis-server-with-mcp-part-1/
+
+import pandas as pd
+import aiohttp
 from datetime import datetime, timedelta
 import os
 from typing import Any, Dict
-
-import pandas as pd
+import numpy as np
+np.NaN = np.nan
+# must be last import after patching NaN
 import pandas_ta as ta
-import aiohttp
+
 
 # pylint: disable=broad-except
 

@@ -1,25 +1,37 @@
+# for openbb we need python 3.11
+# this sometimes conflicts with newer packages
+
+# TA-Lib
+# edgartools
+# magentic
+# mem0ai
+
+websockets
+jupyter_client
+
+anthropic
 ipykernel
-python-dotenv
-openai
-openbb[all]
-tiktoken
-pydantic #
+kaleido
 langchain
 langchain-openai
 langchain-community
-magentic
-wikipedia
-# edgartools
+mcp
+mcp[cli]
+nbformat
 newsapi-python
+numpy
+openai
+openbb
+pandas
+pandas-ta
+playwright
+playwright-stealth
+plotly
+pydantic
+python-dotenv
 sec-api
 sec-parser
+selenium
 streamlit
-mcp==1.9.0
-mem0ai
-# selenium
-playwright==1.51.0
-playwright-stealth==1.0.6
-TA-Lib
-pandas-ta
-plotly
-kaleido
+tiktoken
+wikipedia

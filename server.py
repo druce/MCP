@@ -185,8 +185,14 @@ class StockDataExtractor:
 
     async def get_or_create_page(self) -> AsyncPage:
         """Get a page from the pool or create a new one."""
-        if self.page_pool:
-            return self.page_pool.pop()
+        # Re-use a page from the pool if it is still open
+        while self.page_pool:
+            page = self.page_pool.pop()
+            if not page.is_closed():
+                return page
+            # drop closed pages silently and continue
+
+        # No usable page in pool – create a new one
         if not hasattr(self, 'browser_context') or self.browser_context is None:
             raise RuntimeError(
                 "Browser is not initialized. Call browser_lifespan() first.")
@@ -195,15 +201,21 @@ class StockDataExtractor:
     async def return_page(self, page: AsyncPage):
         """Return a page to the pool for reuse."""
         try:
-            # Clear the page state
+            if page.is_closed():
+                # Page is already gone – nothing to recycle
+                return
+            # Clear the page state before pooling
             await page.goto("about:blank")
             await page.evaluate(
                 "() => { localStorage.clear(); sessionStorage.clear(); }")
             self.page_pool.append(page)
         except Exception as e:
             print(f"Error returning page to pool: {str(e)}")
-            # If cleaning fails, close the page
-            await page.close()
+            # If cleaning fails, close the page if it isn't already
+            try:
+                await page.close()
+            except Exception:
+                pass
 
     def respect_rate_limit(self, source_key: str, rate_limit: float):
         """Ensure we respect rate limits for each source."""
@@ -854,8 +866,9 @@ def make_stock_chart(symbol: Annotated[
             "example": "AAPL"
         }
     ],
-) -> MCPImage:
-    """Return a stock chart for a given symbol."""
+    # ) -> MCPImage:
+) -> str:
+    """Create a stock chart for a given symbol in the charts directory, and return the filename for Claude to display inline."""
 
     # Download weekly data
     symbol_df = yf.download(symbol, interval="1wk", period="4y")
@@ -877,11 +890,10 @@ def make_stock_chart(symbol: Annotated[
     fig = make_subplots(
         rows=2, cols=1,
         shared_xaxes=True,
-        row_heights=[0.7, 0.3],
-        vertical_spacing=0.05,
-        specs=[[{"secondary_y": True}], [{}]],  # row 1 has secondary y-axis
-        subplot_titles=[
-            f"{symbol} Price with Moving Averages & Volume", f"{symbol} Relative to S&P 500"]
+        row_heights=[0.75, 0.25],
+        vertical_spacing=0.02,
+        specs=[[{"secondary_y": True}], [{}]],
+        subplot_titles=[None, None]  # Remove default titles for cleaner look
     )
 
     # --- Row 1: Price Candlesticks & MAs (primary y-axis) ---
@@ -892,31 +904,42 @@ def make_stock_chart(symbol: Annotated[
         low=symbol_df['Low'],
         close=symbol_df['Close'],
         name=symbol,
-        increasing_line_color='black',
-        decreasing_line_color='red'
+        increasing_line_color='#2E8B57',  # Sea green for up candles
+        decreasing_line_color='#DC143C',  # Crimson for down candles
+        increasing_fillcolor='#2E8B57',
+        decreasing_fillcolor='#DC143C',
+        line=dict(width=1)
     ), row=1, col=1, secondary_y=False)
 
     fig.add_trace(go.Scatter(
         x=symbol_df.index,
         y=symbol_df['MA13'],
         mode='lines',
-        name='13-week MA',
-        line=dict(color='blue')
+        name='MA(13)',
+        line=dict(color='#4169E1', width=2),  # Royal blue
+        opacity=0.8
     ), row=1, col=1, secondary_y=False)
 
     fig.add_trace(go.Scatter(
         x=symbol_df.index,
         y=symbol_df['MA52'],
         mode='lines',
-        name='52-week MA',
-        line=dict(color='orange')
+        name='MA(52)',
+        line=dict(color='#FF6347', width=2),  # Tomato red
+        opacity=0.8
     ), row=1, col=1, secondary_y=False)
+
     # --- Row 1: Volume on right axis (secondary y-axis) ---
+    # Color volume bars based on price direction
+    volume_colors = ['#90EE90' if close >= open else '#FFB6C1'
+                     for close, open in zip(symbol_df['Close'], symbol_df['Open'])]
+
     fig.add_trace(go.Bar(
         x=symbol_df.index,
         y=symbol_df['Volume'],
         name='Volume',
-        marker_color='rgba(0, 128, 0, 0.4)',
+        marker_color=volume_colors,
+        opacity=0.6,
         showlegend=False
     ), row=1, col=1, secondary_y=True)
 
@@ -924,37 +947,147 @@ def make_stock_chart(symbol: Annotated[
     fig.add_trace(go.Scatter(
         x=symbol_df.index,
         y=symbol_df['Rel_SPX'],
-        name=symbol + ' / SPX',
+        name=f'{symbol} / SPX',
         mode='lines',
-        line=dict(color='black')
+        line=dict(color='#2F4F4F', width=2),  # Dark slate gray
+        fill='tonexty',
+        fillcolor='rgba(47, 79, 79, 0.1)'
     ), row=2, col=1)
 
-    # Layout adjustments
+    # Get latest price for title
+    latest_price = symbol_df['Close'].iloc[-1]
+    latest_change = symbol_df['Close'].iloc[-1] - symbol_df['Close'].iloc[-2]
+    latest_change_pct = (latest_change / symbol_df['Close'].iloc[-2]) * 100
+
+    # Enhanced layout with gradient background and professional styling
     fig.update_layout(
-        title=symbol +
-        ' Weekly Chart with MAs, Volume (Right Axis), and Relative Strength',
-        height=800,
-        xaxis=dict(rangeslider_visible=False),
-        showlegend=True,
-        # Add some margin for better display
-        margin=dict(l=50, r=50, t=100, b=50)
+        title={
+            'text': f'{symbol} - ${latest_price:.2f} ({latest_change:+.2f}, {latest_change_pct:+.1f}%)',
+            'x': 0.02,
+            'y': 0.98,
+            'xanchor': 'left',
+            'yanchor': 'top',
+            'font': {'size': 16, 'color': '#2F4F4F', 'family': 'Arial, sans-serif'}
+        },
+        height=600,
+        width=900,
+
+        # Gradient background
+        plot_bgcolor='rgba(0,0,0,0)',
+        paper_bgcolor='rgba(0,0,0,0)',
+
+        # Grid styling
+        xaxis=dict(
+            rangeslider_visible=False,
+            showgrid=True,
+            gridwidth=1,
+            gridcolor='rgba(128, 128, 128, 0.3)',
+            showline=True,
+            linewidth=1,
+            linecolor='#D3D3D3',
+            tickfont=dict(size=10, color='#696969')
+        ),
+
+        # Legend styling
+        legend=dict(
+            orientation="h",
+            yanchor="bottom",
+            y=1.02,
+            xanchor="right",
+            x=1,
+            bgcolor='rgba(255,255,255,0.8)',
+            bordercolor='#D3D3D3',
+            borderwidth=1,
+            font=dict(size=10)
+        ),
+
+        # Margins
+        margin=dict(l=60, r=80, t=80, b=40),
+
+        # Remove subplot titles spacing
+        annotations=[]
     )
 
-    fig.update_yaxes(title_text="Price", row=1, col=1, secondary_y=False)
-    fig.update_yaxes(title_text="Volume", row=1, col=1, secondary_y=True)
-    fig.update_yaxes(title_text=f"{symbol} / SPX", row=2, col=1)
+    # Style the y-axes
+    fig.update_yaxes(
+        title_text="Price ($)",
+        row=1, col=1, secondary_y=False,
+        showgrid=True,
+        gridwidth=1,
+        gridcolor='rgba(128, 128, 128, 0.3)',
+        showline=True,
+        linewidth=1,
+        linecolor='#D3D3D3',
+        tickfont=dict(size=10, color='#696969'),
+        title_font=dict(size=12, color='#2F4F4F')
+    )
+
+    # Calculate volume range and set max to show volume in bottom 1/3 of chart
+    max_volume = symbol_df['Volume'].max()
+    volume_range = [0, max_volume * 3]  # Scale so max volume is at 1/3 height
+
+    fig.update_yaxes(
+        title_text="Volume",
+        row=1, col=1, secondary_y=True,
+        showgrid=False,
+        showline=True,
+        linewidth=1,
+        linecolor='#D3D3D3',
+        tickfont=dict(size=10, color='#696969'),
+        title_font=dict(size=12, color='#2F4F4F'),
+        side='right',
+        range=volume_range,
+        showticklabels=True,
+        tickmode='auto'
+    )
+
+    fig.update_yaxes(
+        title_text=f"{symbol} / SPX Ratio",
+        row=2, col=1,
+        showgrid=True,
+        gridwidth=1,
+        gridcolor='rgba(128, 128, 128, 0.3)',
+        showline=True,
+        linewidth=1,
+        linecolor='#D3D3D3',
+        tickfont=dict(size=10, color='#696969'),
+        title_font=dict(size=12, color='#2F4F4F')
+    )
+
+    # Style the x-axes
+    fig.update_xaxes(
+        showgrid=True,
+        gridwidth=1,
+        gridcolor='rgba(128, 128, 128, 0.3)',
+        showline=True,
+        linewidth=1,
+        linecolor='#D3D3D3',
+        tickfont=dict(size=10, color='#696969')
+    )
+
+    # Add gradient background using shapes
+    fig.add_shape(
+        type="rect",
+        xref="paper", yref="paper",
+        x0=0, y0=0, x1=1, y1=1,
+        fillcolor="rgba(240, 248, 255, 0.8)",  # Alice blue with transparency
+        layer="below",
+        line_width=0,
+    )
 
     # Convert the plot to a PNG image and return as FastMCP Image
     dt = datetime.now().strftime("%Y%m%d-%H%M%S.%f")[:-3]
     filename = f"charts/{symbol}_{dt}.png"
     fig.write_image(filename, width=800, height=600, scale=2)
 
-    img_bytes = pio.to_image(fig, format="png", width=800, height=600)
+    # img_bytes = pio.to_image(fig, format="png", width=800, height=600)
+
     # Encode as base64
     # img_base64 = base64.b64encode(img_bytes).decode()
 
     # Return the relative file path
-    return MCPImage(data=img_bytes, format="png")
+    # return MCPImage(data=img_bytes, format="png")
+    return filename
 
 
 @mcp.tool()
