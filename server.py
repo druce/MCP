@@ -25,6 +25,54 @@ $ LOGLEVEL=DEBUG mcp dev server.py
 
 Run for production with (or just use in Claude Desktop):
 $ mcp run server.py
+
+temp dir = tmp / ticker - date
+
+each tool call should save to temp dir, and log to file in this dir so we wee what is up
+
+technicals
+
+get fundamentals , peers
+
+trade tool
+
+file tool
+- files in research directory
+
+make chart
+
+income statement
+
+balance sheet
+
+profile - perplexity
+
+profile - wikipedia
+
+profile - sec 10-k item 1
+
+news -
+
+fetch_options_data
+realized_vol
+implied_vol_from_chain
+put_call_oi_ratio
+option_volume_last_session
+
+
+make chart
+
+get peers
+
+get fundamentals for peers
+
+income statement
+balance sheet
+
+perplexity news , analyst changes
+
+profile info
+
 """
 # pylint: disable=broad-except
 from urllib.parse import urljoin, urlparse
@@ -38,9 +86,14 @@ import logging
 import io
 from typing import Dict, List, Optional, AsyncIterator
 from pathlib import Path
-from datetime import datetime
+from datetime import datetime, timedelta
 from dataclasses import dataclass, field
 from contextlib import asynccontextmanager
+import sqlite3
+import random
+
+import pandas as pd
+import logging
 
 import sec_parser as sp
 from sec_downloader import Downloader
@@ -562,10 +615,95 @@ def fn_get_10k_item_from_symbol(symbol, item="1"):
         logger.info("Error getting 10-K item: %s", e)
     return item_text
 
+##################################################
+# fake blotter data
+##################################################
+
+# Company and pricing info
+companies = {
+    "MSFT": ("Microsoft Corp.", 330),
+    "NVDA": ("Nvidia Corp.", 850),
+    "AAPL": ("Apple, Inc.", 190),
+    "META": ("Meta Platforms, Inc.", 470),
+    "GOOG": ("Alphabet Inc.", 135),
+    "AMZN": ("Amazon.com, Inc.", 185),
+    "AVGO": ("Broadcom Inc.", 1800),
+    "TSM": ("Taiwan Semiconductor Mfg.", 150)
+}
+
+def random_weekday_date(year=2025):
+    while True:
+        d = datetime(year, 1, 1) + timedelta(days=random.randint(0, 364))
+        if d.weekday() < 5:  # Mon-Fri
+            return d.strftime("%Y-%m-%d")
+
+def generate_fake_trade():
+    symbol = random.choice(list(companies.keys()))
+    company, base_price = companies[symbol]
+    date = random_weekday_date()
+    price = round(random.gauss(mu=base_price, sigma=base_price * 0.05), 2)
+    total_value = random.randint(10_000, 100_000)
+    quantity = max(1, int(total_value / price))
+    side = random.choice(["BUY", "SELL"])
+    return (date, symbol, company, side, quantity, price)
+
+def insert_fake_trades():
+
+    # Connect to SQLite
+    conn = sqlite3.connect("blotter.db")
+    cur = conn.cursor()
+
+    # Create table
+    cur.execute("DROP TABLE IF EXISTS blotter")
+    cur.execute("""
+    CREATE TABLE blotter (
+        id INTEGER PRIMARY KEY AUTOINCREMENT,
+        date TEXT,
+        symbol TEXT,
+        company TEXT,
+        side TEXT,
+        quantity INTEGER,
+        price REAL
+    )
+    """)
+
+    # Insert fake trades
+    trades = [generate_fake_trade() for _ in range(1000)]
+    cur.executemany("""
+    INSERT INTO blotter (date, symbol, company, side, quantity, price)
+    VALUES (?, ?, ?, ?, ?, ?)
+    """, trades)
+
+    conn.commit()
 
 # Initialize MCP server
 # needed for toolw definitions below
 mcp = FastMCP("stock-symbol-server", lifespan=app_lifespan)
+
+@mcp.tool()
+def get_trades_for_symbol(symbol, db_path="blotter.db"):
+    """
+    Retrieve all trades for a given symbol from the blotter database.
+
+    Args:
+        symbol (str): The symbol to query trades for.
+        db_path (str): Path to the SQLite database file.
+
+    Returns:
+        str: JSON-formatted list of trades, or an empty list if none found.
+    """
+    if not isinstance(symbol, str) or not symbol:
+        raise ValueError("Symbol must be a non-empty string")
+
+    try:
+        with sqlite3.connect(db_path) as conn:
+            df = pd.read_sql_query(
+                "SELECT * FROM blotter WHERE symbol = ?", conn, params=(symbol,)
+            )
+        return df.to_json(orient='records')
+    except Exception as e:
+        logging.error(f"Error fetching trades for symbol {symbol}: {e}")
+        return "[]"
 
 
 @mcp.tool()

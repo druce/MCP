@@ -5,6 +5,8 @@
 # edgartools
 # magentic
 # mem0ai
+# newsapi-python
+# streamlit
 
 websockets
 jupyter_client
@@ -14,16 +16,15 @@ ipykernel
 kaleido
 langchain
 langchain-openai
+langchain-anthropic
 langchain-community
 mcp
 mcp[cli]
 nbformat
-newsapi-python
 numpy
 openai
 openbb
 pandas
-pandas-ta
 playwright
 playwright-stealth
 plotly
@@ -32,6 +33,7 @@ python-dotenv
 sec-api
 sec-parser
 selenium
-streamlit
+ta-lib
 tiktoken
 wikipedia
+html2text

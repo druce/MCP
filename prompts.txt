@@ -81,6 +81,9 @@ that's great. let's dive even deeper.  Using everything found so far and everyth
 
 7. Recent developments, News Search and Risk Factors:
 • Conduct a deep news search for significant positive and negative news items over the last 12 months, including:
+    • company +  "analyst report" OR "research note" downgrade OR upgrade
+    • use perplexity to search for company + "profile" or "executive profile" and ask: "What are the most significant investigative reports and executive profiles about company published in 2023-2024?"
+
     • Revenue and earnings trends
     • Management changes
     • New product launches
@@ -95,7 +98,6 @@ that's great. let's dive even deeper.  Using everything found so far and everyth
 • Discuss what companies might be potential acquisition targets or acquirers of the company, based on overlapping or complementary customer bases, product offerings, and technical capabilities.
 • Note any other key themes or trends that you think are important.
 
-
 8. Overall Assessment:
 • Summarize the company’s strategic position and the stock's investment risk/reward profile
     • Strengths, weaknesses, opportunities, threats
@@ -107,15 +109,18 @@ Most Critical Additions for Your Use Case:
 
 Short interest data - Essential for risk assessment
 13F institutional flow tracking - Shows smart money moves
+WhaleWisdom / Dataroma - 13F filings tracking, institutional position changes
+
 Options unusual activity - Early warning system
+Alpha Vantage:
+earnings_call_transcript - Requires symbol (PTON) and quarter (e.g., "2024-Q4")
+
 1. Use Perplexity for Synthesis:
 I can use the Perplexity tool to ask: "What are the most significant investigative reports and executive profiles about Peloton published in 2023-2024?"
 3. Analyst Report Mentions:
 "Peloton" "analyst report" OR "research note" downgrade OR upgrade
 2. search for earnings_call_transcript using Alpha Vantage:
-Alpha Vantage:
 
-earnings_call_transcript - Requires symbol (PTON) and quarter (e.g., "2024-Q4")
 
 Critical Missing Data Sources:
 Short Interest & Sentiment:
@@ -126,7 +131,6 @@ Social sentiment tools (StockTwits, Reddit sentiment analysis)
 
 Institutional Flow & 13F Data:
 
-WhaleWisdom / Dataroma - 13F filings tracking, institutional position changes
 Morningstar Direct - Institutional ownership analysis
 FactSet ownership data - Real-time institutional buying/selling
 
