@@ -13,27 +13,6 @@
         "wikipedia": {
             "command": "/opt/anaconda3/envs/mcp/bin/wikipedia-mcp"
         },
-        "sec-edgar-mcp": {
-            "command": "docker",
-            "args": [
-                "run",
-                "-e",
-                "SEC_EDGAR_USER_AGENT=Your Name (your.email@domain.com)",
-                "stefanoamorelli/sec-edgar-mcp:latest"
-            ],
-            "env": {}
-        },
-        "stock-symbol-server": {
-            "command": "/opt/anaconda3/envs/mcp/bin/python",
-            "args": [
-                "/Users/drucev/projects/windsurf/MCP/server.py"
-            ],
-            "cwd": "/Users/drucev/projects/windsurf/MCP",
-            "env": {
-                "CONDA_DEFAULT_ENV": "mcp",
-                "PATH": "/opt/anaconda3/envs/mcp/bin:/usr/local/bin:/usr/bin:/bin"
-            }
-        },
         "perplexity-ask": {
             "command": "npx",
             "args": [
@@ -86,6 +65,17 @@
                 "PATH": "/opt/anaconda3/envs/mcp/bin:/usr/local/bin:/usr/bin:/bin",
                 "PYTHONPATH": "/Users/drucev/projects/windsurf/MCP/fmp-mcp-server",
                 "FMP_API_KEY": "your api key"
+            }
+        },
+        "stock-symbol-server": {
+            "command": "/opt/anaconda3/envs/mcp/bin/python",
+            "args": [
+                "/Users/drucev/projects/windsurf/MCP/server.py"
+            ],
+            "cwd": "/Users/drucev/projects/windsurf/MCP",
+            "env": {
+                "CONDA_DEFAULT_ENV": "mcp",
+                "PATH": "/opt/anaconda3/envs/mcp/bin:/usr/local/bin:/usr/bin:/bin"
             }
         }
     }
