@@ -1,47 +1,75 @@
-We will be using installed tools to analyze  Peleton Interactive (symbol: PTON)
+We will be using  tools to analyze Tesla (symbol: TSLA) as of today , Tuesday August 5, 2025
 
-use the make_stock_chart tool to get a chart of PTON
+get trades
 
-use the fetch_technical_analysis tool to run a technical analysis summary for PTON
+get stock chart
 
-use the fetch_peers tool to make a list of comparable companies to PTON
+use the fetch_technical_analysis tool to run a technical analysis summary for TSLA
 
-use the get_yahoo_stats tool to get fundamental summary data for PTON
+use the get_peers_ratios function to get comps for TSLA vs peers
 
----
-use news and research tools and web search and tell me what is the latest news for PTON
 
-get_bloomberg_news
-get_reuters_news
-get_yahoo_news
-get_google_finance_news
-get_finviz_news
-get_reddit_news
-
----
-use additional news and research tools and web search and tell me what is the latest news for PTON
-alphavantage
-yfinance
-fmp
-
----
-use get_morningstar_research to get recent research
----
-
-summarize PTON's business profile using perplexity
----
-
-summarize PTON's business profile using wikipedia
----
-
-summarize PTON's business from the sec 10-k item 1
----
-
-based on everything you found so far and anything else you can discover on the Web and using tools, write a comprehensive summary of PTON's business, its fundamental valuation, and technical setup.
 
 ---
 
-that's great. let's dive even deeper.  Using everything found so far and everything you can find by using tools and doing deep research, write a report on PTON in the straightforward factual style of a Wall Street equity research analyst, in 8 sections:
+Using the AlphaVantage tool:
+
+Get the company overview for Q2 2025
+Get the latest earnings call transcript
+
+-----
+
+Using the yfinance tool:
+
+Get stock info
+Get current recommendations
+Get the latest income statement
+Get the latest balance sheet
+Get the latest news
+
+----
+
+Using Perplexity, what are the most impactful news stories about Tesla (TSLA) since 2024, including management profiles and investigative reports? Focus particularly on major financial media and business publications, like  Wall Street Journal, Reuters, Bloomberg, Financial Times, Fortune, BusinessWeek, Forbes, and national media like New York Times, Washington Post, The Atlantic, The New Yorker, Vanity Fair, 60 Minutes, major TV networks, technical publications like The Verge and Wired. For any notable stories, provide the date of publication and the media that reported them.
+
+----
+
+Use Perplexity to summarize TSLA's business profile. Provide a comprehensive analysis and try to including things like:
+
+Company Profile: An overview of TSLA, including its lines of business, history, and recent key developments.
+
+Major News: Significant events related to TSLA or its industry impacting its stock.
+
+Financial Performance: Recent earnings reports and stock performance compared to expectations, changes in dividends or stock buybacks.
+
+Analyst Coverage: summarize recent changes to analysts' ratings noting which analyst and firms made upgrades or downgrades; summarize any recent short seller reports noting the firm and analyst.
+
+Product Announcements: Launch of new products, strategic initiatives, or restructurings.
+
+Strategic Moves: Information on deals, partnerships, mergers, acquisitions, divestitures, joint ventures, and major new business and revenue.
+
+Securities Offerings: Announcements related to stock or bond issuances, buybacks, special dividends, or stock splits.
+
+Management Changes: Significant personnel changes within TSLA.
+
+Stock Price Movements: Notable stock price changes and their back stories.
+
+----
+
+Use Wikipedia to summarize TSLA's business profile
+
+---
+
+Use the sec 10-k item 1 to summarize TSLA's business profile
+
+---
+
+
+based on everything we discovered so far and anything else you can find on the Web and using tools, write a comprehensive summary of TSLA's business, its fundamental valuation, and technical setup.
+
+
+---
+
+that's great. let's dive even deeper.  Using everything found so far and everything you can find by using tools and doing deep research, write a report on TSLA in the straightforward factual style of a Wall Street equity research analyst, in 8 sections:
 
 1. Profile
 • History with origin story and key historical milestones
@@ -83,7 +111,6 @@ that's great. let's dive even deeper.  Using everything found so far and everyth
 • Conduct a deep news search for significant positive and negative news items over the last 12 months, including:
     • company +  "analyst report" OR "research note" downgrade OR upgrade
     • use perplexity to search for company + "profile" or "executive profile" and ask: "What are the most significant investigative reports and executive profiles about company published in 2023-2024?"
-
     • Revenue and earnings trends
     • Management changes
     • New product launches
@@ -105,82 +132,34 @@ that's great. let's dive even deeper.  Using everything found so far and everyth
     • The level of risk
     • Any critical “watch points” for further due diligence and ongoing monitoring.
 
-Most Critical Additions for Your Use Case:
-
-Short interest data - Essential for risk assessment
-13F institutional flow tracking - Shows smart money moves
+---
+Possible Additions for Your Use Case:
+SaaS metrics like rule of 40
+Short interest data - days to cover, on special/rebate
+13F institutional flow tracking
 WhaleWisdom / Dataroma - 13F filings tracking, institutional position changes
+Options activity, unusual options activity, put/call ratios, open interest, implied/historical vol
+Sentiment over time in news, social media, StockTwits, Reddit, Twitter, TikTok, YouTube
+is it a meme stock, highly mentioned in retail channels, robinhood volume vs dark pool or block trades or overall volume
+is it an institutional story stock, hedge fund stock, lots of 13F filings, highly followed or orphan
+large insider ownership
+guidance over time, recommendations over time
+Credit default swap data - Market-implied credit risk
+Bankruptcy prediction models (Altman Z-score, etc.)
 
-Options unusual activity - Early warning system
-Alpha Vantage:
-earnings_call_transcript - Requires symbol (PTON) and quarter (e.g., "2024-Q4")
-
-1. Use Perplexity for Synthesis:
-I can use the Perplexity tool to ask: "What are the most significant investigative reports and executive profiles about Peloton published in 2023-2024?"
-3. Analyst Report Mentions:
-"Peloton" "analyst report" OR "research note" downgrade OR upgrade
-2. search for earnings_call_transcript using Alpha Vantage:
-
-
-Critical Missing Data Sources:
-Short Interest & Sentiment:
-
-S3 Partners / Ortex - Real-time short interest data, days to cover, borrowing costs
-Fintel - Short interest tracking, institutional flow
-Social sentiment tools (StockTwits, Reddit sentiment analysis)
-
-Institutional Flow & 13F Data:
-
-Morningstar Direct - Institutional ownership analysis
-FactSet ownership data - Real-time institutional buying/selling
-
-Options Flow & Derivatives:
-
-Unusual Options Activity tools - Large block trades, unusual volume
-Put/Call ratios and open interest data
-Dark pool activity (would show institutional accumulation/distribution)
-
-Earnings & Event Data:
-
-Earnings call transcripts (full text, not just summaries)
-Guidance tracking - Management guidance vs. actual results over time
-Conference presentation materials
-
-Industry & Competitive Intelligence:
-
+alt data
 App store analytics (App Annie/Sensor Tower) - For consumer apps/digital products
 Web traffic data (SimilarWeb, SEMrush) - Customer engagement metrics
 Patent databases - Innovation pipeline analysis
 Glassdoor employee sentiment - Internal culture indicators
-
-Alternative Data:
-
 Satellite data (for retail foot traffic, shipping volumes)
 Credit card spend data (consumer behavior)
 Supply chain tracking (ImportGenius for trade data)
-
-Advanced Financial Analytics:
-
 CapitalIQ models - Detailed financial modeling templates
-Credit default swap data - Market-implied credit risk
-Bankruptcy prediction models (Altman Z-score, etc.)
-
-Regulatory & Legal:
-
 PACER court filing search - Litigation tracking
 FDA drug approval databases (for pharma/biotech)
-Patent litigation tracking
 
 ESG & Governance:
-
 ESG rating services (MSCI, Sustainalytics)
 Governance risk metrics
 Executive compensation benchmarking
-
-Most Critical Additions for Your Use Case:
-
-Short interest data - Essential for risk assessment
-13F institutional flow tracking - Shows smart money moves
-Options unusual activity - Early warning system
-Full earnings transcripts - Management tone and guidance
-Industry-specific metrics (for PTON: fitness app downloads, subscriber churn, etc.)
