@@ -1,34 +1,37 @@
 
 # proof of concept deep research agent to analyze a stock.
 
-## Report format, 8 sections:
-
-prompt: write a report in these sections, using the tools to find the information.
-
-1. Profile
-
-	1. history with origin story and key historical milestones
-
-	2. core business and competitors
-
-	3. recent major news
-
-	4. stock chart
-
-	5. table of technical indicators
-
-	6. table of key fundamental ratios
-
-	7. sankey chart  of income statement
+Create a multi-agent AI to write a profile of a company from the perspective of an equity investor, in the matter-of-fact style of a Wall Street research analyst.
 
 
-2. Business Model:
+## Desired Report format, 8 sections:
+
+Output will be a report structured in these sections
+
+1. Company Profile
+
+	- history with origin story and key historical milestones
+
+	- core business and competitors
+
+	- recent major developments
+
+	- stock chart
+
+	- table of technical indicators
+
+	- table of key fundamental ratios
+
+	- sankey chart  of income statement
+
+
+2. Company Business Model:
 
 	• Describe their core businesses, products and services.
 
-	• Outline their key revenue streams, customer segments, and monetization strategies.
+	• Describe how they turn these business into money: their key revenue streams, customer segments, and monetization strategies.
 
-	• Explain any sources of competitive advantage such as network effects, switching costs, regulatory moats.
+	• Explain any sources of competitive advantage such as network effects, switching costs, regulatory moats, brands, difficult-to-replicate technology or distribution.
 
 
 3. Competitive Landscape:
@@ -51,7 +54,7 @@ prompt: write a report in these sections, using the tools to find the informatio
 
 6. Valuation:
 
-	• Identify appropriate valuation methodologies, including income-based (e.g., DCF), asset-based (eg book value and sum of parts), market-based (e.g. comps), and LBO analysis
+	• Discuss appropriateness of various valuation methodologies, including income-based (e.g., DCF), asset-based (eg book value and sum of parts), market-based (e.g. comps), and LBO analysis
 
 	• Highlight important valuation inputs and metrics (growth rates, margins, discount rates, terminal value assumptions).
 
@@ -73,70 +76,73 @@ prompt: write a report in these sections, using the tools to find the informatio
 
 8. Overall Assessment:
 
-	• Summarize the company’s strategic position, risks, opportunities, bull and bear cases, and any “watch points” for further diligence.
+	• Summarize the company’s strategic position, strengths, weaknesses, opportunities, threats, bull and bear cases, and any “watch points” for further diligence.
 
 ---
 
-## multi-agent algorithm
+## multi-agent architecture
 
-bring data into a vector store, and knowledge graph, like mem0.
-prompt ai to write individual sections using the tools to find the information. use critic-optimizer to improve the sections. finally combine the sections into a report and do a final polish.
+A coordinator-based multi-agent system where a main coordinator orchestrates specialized sub-agents. Use Python with asyncio for concurrent operations and Playwright for robust web scraping. Use SQLite, ChromaDB, and knowledge graph, for shared data across sub-agents.
 
-1. tell the user, enter a stock to analyze
+Gather data; prompt ai to write individual sections using available tools to find information. Use a critic-optimizer to improve each section. Finally, combine the sections into a report and do a final critic-optimizer loop to polish it.
 
-2. user enters a stock,
+Flow:
 
-	1. confirm valid ticker, look up basics with tool
+1. Prompt the user: enter a stock to analyze
 
-	2. show the standard deep research output outline, ask the user if any other specific questions. outline is 8 sections , with an initial prompt for each section on what info to search for and continue
+2. User enters a stock,
 
-	3. edit the outline, show the updated outline, repeat until OK
+	- Confirm valid ticker, look up basic information using a tool
+
+	- Show the standard deep research output outline above. Ask the user if any other specific questions. 
+
+	- edit the outline, show the updated outline, repeat until OK
 
 3. launch orchestrator. orchestrator manages tasks / sub-agents via a queue, (with dependencies so it represents a directed acyclic graph). loop:
 
-	1. insert initial tasks into queue of tasks/sub-agents data structure as follows:
+	1. insert initial tasks into queue of tasks/sub-agents data structure. Tasks are structured as follows:
 
-		1. name
+		- Task name
 
-		2. optional initial prompt
+		- Optional initial prompt (maybe seed some stuff into the context)
 
-		3. required main prompt, do x with tools
+		- Required main prompt, do x with the provided tools
 
-		4. tools to use
+		- Tools to use
 
-		5. how to query memory (like mem0 knowledge graph and vector store)
+		- Tools to query memory (SQLite, knowledge graph and vector store)
 
-		6. optional critic prompt
+	    - Optional critic prompt - evaluate output from initial prompt according to 
 
-		7. optional optimizer prompt , improve initial response based on critic eval
+		- Optional optimizer prompt , improve initial response based on critic eval
 
-		8. optional test if complete
+		- Optional test if complete
 
-		9. budget , iterations or tokens
+		- Agent budget , iterations or tokens
 
-		10. dependencies
+		- Task Dependencies, eligible to start when dependencies are satisfied
 
-		11. status (not started, running, waiting, complete)
+		- Atatus (not ready, ready, running, complete)
 
-	2. identify all tasks with no missing dependencies
+	2. Identify all tasks with no missing dependencies
 
-	3. for each one that is ready to run, fire off a sub- agent asynchronously
+	3. For each one that is ready to run, run sub- agent asynchronously
 
-	4. whenever a task returns
+	4. Whenever a task returns
 
-		1. mark it complete
+		1. Mark it complete
+        
+		2. Optionally plan based on current state, determine if it raises any new research avenues and tasks and put those in the queue
 
-		2. optionally plan based on current state, determine if it raises any new research avenues and tasks and put those in the queue
+		3. Launch all tasks which are ready go as sub-agents
 
-		3. launch all tasks which are ready go as sub-agents
+		4. Wait for next one to return
 
-		4. wait for next one to return
+5. Evergreen tasks, always put into queue at start , all sections dependent on them
 
-5. evergreen tasks, always put into queue at start , all sections dependent on them
+	1. Get company profile from: 10-k item 1, a couple of web sites like yahoo, perplexity, wikipedia
 
-	1. get company profile from: 10-k item 1, a couple of web sites like yahoo
-
-	2. stuff that comes back, look at it, store facts in mem0 knowledge graph, text chunks in vector store
+	2. Stuff that comes back, parse it, store facts in knowledge graph, text chunks in vector store
 
 	3. get comparables from openbb. store list of comparables in mem0,
 

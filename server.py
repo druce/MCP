@@ -55,6 +55,12 @@ https://github.com/modelcontextprotocol/servers/tree/main/src/filesystem
 
 """
 
+from scrape import get_browser
+from playwright.async_api import (
+    async_playwright,
+    BrowserContext as AsyncBrowserContext,
+    Page as AsyncPage
+)
 import os
 from datetime import datetime
 import dotenv
@@ -91,6 +97,7 @@ import openbb
 from openbb import obb
 from openbb_core.app.model.obbject import OBBject
 
+
 class MarketData:
     """Handles all market data fetching operations."""
 
@@ -99,7 +106,8 @@ class MarketData:
         if not self.api_key:
             raise ValueError("TIINGO_API_KEY not found in environment")
 
-        self.headers = {"Content-Type": "application/json", "Authorization": f"Token {self.api_key}"}
+        self.headers = {"Content-Type": "application/json",
+                        "Authorization": f"Token {self.api_key}"}
 
     async def get_historical_data(self, symbol: str, lookback_days: int = 365) -> pd.DataFrame:
         """
@@ -140,18 +148,21 @@ class MarketData:
             df["date"] = pd.to_datetime(df["date"])
             df.set_index("date", inplace=True)
 
-            df[["open", "high", "low", "close"]] = df[["adjOpen", "adjHigh", "adjLow", "adjClose"]].round(2)
+            df[["open", "high", "low", "close"]] = df[[
+                "adjOpen", "adjHigh", "adjLow", "adjClose"]].round(2)
             df["volume"] = df["adjVolume"].astype(int)
             df["symbol"] = symbol.upper()
 
             return df
 
         except aiohttp.ClientError as e:
-            raise ConnectionError(f"Network error while fetching data for {symbol}: {e}")
+            raise ConnectionError(
+                f"Network error while fetching data for {symbol}: {e}")
         except ValueError as ve:
             raise ve  # Propagate value errors (symbol issues, no data, etc.)
         except Exception as e:
-            raise Exception(f"Unexpected error fetching data for {symbol}: {e}")
+            raise Exception(
+                f"Unexpected error fetching data for {symbol}: {e}")
 
 
 class TechnicalAnalysis:
@@ -187,7 +198,8 @@ class TechnicalAnalysis:
             df["rsi"] = talib.RSI(close, timeperiod=14)
 
             # MACD indicator
-            macd, macd_signal, macd_hist = talib.MACD(close, fastperiod=12, slowperiod=26, signalperiod=9)
+            macd, macd_signal, macd_hist = talib.MACD(
+                close, fastperiod=12, slowperiod=26, signalperiod=9)
             df["macd"] = macd
             df["macd_signal"] = macd_signal
             df["macd_histogram"] = macd_hist
@@ -203,7 +215,8 @@ class TechnicalAnalysis:
     def check_trend_status(df: pd.DataFrame) -> Dict[str, Any]:
         """Analyze the current trend status."""
         if df.empty:
-            raise ValueError("DataFrame is empty. Ensure it contains valid data.")
+            raise ValueError(
+                "DataFrame is empty. Ensure it contains valid data.")
 
         latest = df.iloc[-1]
 
@@ -223,14 +236,6 @@ class TechnicalAnalysis:
         }
 
 
-from playwright.async_api import (
-    async_playwright,
-    BrowserContext as AsyncBrowserContext,
-    Page as AsyncPage
-)
-
-from scrape import get_browser
-
 dotenv.load_dotenv()
 
 # Change working directory to the directory where this script is located
@@ -248,6 +253,7 @@ logging.basicConfig(
 )
 logger = logging.getLogger(__name__)
 logger.info("Starting in directory: %s", os.getcwd())
+
 
 def create_or_get_temp_dir(symbol: str) -> str:
     """
@@ -285,11 +291,13 @@ companies = {
     "TSLA": ("Tesla, Inc.", 150)
 }
 
+
 def random_weekday_date(year=2025):
     while True:
         d = datetime(year, 1, 1) + timedelta(days=random.randint(0, 364))
         if d.weekday() < 5:  # Mon-Fri
             return d.strftime("%Y-%m-%d")
+
 
 def generate_fake_trade():
     symbol = random.choice(list(companies.keys()))
@@ -300,6 +308,7 @@ def generate_fake_trade():
     quantity = max(1, int(total_value / price))
     side = random.choice(["BUY", "SELL"])
     return (date, symbol, company, side, quantity, price)
+
 
 def insert_fake_trades():
 
@@ -335,10 +344,11 @@ def insert_fake_trades():
 # needed for tool definitions below
 mcp = FastMCP("stock-symbol-server")
 
+
 @mcp.tool()
 def get_trades_for_symbol(
-    symbol: str = Field(description="The symbol to query trades for."),
-    db_path: str = Field(default="blotter.db", description="Path to the SQLite database file.")) -> str:
+        symbol: str = Field(description="The symbol to query trades for."),
+        db_path: str = Field(default="blotter.db", description="Path to the SQLite database file.")) -> str:
     """
     Retrieve all trades for a given symbol from the blotter database.
     """
@@ -372,7 +382,7 @@ def fetch_10k_item1(symbol: str = Field(description="The stock symbol whose 10-K
         tree = sp.TreeBuilder().build(elements)
         # look for e.g. "Item 1."
         # sections = [n for n in tree.nodes if re.match(r"^ITEM 1[A-Z]?\.", n.text.strip().upper())]
-        item="1"
+        item = "1"
         sections = [n for n in tree.nodes if re.match(
             r"^ITEM\s+" + item, n.text.strip().upper())]
         logger.info("Sections: %d", len(sections))
@@ -388,7 +398,6 @@ def fetch_10k_item1(symbol: str = Field(description="The stock symbol whose 10-K
         logger.info("Error getting 10-K item: %s", e)
 
     return item_text
-
 
 
 @mcp.tool()
@@ -651,6 +660,7 @@ Average Volume (20D): {df['avg_20d_vol'].iloc[-1]:,.0f}
 
     return analysis
 
+
 def gfr(symbol):
     "helper function to create ratios dataframe"
     ticker = yf.Ticker(symbol)
@@ -720,15 +730,28 @@ def gfr(symbol):
     )
     return df[["Category", "Metric", symbol]]
 
+
 @mcp.tool()
 def get_fundamental_ratios(symbol: str = Field(description="The stock symbol to get fundamentals on.")) -> str:
     """Get a comprehensive list of fundamental ratios and statistics for a given symbol."""
-    temp_dir = create_or_get_temp_dir(symbol)
-    df = gfr(symbol)
-    md_str = df.to_markdown()
-    with open(os.path.join(temp_dir, "fundamental_ratios.md"), "w", encoding="utf-8") as f:
-        f.write(md_str)
 
+    temp_dir = create_or_get_temp_dir(symbol)
+    obb.user.credentials.openbb_pat = os.environ['OPENBB_PAT']
+
+    symbol_df = gfr(symbol)
+
+    # get peers list
+    obj = obb.equity.compare.peers(symbol=symbol, provider='fmp')
+    peers_df = obj.to_df()
+    peers_list = peers_df['symbol'].to_list()
+
+    # get gfr, only keep last column of data for each symbol
+    peers_dflist = [gfr(p).iloc[:, 2] for p in peers_list]
+    # concatenate original gfr table with data from peers
+    df = pd.concat([symbol_df] + peers_dflist, axis=1)
+    md_str = df.to_markdown()
+    with open(os.path.join(temp_dir, "peers_ratios.md"), "w", encoding="utf-8") as f:
+        f.write(md_str)
     return md_str
 
 
@@ -736,7 +759,7 @@ def get_fundamental_ratios(symbol: str = Field(description="The stock symbol to 
 def get_peers(symbol: str = Field(description="The stock symbol to get peers for.")) -> str:
     """Get a list of peers for a given symbol."""
     temp_dir = create_or_get_temp_dir(symbol)
-    obb.account.login(email=os.environ['OPENBB_USER'], password=os.environ['OPENBB_PW'], remember_me=True)
+    obb.user.credentials.openbb_pat = os.environ['OPENBB_PAT']
     obj = obb.equity.compare.peers(symbol=symbol, provider='fmp')
     json_str = json.dumps(obj.to_dict())
     with open(os.path.join(temp_dir, "peers.json"), "w", encoding="utf-8") as f:
@@ -750,12 +773,12 @@ def get_peers_ratios(symbol: str = Field(description="The stock symbol to get pe
     temp_dir = create_or_get_temp_dir(symbol)
     symboldf = gfr(symbol)
 
-    obb.account.login(email=os.environ['OPENBB_USER'], password=os.environ['OPENBB_PW'], remember_me=True)
+    obb.user.credentials.openbb_pat = os.environ['OPENBB_PAT']
     obj = obb.equity.compare.peers(symbol=symbol, provider='fmp')
-    peers = obj.results
-    peers_list=peers.peers_list
+    peers_df = obj.to_df()
+    peers_list = peers_df['symbol'].to_list()
     # only keep last column
-    peers_dflist = [gfr(p).iloc[:,2] for p in peers_list]
+    peers_dflist = [gfr(p).iloc[:, 2] for p in peers_list]
     df = pd.concat([symboldf] + peers_dflist, axis=1)
     md_str = df.to_markdown()
     with open(os.path.join(temp_dir, "peers_ratios.md"), "w", encoding="utf-8") as f:

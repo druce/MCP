@@ -8,22 +8,27 @@
 # newsapi-python
 # streamlit
 
+pip
+setuptools
+wheel
+
+aiohttp
 websockets
 jupyter_client
 
-anthropic
+# anthropic
 ipykernel
-kaleido
-langchain
-langchain-openai
-langchain-anthropic
-langchain-community
+# kaleido
+# langchain
+# langchain-openai
+# langchain-anthropic
+# langchain-community
 mcp
-mcp[cli]
+# mcp[cli]
 nbformat
 numpy
 openai
-openbb
+# openbb
 pandas
 playwright
 playwright-stealth
@@ -35,5 +40,9 @@ sec-parser
 selenium
 ta-lib
 tiktoken
-wikipedia
+# wikipedia
 html2text
+
+wikipedia-mcp
+yfinance
+openbb

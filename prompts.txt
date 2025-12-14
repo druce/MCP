@@ -1,12 +1,12 @@
-We will be using  tools to analyze Tesla (symbol: TSLA) as of today , Tuesday August 5, 2025
+We will be using  tools to analyze Intel (symbol: INTC) as of today , Tuesday August 5, 2025
 
 get trades
 
 get stock chart
 
-use the fetch_technical_analysis tool to run a technical analysis summary for TSLA
+use the fetch_technical_analysis tool to run a technical analysis summary for INTC
 
-use the get_peers_ratios function to get comps for TSLA vs peers
+use the get_peers_ratios function to get comps for INTC vs peers
 
 
 
@@ -14,7 +14,7 @@ use the get_peers_ratios function to get comps for TSLA vs peers
 
 Using the AlphaVantage tool:
 
-Get the company overview for Q2 2025
+Get the company overview for the latest quarter
 Get the latest earnings call transcript
 
 -----
@@ -29,15 +29,15 @@ Get the latest news
 
 ----
 
-Using Perplexity, what are the most impactful news stories about Tesla (TSLA) since 2024, including management profiles and investigative reports? Focus particularly on major financial media and business publications, like  Wall Street Journal, Reuters, Bloomberg, Financial Times, Fortune, BusinessWeek, Forbes, and national media like New York Times, Washington Post, The Atlantic, The New Yorker, Vanity Fair, 60 Minutes, major TV networks, technical publications like The Verge and Wired. For any notable stories, provide the date of publication and the media that reported them.
+Using Perplexity, what are the most impactful news stories about Intel (INTC) since 2024, including management profiles and investigative reports? Focus particularly on major financial media and business publications, like  Wall Street Journal, Reuters, Bloomberg, Financial Times, Fortune, BusinessWeek, Forbes, and national media like New York Times, Washington Post, The Atlantic, The New Yorker, Vanity Fair, 60 Minutes, major TV networks, technical publications like The Verge and Wired. For any notable stories, provide the date of publication and the media that reported them.
 
 ----
 
-Use Perplexity to summarize TSLA's business profile. Provide a comprehensive analysis and try to including things like:
+Use Perplexity to summarize INTC's business profile. Provide a comprehensive analysis and try to include things like:
 
-Company Profile: An overview of TSLA, including its lines of business, history, and recent key developments.
+Company Profile: An overview of INTC, including its lines of business, history, and recent key developments.
 
-Major News: Significant events related to TSLA or its industry impacting its stock.
+Major News: Significant events related to INTC or its industry impacting its stock.
 
 Financial Performance: Recent earnings reports and stock performance compared to expectations, changes in dividends or stock buybacks.
 
@@ -49,27 +49,27 @@ Strategic Moves: Information on deals, partnerships, mergers, acquisitions, dive
 
 Securities Offerings: Announcements related to stock or bond issuances, buybacks, special dividends, or stock splits.
 
-Management Changes: Significant personnel changes within TSLA.
+Management Changes: Significant personnel changes within INTC.
 
 Stock Price Movements: Notable stock price changes and their back stories.
 
 ----
 
-Use Wikipedia to summarize TSLA's business profile
+Use Wikipedia to summarize INTC's business profile
 
 ---
 
-Use the sec 10-k item 1 to summarize TSLA's business profile
+Use the sec 10-k item 1 to summarize INTC's business profile
 
 ---
 
 
-based on everything we discovered so far and anything else you can find on the Web and using tools, write a comprehensive summary of TSLA's business, its fundamental valuation, and technical setup.
+based on everything we discovered so far and anything else you can find on the Web and using tools, write a comprehensive summary of INTC's business, its fundamental valuation, and technical setup.
 
 
 ---
 
-that's great. let's dive even deeper.  Using everything found so far and everything you can find by using tools and doing deep research, write a report on TSLA in the straightforward factual style of a Wall Street equity research analyst, in 8 sections:
+that's great. let's dive even deeper.  Using everything found so far and everything you can find by using tools and doing deep research, write a report on INTC in the straightforward factual style of a Wall Street equity research analyst, in 8 sections:
 
 1. Profile
 • History with origin story and key historical milestones
