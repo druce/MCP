@@ -1,4 +1,4 @@
-# Fidelity Portfolio Management Skills
+# Equity Research and Portfolio Management Skills
 
 A collection of Claude Code skills for portfolio analysis, categorization, and restructuring.
 
