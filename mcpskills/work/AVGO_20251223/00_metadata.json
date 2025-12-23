@@ -1,0 +1,13 @@
+{
+  "symbol": "AVGO",
+  "research_date": "2025-12-23",
+  "research_timestamp": "2025-12-23T00:54:29.641125",
+  "phases_completed": [
+    "report",
+    "deep",
+    "final"
+  ],
+  "phases_failed": [],
+  "errors": [],
+  "data_sources": {}
+}

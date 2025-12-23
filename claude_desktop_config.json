@@ -35,13 +35,13 @@
         "alphavantage": {
             "command": "/opt/anaconda3/envs/mcp/bin/python",
             "args": [
-                "/Users/drucev/projects/windsurf/MCP/alphavantage/src/alphavantage_mcp_server/server.py"
+                "/Users/drucev/projects/MCP/alphavantage/src/alphavantage_mcp_server/server.py"
             ],
-            "cwd": "/Users/drucev/projects/windsurf/MCP/alphavantage",
+            "cwd": "/Users/drucev/projects/MCP/alphavantage",
             "env": {
                 "CONDA_DEFAULT_ENV": "mcp",
                 "PATH": "/opt/anaconda3/envs/mcp/bin:/usr/local/bin:/usr/bin:/bin",
-                "PYTHONPATH": "/Users/drucev/projects/windsurf/MCP/alphavantage/src",
+                "PYTHONPATH": "/Users/drucev/projects/MCP/alphavantage/src",
                 "ALPHA_VANTAGE_API_KEY": "your api key"
             }
         },
@@ -49,7 +49,7 @@
             "command": "/Users/drucev/.local/bin/uv",
             "args": [
                 "--directory",
-                "/Users/drucev/projects/windsurf/MCP/yahoo-finance-mcp",
+                "/Users/drucev/projects/MCP/yahoo-finance-mcp",
                 "run",
                 "server.py"
             ]
@@ -57,22 +57,22 @@
         "fmp": {
             "command": "/opt/anaconda3/envs/mcp/bin/python",
             "args": [
-                "/Users/drucev/projects/windsurf/MCP/fmp-mcp-server/src/server.py"
+                "/Users/drucev/projects/MCP/fmp-mcp-server/src/server.py"
             ],
-            "cwd": "/Users/drucev/projects/windsurf/MCP/fmp-mcp-server",
+            "cwd": "/Users/drucev/projects/MCP/fmp-mcp-server",
             "env": {
                 "CONDA_DEFAULT_ENV": "mcp",
                 "PATH": "/opt/anaconda3/envs/mcp/bin:/usr/local/bin:/usr/bin:/bin",
-                "PYTHONPATH": "/Users/drucev/projects/windsurf/MCP/fmp-mcp-server",
+                "PYTHONPATH": "/Users/drucev/projects/MCP/fmp-mcp-server",
                 "FMP_API_KEY": "your api key"
             }
         },
         "stock-symbol-server": {
             "command": "/opt/anaconda3/envs/mcp/bin/python",
             "args": [
-                "/Users/drucev/projects/windsurf/MCP/server.py"
+                "/Users/drucev/projects/MCP/server.py"
             ],
-            "cwd": "/Users/drucev/projects/windsurf/MCP",
+            "cwd": "/Users/drucev/projects/MCP",
             "env": {
                 "CONDA_DEFAULT_ENV": "mcp",
                 "PATH": "/opt/anaconda3/envs/mcp/bin:/usr/local/bin:/usr/bin:/bin"

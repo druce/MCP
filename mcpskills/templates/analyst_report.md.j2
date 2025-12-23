@@ -1,0 +1,261 @@
+# Stock Research Report: {{ symbol }}
+
+**Generated:** {{ timestamp }}
+
+---
+
+## Executive Summary
+
+**Company:** {{ company_name }}
+**Sector:** {{ sector }}
+**Industry:** {{ industry }}
+**Latest Price:** ${{ latest_price }}
+**Market Cap:** ${{ market_cap }}
+
+---
+
+## 1. Company Profile
+
+### History & Evolution
+{% if wikipedia_summary %}
+{{ wikipedia_summary }}
+{% else %}
+*Wikipedia data not available*
+{% endif %}
+
+### Competitors
+{% if peers %}
+**Key Competitors:**
+{% for peer in peers %}
+- {{ peer.name }} ({{ peer.symbol }}): ${{ peer.price }} - Market Cap: ${{ peer.market_cap }}
+{% endfor %}
+{% else %}
+*Peer data not available*
+{% endif %}
+
+### Recent News
+{% if news_stories %}
+{{ news_stories }}
+{% else %}
+*News research not available*
+{% endif %}
+
+---
+
+## 2. Business Model
+
+{% if business_profile %}
+{{ business_profile }}
+{% else %}
+*Business profile research not available*
+
+**Revenue Streams:**
+{% if revenue %}
+- Total Revenue: ${{ revenue }}
+- Revenue Per Share: ${{ revenue_per_share }}
+- Quarterly Revenue Growth: {{ quarterly_revenue_growth }}%
+{% endif %}
+
+**Business Summary:**
+{% if business_summary %}
+{{ business_summary }}
+{% endif %}
+{% endif %}
+
+---
+
+## 3. Competitive Landscape
+
+### Market Position
+{% if business_profile %}
+*See Business Profile section above for competitive analysis*
+{% else %}
+*Competitive landscape analysis not available*
+{% endif %}
+
+### Differentiation
+{% if competitive_advantages %}
+{{ competitive_advantages }}
+{% endif %}
+
+---
+
+## 4. Supply Chain Positioning
+
+{% if supply_chain %}
+{{ supply_chain }}
+{% else %}
+*Supply chain analysis not available*
+
+{% if business_summary %}
+Refer to business summary for operations overview.
+{% endif %}
+{% endif %}
+
+---
+
+## 5. Financial & Operating Leverage
+
+### Profitability Metrics
+{% if profit_margin %}
+- **Profit Margin:** {{ profit_margin }}%
+- **Operating Margin:** {{ operating_margin }}%
+- **Gross Profit:** ${{ gross_profit }}
+- **EBITDA:** ${{ ebitda }}
+{% endif %}
+
+### Returns
+{% if roe %}
+- **Return on Equity (ROE):** {{ roe }}%
+- **Return on Assets (ROA):** {{ roa }}%
+{% endif %}
+
+### Debt & Cash
+*See balance sheet data in fundamental analysis outputs*
+
+---
+
+## 6. Valuation
+
+### Valuation Multiples
+{% if trailing_pe %}
+- **P/E Ratio (Trailing):** {{ trailing_pe }}
+- **P/E Ratio (Forward):** {{ forward_pe }}
+- **PEG Ratio:** {{ peg_ratio }}
+- **Price/Book:** {{ price_to_book }}
+- **Price/Sales:** {{ price_to_sales }}
+{% else %}
+*Valuation metrics not available*
+{% endif %}
+
+### Analyst Recommendations
+{% if analyst_recommendations %}
+**Recent Analyst Actions:**
+{% for rec in analyst_recommendations[-10:] %}
+- {{ rec.Firm }}: {{ rec['To Grade'] }} ({{ rec.Date }})
+{% endfor %}
+{% else %}
+*Analyst recommendations not available*
+{% endif %}
+
+---
+
+## 7. Technical Analysis
+
+### Trend Analysis
+{% if technical_analysis %}
+**Price:** ${{ technical_analysis.latest_price }}
+
+**Moving Averages:**
+- 20 SMA: ${{ technical_analysis.indicators.sma_20 }} {% if technical_analysis.trend_signals.above_20sma %}✅{% else %}❌{% endif %}
+- 50 SMA: ${{ technical_analysis.indicators.sma_50 }} {% if technical_analysis.trend_signals.above_50sma %}✅{% else %}❌{% endif %}
+- 200 SMA: ${{ technical_analysis.indicators.sma_200 }} {% if technical_analysis.trend_signals.above_200sma %}✅{% else %}❌{% endif %}
+
+**Momentum:**
+- RSI (14): {{ technical_analysis.indicators.rsi_14 }}
+- MACD: {{ technical_analysis.indicators.macd }} {% if technical_analysis.trend_signals.macd_bullish %}✅{% else %}❌{% endif %}
+
+**Volatility:**
+- ATR (14): {{ technical_analysis.indicators.atr_14 }}
+- Bollinger Bands: ${{ technical_analysis.indicators.bollinger_lower }} - ${{ technical_analysis.indicators.bollinger_upper }}
+
+**Volume:**
+- Average Volume (20D): {{ technical_analysis.indicators.avg_volume_20d }}
+
+{% if chart_path %}
+![Technical Chart]({{ chart_path }})
+{% endif %}
+{% else %}
+*Technical analysis not available*
+{% endif %}
+
+---
+
+## 8. Recent Developments & Risk Factors
+
+### Recent Developments
+{% if recent_news %}
+{{ recent_news }}
+{% else %}
+*Recent news not available*
+{% endif %}
+
+### Leadership
+{% if executive_profiles %}
+{{ executive_profiles }}
+{% else %}
+*Executive profiles not available*
+{% endif %}
+
+### SEC Filings
+{% if sec_filing_url %}
+**Latest 10-K Filing:** [View Filing]({{ sec_filing_url }})
+- Filing Date: {{ sec_filing_date }}
+- Report Date: {{ sec_report_date }}
+{% else %}
+*SEC filing information not available*
+{% endif %}
+
+### Risk Assessment
+*Key risks to consider:*
+{% if business_profile %}
+- Market competition and technological disruption
+- Regulatory and compliance risks
+- Economic and industry cyclicality
+- Execution risks on growth strategy
+{% else %}
+- Perform additional research to identify specific risk factors
+{% endif %}
+
+---
+
+## Overall Assessment
+
+### Strengths
+{% if strengths %}
+{{ strengths }}
+{% else %}
+- Market position in {{ industry }}
+- Financial metrics {% if profit_margin %}({{ profit_margin }}% profit margin){% endif %}
+{% if technical_analysis and technical_analysis.trend_signals.above_200sma %}- Positive long-term technical trend{% endif %}
+{% endif %}
+
+### Weaknesses
+{% if weaknesses %}
+{{ weaknesses }}
+{% else %}
+- Review financial statements for debt levels and cash flow
+- Analyze competitive pressures in {{ industry }}
+{% endif %}
+
+### Bull Case
+{% if bull_case %}
+{{ bull_case }}
+{% else %}
+- Strong market position
+{% if quarterly_revenue_growth %}- Revenue growth of {{ quarterly_revenue_growth }}%{% endif %}
+- Industry tailwinds
+{% endif %}
+
+### Bear Case
+{% if bear_case %}
+{{ bear_case }}
+{% else %}
+- Competitive threats
+- Valuation concerns
+- Market risks
+{% endif %}
+
+---
+
+## Data Sources
+
+- **Technical Analysis:** yfinance, TA-Lib
+- **Fundamental Data:** yfinance, OpenBB (FMP provider)
+- **Research:** Perplexity AI
+- **SEC Filings:** OpenBB SEC API
+- **Company Info:** Wikipedia
+
+---
+
+*This report was generated using Claude Code stock research system. All data is provided for informational purposes only and should not be considered investment advice.*

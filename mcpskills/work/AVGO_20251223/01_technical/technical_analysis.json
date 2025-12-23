@@ -1,0 +1,28 @@
+{
+  "symbol": "AVGO",
+  "timestamp": "2025-12-23T00:54:52.534728",
+  "latest_price": 341.45001220703125,
+  "indicators": {
+    "sma_20": 373.7440475463867,
+    "sma_50": 361.18158569335935,
+    "sma_200": 283.33440353393553,
+    "rsi_14": 42.144921793222004,
+    "macd": -6.729960375312885,
+    "macd_signal": 0.2565145246677753,
+    "macd_histogram": -6.98647489998066,
+    "atr_14": 17.04042588029848,
+    "bollinger_upper": 428.89227576696686,
+    "bollinger_middle": 373.7440475463867,
+    "bollinger_lower": 318.59581932580653,
+    "avg_volume_20d": 44858850.0
+  },
+  "trend_signals": {
+    "above_20sma": false,
+    "above_50sma": false,
+    "above_200sma": true,
+    "sma_20_50_bullish": true,
+    "sma_50_200_bullish": true,
+    "macd_bullish": false
+  },
+  "analysis": "Technical Analysis for AVGO:\n\nTrend Analysis:\n- Above 20 SMA: \u274c\n- Above 50 SMA: \u274c\n- Above 200 SMA: \u2705\n- 20/50 SMA Bullish Cross: \u2705\n- 50/200 SMA Bullish Cross: \u2705\n\nMomentum:\n- RSI (14): 42.14\n- MACD Bullish: \u274c\n\nLatest Price: $341.45\nAverage True Range (14): 17.04\nAverage Volume (20D): 44,858,850"
+}

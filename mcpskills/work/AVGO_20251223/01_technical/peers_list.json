@@ -1,0 +1,50 @@
+{
+  "symbol": [
+    "META",
+    "TSM",
+    "ASML",
+    "AMD",
+    "MU",
+    "ADI",
+    "QRVO",
+    "SMTC",
+    "FORM",
+    "POWI"
+  ],
+  "name": [
+    "Meta Platforms, Inc.",
+    "Taiwan Semiconductor Manufacturing Company Limited",
+    "ASML Holding N.V.",
+    "Advanced Micro Devices, Inc.",
+    "Micron Technology, Inc.",
+    "Analog Devices, Inc.",
+    "Qorvo, Inc.",
+    "Semtech Corporation",
+    "FormFactor, Inc.",
+    "Power Integrations, Inc."
+  ],
+  "price": [
+    661.5,
+    293.28,
+    1056.98,
+    214.95,
+    276.59,
+    275.82,
+    86.45,
+    75.3,
+    57.93,
+    37.03
+  ],
+  "market_cap": [
+    1667367054234,
+    1521103507085,
+    409686534575,
+    348867573364,
+    309646141882,
+    136359609160,
+    7987713820,
+    6439906448,
+    4476137499,
+    2049098079
+  ]
+}
