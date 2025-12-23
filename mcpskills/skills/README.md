@@ -1,4 +1,4 @@
-# Fidelity Portfolio Skills
+# Research and Portfolio Skills
 
 This directory contains standalone skills for portfolio analysis and securities research.
 
@@ -1091,3 +1091,4 @@ To create a new skill:
 - **Output consistency:** Use consistent formatting (=== dividers, ✓/❌ symbols)
 - **Dated archives:** Use `datetime.now().strftime('%Y%m%d')` for archival outputs
 - **Documentation:** Multi-line docstring with usage examples and output description
+
