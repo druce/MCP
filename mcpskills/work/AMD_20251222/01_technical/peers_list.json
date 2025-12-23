@@ -1,0 +1,50 @@
+{
+  "symbol": [
+    "PLTR",
+    "ASML",
+    "MU",
+    "SAP",
+    "LRCX",
+    "AMAT",
+    "QCOM",
+    "KLAC",
+    "TXN",
+    "ARM"
+  ],
+  "name": [
+    "Palantir Technologies Inc.",
+    "ASML Holding N.V.",
+    "Micron Technology, Inc.",
+    "SAP SE",
+    "Lam Research Corporation",
+    "Applied Materials, Inc.",
+    "QUALCOMM Incorporated",
+    "KLA Corporation",
+    "Texas Instruments Incorporated",
+    "Arm Holdings plc American Depositary Shares"
+  ],
+  "price": [
+    193.98,
+    1056.98,
+    276.59,
+    245.3,
+    175.26,
+    259.01,
+    174.22,
+    1265.66,
+    178.82,
+    113.29
+  ],
+  "market_cap": [
+    443115111648,
+    409686534575,
+    309646141882,
+    285832185729,
+    220131817800,
+    206338364342,
+    186589620000,
+    166298026513,
+    162479968436,
+    119635114599
+  ]
+}

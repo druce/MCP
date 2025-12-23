@@ -1,0 +1,664 @@
+[
+  {
+    "id": "53738ab3-c601-4b9b-96f4-06bd01194eb0",
+    "content": {
+      "id": "53738ab3-c601-4b9b-96f4-06bd01194eb0",
+      "contentType": "STORY",
+      "title": "Nvidia dominated the headlines in 2025 \u2014 these were its 15 biggest events of the year",
+      "description": "",
+      "summary": "Nvidia ruled 2025. Here are its biggest moments of the year.",
+      "pubDate": "2025-12-22T16:01:54Z",
+      "displayTime": "2025-12-22T23:29:11Z",
+      "isHosted": true,
+      "bypassModal": false,
+      "previewUrl": null,
+      "thumbnail": {
+        "originalUrl": "https://s.yimg.com/os/creatr-uploaded-images/2025-08/b324fef0-71de-11f0-b76f-b7b0cd4c9f95",
+        "originalWidth": 3143,
+        "originalHeight": 2095,
+        "caption": "",
+        "resolutions": [
+          {
+            "url": "https://s.yimg.com/uu/api/res/1.2/MspqxhdKRn.56RQLzmvxvg--~B/aD0yMDk1O3c9MzE0MzthcHBpZD15dGFjaHlvbg--/https://s.yimg.com/os/creatr-uploaded-images/2025-08/b324fef0-71de-11f0-b76f-b7b0cd4c9f95",
+            "width": 3143,
+            "height": 2095,
+            "tag": "original"
+          },
+          {
+            "url": "https://s.yimg.com/uu/api/res/1.2/jp6lCv22OO9PBNF2I147vA--~B/Zmk9c3RyaW07aD0xMjg7dz0xNzA7YXBwaWQ9eXRhY2h5b24-/https://s.yimg.com/os/creatr-uploaded-images/2025-08/b324fef0-71de-11f0-b76f-b7b0cd4c9f95",
+            "width": 170,
+            "height": 128,
+            "tag": "170x128"
+          }
+        ]
+      },
+      "provider": {
+        "displayName": "Yahoo Finance",
+        "url": "http://finance.yahoo.com/"
+      },
+      "canonicalUrl": {
+        "url": "https://finance.yahoo.com/news/nvidia-dominated-the-headlines-in-2025--these-were-its-15-biggest-events-of-the-year-160154710.html",
+        "site": "finance",
+        "region": "US",
+        "lang": "en-US"
+      },
+      "clickThroughUrl": {
+        "url": "https://finance.yahoo.com/news/nvidia-dominated-the-headlines-in-2025--these-were-its-15-biggest-events-of-the-year-160154710.html",
+        "site": "finance",
+        "region": "US",
+        "lang": "en-US"
+      },
+      "metadata": {
+        "editorsPick": true
+      },
+      "finance": {
+        "premiumFinance": {
+          "isPremiumNews": false,
+          "isPremiumFreeNews": false
+        }
+      },
+      "storyline": {
+        "storylineItems": [
+          {
+            "content": {
+              "id": "3137b1db-cd02-49f5-bcb4-9f1a4ae65c0f",
+              "contentType": "STORY",
+              "isHosted": true,
+              "title": "Intel stock soared in 2025. But the chipmaker still has a long road ahead.",
+              "thumbnail": {
+                "originalUrl": "https://s.yimg.com/os/creatr-images/2020-01/60c49a50-3047-11ea-947f-16712b748ca2",
+                "originalWidth": 4841,
+                "originalHeight": 3227,
+                "caption": "",
+                "resolutions": null
+              },
+              "provider": {
+                "displayName": "Yahoo Finance",
+                "sourceId": "yahoofinance.com"
+              },
+              "previewUrl": null,
+              "providerContentUrl": "",
+              "canonicalUrl": {
+                "url": "https://finance.yahoo.com/news/intel-stock-soared-in-2025-but-the-chipmaker-still-has-a-long-road-ahead-140004121.html"
+              },
+              "clickThroughUrl": {
+                "url": "https://finance.yahoo.com/news/intel-stock-soared-in-2025-but-the-chipmaker-still-has-a-long-road-ahead-140004121.html"
+              }
+            }
+          },
+          {
+            "content": {
+              "id": "2274ecd2-d00c-49a0-9273-c134cb14b3eb",
+              "contentType": "STORY",
+              "isHosted": true,
+              "title": "How Oracle became a \u2018poster child\u2019 for AI bubble fears",
+              "thumbnail": {
+                "originalUrl": "https://s.yimg.com/os/creatr-uploaded-images/2025-12/234bd480-dc72-11f0-bb76-4afba1d1dbe0",
+                "originalWidth": 3000,
+                "originalHeight": 2000,
+                "caption": "",
+                "resolutions": null
+              },
+              "provider": {
+                "displayName": "Yahoo Finance",
+                "sourceId": "yahoofinance.com"
+              },
+              "previewUrl": null,
+              "providerContentUrl": "",
+              "canonicalUrl": {
+                "url": "https://finance.yahoo.com/news/how-oracle-became-a-poster-child-for-ai-bubble-fears-150039511.html"
+              },
+              "clickThroughUrl": {
+                "url": "https://finance.yahoo.com/news/how-oracle-became-a-poster-child-for-ai-bubble-fears-150039511.html"
+              }
+            }
+          }
+        ]
+      }
+    }
+  },
+  {
+    "id": "49aa4e22-9212-362e-8592-9c8a0a932cb6",
+    "content": {
+      "id": "49aa4e22-9212-362e-8592-9c8a0a932cb6",
+      "contentType": "STORY",
+      "title": "Could AMD Finally Close the Gap on Nvidia AI Dominance?",
+      "description": "",
+      "summary": "An upcoming chip release by AMD in 2026 could challenge Nvidia's dominance.",
+      "pubDate": "2025-12-23T00:05:00Z",
+      "displayTime": "2025-12-23T00:05:00Z",
+      "isHosted": true,
+      "bypassModal": false,
+      "previewUrl": null,
+      "thumbnail": {
+        "originalUrl": "https://media.zenfs.com/en/motleyfool.com/b3f710e25f94ccf96e61610c7d2842ba",
+        "originalWidth": 1400,
+        "originalHeight": 753,
+        "caption": "An AI chip in a circuit board.",
+        "resolutions": [
+          {
+            "url": "https://s.yimg.com/uu/api/res/1.2/YnqOyqsLxlQoDs66Rbh9RQ--~B/aD03NTM7dz0xNDAwO2FwcGlkPXl0YWNoeW9u/https://media.zenfs.com/en/motleyfool.com/b3f710e25f94ccf96e61610c7d2842ba",
+            "width": 1400,
+            "height": 753,
+            "tag": "original"
+          },
+          {
+            "url": "https://s.yimg.com/uu/api/res/1.2/JPnHt9gpLV.VWbZQgbKyNw--~B/Zmk9c3RyaW07aD0xMjg7dz0xNzA7YXBwaWQ9eXRhY2h5b24-/https://media.zenfs.com/en/motleyfool.com/b3f710e25f94ccf96e61610c7d2842ba",
+            "width": 170,
+            "height": 128,
+            "tag": "170x128"
+          }
+        ]
+      },
+      "provider": {
+        "displayName": "Motley Fool",
+        "url": "http://www.fool.com/"
+      },
+      "canonicalUrl": {
+        "url": "https://www.fool.com/investing/2025/12/22/could-amd-finally-close-gap-nvidia-ai-dominance/",
+        "site": "finance",
+        "region": "US",
+        "lang": "en-US"
+      },
+      "clickThroughUrl": {
+        "url": "https://finance.yahoo.com/news/could-amd-finally-close-gap-000500201.html",
+        "site": "finance",
+        "region": "US",
+        "lang": "en-US"
+      },
+      "metadata": {
+        "editorsPick": false
+      },
+      "finance": {
+        "premiumFinance": {
+          "isPremiumNews": false,
+          "isPremiumFreeNews": false
+        }
+      },
+      "storyline": null
+    }
+  },
+  {
+    "id": "cfe3bceb-54ef-39b4-8ee8-2a122f544ee4",
+    "content": {
+      "id": "cfe3bceb-54ef-39b4-8ee8-2a122f544ee4",
+      "contentType": "STORY",
+      "title": "Stock Indexes Close Higher on Strength in Tech Stocks",
+      "description": "",
+      "summary": "The S&P 500 Index ($SPX ) (SPY ) on Monday closed up +0.64%, the Dow Jones Industrials Index ($DOWI ) (DIA ) closed up +0.47%, and the Nasdaq 100 Index ($IUXX ) (QQQ ) closed up +0.46%. March E-mini S&P futures (ESH26 ) rose +0.63%, and March E-mini Nasdaq futures...",
+      "pubDate": "2025-12-22T22:21:25Z",
+      "displayTime": "2025-12-22T22:21:25Z",
+      "isHosted": true,
+      "bypassModal": false,
+      "previewUrl": null,
+      "thumbnail": {
+        "originalUrl": "https://media.zenfs.com/en/barchart_com_477/bab324b7ff3e454bd77e3afc82d85ce5",
+        "originalWidth": 1280,
+        "originalHeight": 848,
+        "caption": "New York Stock Exchange NYSE by Rabbimichoel via Pixabay",
+        "resolutions": [
+          {
+            "url": "https://s.yimg.com/uu/api/res/1.2/yh4yECYoOljTekH5DMlRMw--~B/aD04NDg7dz0xMjgwO2FwcGlkPXl0YWNoeW9u/https://media.zenfs.com/en/barchart_com_477/bab324b7ff3e454bd77e3afc82d85ce5",
+            "width": 1280,
+            "height": 848,
+            "tag": "original"
+          },
+          {
+            "url": "https://s.yimg.com/uu/api/res/1.2/4X69PKqfxr5PzC4nIWXYjw--~B/Zmk9c3RyaW07aD0xMjg7dz0xNzA7YXBwaWQ9eXRhY2h5b24-/https://media.zenfs.com/en/barchart_com_477/bab324b7ff3e454bd77e3afc82d85ce5",
+            "width": 170,
+            "height": 128,
+            "tag": "170x128"
+          }
+        ]
+      },
+      "provider": {
+        "displayName": "Barchart",
+        "url": "https://www.barchart.com/"
+      },
+      "canonicalUrl": {
+        "url": "https://www.barchart.com/story/news/36752104/stock-indexes-close-higher-on-strength-in-tech-stocks",
+        "site": "finance",
+        "region": "US",
+        "lang": "en-US"
+      },
+      "clickThroughUrl": {
+        "url": "https://finance.yahoo.com/news/stock-indexes-close-higher-strength-222125565.html",
+        "site": "finance",
+        "region": "US",
+        "lang": "en-US"
+      },
+      "metadata": {
+        "editorsPick": false
+      },
+      "finance": {
+        "premiumFinance": {
+          "isPremiumNews": false,
+          "isPremiumFreeNews": false
+        }
+      },
+      "storyline": null
+    }
+  },
+  {
+    "id": "21447302-1071-30d3-8b3c-e661e8ba6773",
+    "content": {
+      "id": "21447302-1071-30d3-8b3c-e661e8ba6773",
+      "contentType": "STORY",
+      "title": "Nvidia Stock Climbs On China Export News",
+      "description": "",
+      "summary": "Nvidia stock rose Monday on a news report that the AI chipmaker plans to start shipping its H200 processors to China in mid-February.",
+      "pubDate": "2025-12-22T21:24:17Z",
+      "displayTime": "2025-12-22T21:24:17Z",
+      "isHosted": false,
+      "bypassModal": false,
+      "previewUrl": "https://finance.yahoo.com/m/21447302-1071-30d3-8b3c-e661e8ba6773/nvidia-stock-climbs-on-china.html",
+      "thumbnail": {
+        "originalUrl": "https://media.zenfs.com/en/ibd.com/29b3702eb7f43c21f5189066b77fe04c",
+        "originalWidth": 1000,
+        "originalHeight": 511,
+        "caption": "",
+        "resolutions": [
+          {
+            "url": "https://s.yimg.com/uu/api/res/1.2/dKHi_oajBfdwg.jU_RZhsQ--~B/aD01MTE7dz0xMDAwO2FwcGlkPXl0YWNoeW9u/https://media.zenfs.com/en/ibd.com/29b3702eb7f43c21f5189066b77fe04c",
+            "width": 1000,
+            "height": 511,
+            "tag": "original"
+          },
+          {
+            "url": "https://s.yimg.com/uu/api/res/1.2/X2Gf8_LAqwcYuCdMmV7waA--~B/Zmk9c3RyaW07aD0xMjg7dz0xNzA7YXBwaWQ9eXRhY2h5b24-/https://media.zenfs.com/en/ibd.com/29b3702eb7f43c21f5189066b77fe04c",
+            "width": 170,
+            "height": 128,
+            "tag": "170x128"
+          }
+        ]
+      },
+      "provider": {
+        "displayName": "Investor's Business Daily",
+        "url": "http://www.investors.com/"
+      },
+      "canonicalUrl": {
+        "url": "https://www.investors.com/news/technology/nvidia-stock-nvda-climbs-china-export-news/?src=A00220&yptr=yahoo",
+        "site": "finance",
+        "region": "US",
+        "lang": "en-US"
+      },
+      "clickThroughUrl": null,
+      "metadata": {
+        "editorsPick": false
+      },
+      "finance": {
+        "premiumFinance": {
+          "isPremiumNews": false,
+          "isPremiumFreeNews": false
+        }
+      },
+      "storyline": null
+    }
+  },
+  {
+    "id": "b831a9c5-2962-34ae-9946-69acde4fd468",
+    "content": {
+      "id": "b831a9c5-2962-34ae-9946-69acde4fd468",
+      "contentType": "STORY",
+      "title": "AMD Shares Climb on Reports of Alibaba Massive AI Chip Order",
+      "description": "",
+      "summary": "MI308 Chips in Spotlight After Reports of Major Chinese Tech Interest",
+      "pubDate": "2025-12-22T18:03:23Z",
+      "displayTime": "2025-12-22T18:03:23Z",
+      "isHosted": true,
+      "bypassModal": false,
+      "previewUrl": null,
+      "thumbnail": {
+        "originalUrl": "https://media.zenfs.com/en/us.finance.gurufocus/35374f9af1c90b1e6f7cf432691fc152",
+        "originalWidth": 400,
+        "originalHeight": 400,
+        "caption": "",
+        "resolutions": [
+          {
+            "url": "https://s.yimg.com/uu/api/res/1.2/RA.cdjIdyiLiVi_y3kVZig--~B/aD00MDA7dz00MDA7YXBwaWQ9eXRhY2h5b24-/https://media.zenfs.com/en/us.finance.gurufocus/35374f9af1c90b1e6f7cf432691fc152",
+            "width": 400,
+            "height": 400,
+            "tag": "original"
+          },
+          {
+            "url": "https://s.yimg.com/uu/api/res/1.2/z1TjThkGvq0nBJ8jWGVOcg--~B/Zmk9c3RyaW07aD0xMjg7dz0xNzA7YXBwaWQ9eXRhY2h5b24-/https://media.zenfs.com/en/us.finance.gurufocus/35374f9af1c90b1e6f7cf432691fc152",
+            "width": 170,
+            "height": 128,
+            "tag": "170x128"
+          }
+        ]
+      },
+      "provider": {
+        "displayName": "GuruFocus.com",
+        "url": "http://www.gurufocus.com/"
+      },
+      "canonicalUrl": {
+        "url": "https://finance.yahoo.com/news/amd-shares-climb-reports-alibaba-180323303.html",
+        "site": "finance",
+        "region": "US",
+        "lang": "en-US"
+      },
+      "clickThroughUrl": {
+        "url": "https://finance.yahoo.com/news/amd-shares-climb-reports-alibaba-180323303.html",
+        "site": "finance",
+        "region": "US",
+        "lang": "en-US"
+      },
+      "metadata": {
+        "editorsPick": false
+      },
+      "finance": {
+        "premiumFinance": {
+          "isPremiumNews": false,
+          "isPremiumFreeNews": false
+        }
+      },
+      "storyline": null
+    }
+  },
+  {
+    "id": "8fb0b09d-4808-38c7-83fb-ad8116dc56d0",
+    "content": {
+      "id": "8fb0b09d-4808-38c7-83fb-ad8116dc56d0",
+      "contentType": "STORY",
+      "title": "Alibaba Weighs Major AMD AI Chip Order",
+      "description": "",
+      "summary": "Potential deal highlights China's growing interest in U.S. chip technology.",
+      "pubDate": "2025-12-22T17:59:39Z",
+      "displayTime": "2025-12-22T17:59:39Z",
+      "isHosted": true,
+      "bypassModal": false,
+      "previewUrl": null,
+      "thumbnail": {
+        "originalUrl": "https://media.zenfs.com/en/us.finance.gurufocus/db7eb292afac1bf133336ac557e708de",
+        "originalWidth": 5184,
+        "originalHeight": 3456,
+        "caption": "",
+        "resolutions": [
+          {
+            "url": "https://s.yimg.com/uu/api/res/1.2/50yc3WrUEoEvlp562UsSeA--~B/aD0zNDU2O3c9NTE4NDthcHBpZD15dGFjaHlvbg--/https://media.zenfs.com/en/us.finance.gurufocus/db7eb292afac1bf133336ac557e708de",
+            "width": 5184,
+            "height": 3456,
+            "tag": "original"
+          },
+          {
+            "url": "https://s.yimg.com/uu/api/res/1.2/mK5goRSuFv3wJIQ8VKXGjA--~B/Zmk9c3RyaW07aD0xMjg7dz0xNzA7YXBwaWQ9eXRhY2h5b24-/https://media.zenfs.com/en/us.finance.gurufocus/db7eb292afac1bf133336ac557e708de",
+            "width": 170,
+            "height": 128,
+            "tag": "170x128"
+          }
+        ]
+      },
+      "provider": {
+        "displayName": "GuruFocus.com",
+        "url": "http://www.gurufocus.com/"
+      },
+      "canonicalUrl": {
+        "url": "https://finance.yahoo.com/news/alibaba-weighs-major-amd-ai-175939198.html",
+        "site": "finance",
+        "region": "US",
+        "lang": "en-US"
+      },
+      "clickThroughUrl": {
+        "url": "https://finance.yahoo.com/news/alibaba-weighs-major-amd-ai-175939198.html",
+        "site": "finance",
+        "region": "US",
+        "lang": "en-US"
+      },
+      "metadata": {
+        "editorsPick": false
+      },
+      "finance": {
+        "premiumFinance": {
+          "isPremiumNews": false,
+          "isPremiumFreeNews": false
+        }
+      },
+      "storyline": null
+    }
+  },
+  {
+    "id": "8dfbc2a3-8359-33d7-95c8-31eb684e11bd",
+    "content": {
+      "id": "8dfbc2a3-8359-33d7-95c8-31eb684e11bd",
+      "contentType": "STORY",
+      "title": "Advanced Micro Devices Could Score Major China Coup",
+      "description": "",
+      "summary": "For more than two years, U.S. export restrictions have severely limited Advanced Micro Devices (NASDAQ:AMD) and Nvidia (NASDAQ:NVDA) from selling their most advanced artificial intelligence (AI) accelerators in China. The controls, progressively tightened by the federal government, aim to prevent Beijing from obtaining cutting-edge technology that could advance military or strategic AI capabilities. As a ... Advanced Micro Devices Could Score Major China Coup",
+      "pubDate": "2025-12-22T17:16:05Z",
+      "displayTime": "2025-12-22T17:16:05Z",
+      "isHosted": true,
+      "bypassModal": false,
+      "previewUrl": null,
+      "thumbnail": {
+        "originalUrl": "https://media.zenfs.com/en/24_7_wall_st__718/92da55725e4395fa3ebd3df2d60c7505",
+        "originalWidth": 1024,
+        "originalHeight": 1024,
+        "caption": "",
+        "resolutions": [
+          {
+            "url": "https://s.yimg.com/uu/api/res/1.2/HBDgw6CSrvMw895_7CSXLw--~B/aD0xMDI0O3c9MTAyNDthcHBpZD15dGFjaHlvbg--/https://media.zenfs.com/en/24_7_wall_st__718/92da55725e4395fa3ebd3df2d60c7505",
+            "width": 1024,
+            "height": 1024,
+            "tag": "original"
+          },
+          {
+            "url": "https://s.yimg.com/uu/api/res/1.2/zf3ECyfRmRRg2Y0LPN0WJQ--~B/Zmk9c3RyaW07aD0xMjg7dz0xNzA7YXBwaWQ9eXRhY2h5b24-/https://media.zenfs.com/en/24_7_wall_st__718/92da55725e4395fa3ebd3df2d60c7505",
+            "width": 170,
+            "height": 128,
+            "tag": "170x128"
+          }
+        ]
+      },
+      "provider": {
+        "displayName": "24/7 Wall St.",
+        "url": "https://247wallst.com/"
+      },
+      "canonicalUrl": {
+        "url": "https://247wallst.com/investing/2025/12/22/advanced-micro-devices-could-score-major-china-coup/",
+        "site": "finance",
+        "region": "US",
+        "lang": "en-US"
+      },
+      "clickThroughUrl": {
+        "url": "https://finance.yahoo.com/news/advanced-micro-devices-could-score-171605467.html",
+        "site": "finance",
+        "region": "US",
+        "lang": "en-US"
+      },
+      "metadata": {
+        "editorsPick": false
+      },
+      "finance": {
+        "premiumFinance": {
+          "isPremiumNews": false,
+          "isPremiumFreeNews": false
+        }
+      },
+      "storyline": null
+    }
+  },
+  {
+    "id": "b6089725-3cbc-30ab-bfab-4d5614429499",
+    "content": {
+      "id": "b6089725-3cbc-30ab-bfab-4d5614429499",
+      "contentType": "STORY",
+      "title": "TER vs. AMD: Which AI Component Supplier Stock Is the Better Buy?",
+      "description": "",
+      "summary": "Teradyne's AI-driven test systems and stronger earnings surprises give TER an edge over Advanced Micro Devices in the fast-growing AI semiconductor supply chain.",
+      "pubDate": "2025-12-22T16:38:00Z",
+      "displayTime": "2025-12-22T16:38:00Z",
+      "isHosted": true,
+      "bypassModal": false,
+      "previewUrl": null,
+      "thumbnail": {
+        "originalUrl": "https://media.zenfs.com/en/zacks.com/d43cb7b76527c97c59494165d3dffeae",
+        "originalWidth": 635,
+        "originalHeight": 400,
+        "caption": "",
+        "resolutions": [
+          {
+            "url": "https://s.yimg.com/uu/api/res/1.2/as5m4_sYhwbum22y4k2zVQ--~B/aD00MDA7dz02MzU7YXBwaWQ9eXRhY2h5b24-/https://media.zenfs.com/en/zacks.com/d43cb7b76527c97c59494165d3dffeae",
+            "width": 635,
+            "height": 400,
+            "tag": "original"
+          },
+          {
+            "url": "https://s.yimg.com/uu/api/res/1.2/ZOiWKOkYdnIgUT2QkjlFKQ--~B/Zmk9c3RyaW07aD0xMjg7dz0xNzA7YXBwaWQ9eXRhY2h5b24-/https://media.zenfs.com/en/zacks.com/d43cb7b76527c97c59494165d3dffeae",
+            "width": 170,
+            "height": 128,
+            "tag": "170x128"
+          }
+        ]
+      },
+      "provider": {
+        "displayName": "Zacks",
+        "url": "http://www.zacks.com/"
+      },
+      "canonicalUrl": {
+        "url": "https://finance.yahoo.com/news/ter-vs-amd-ai-component-163800705.html",
+        "site": "finance",
+        "region": "US",
+        "lang": "en-US"
+      },
+      "clickThroughUrl": {
+        "url": "https://finance.yahoo.com/news/ter-vs-amd-ai-component-163800705.html",
+        "site": "finance",
+        "region": "US",
+        "lang": "en-US"
+      },
+      "metadata": {
+        "editorsPick": false
+      },
+      "finance": {
+        "premiumFinance": {
+          "isPremiumNews": false,
+          "isPremiumFreeNews": false
+        }
+      },
+      "storyline": null
+    }
+  },
+  {
+    "id": "40ab53a0-2ab2-35f3-9bfa-ba5baf6e4ccf",
+    "content": {
+      "id": "40ab53a0-2ab2-35f3-9bfa-ba5baf6e4ccf",
+      "contentType": "STORY",
+      "title": "AI Chips Are Driving a Foundry Boom. Why TSMC Is Winning the Most",
+      "description": "",
+      "summary": "TSMC Tightens Its Grip on the Foundry Market as AI Spending Accelerates",
+      "pubDate": "2025-12-22T15:33:01Z",
+      "displayTime": "2025-12-22T15:33:01Z",
+      "isHosted": true,
+      "bypassModal": false,
+      "previewUrl": null,
+      "thumbnail": {
+        "originalUrl": "https://media.zenfs.com/en/us.finance.gurufocus/6e81bdbdd7aeb9e9aa9aa56ad2e8e47d",
+        "originalWidth": 400,
+        "originalHeight": 400,
+        "caption": "",
+        "resolutions": [
+          {
+            "url": "https://s.yimg.com/uu/api/res/1.2/hG.PvW71RxNcU3Xxqu4IOg--~B/aD00MDA7dz00MDA7YXBwaWQ9eXRhY2h5b24-/https://media.zenfs.com/en/us.finance.gurufocus/6e81bdbdd7aeb9e9aa9aa56ad2e8e47d",
+            "width": 400,
+            "height": 400,
+            "tag": "original"
+          },
+          {
+            "url": "https://s.yimg.com/uu/api/res/1.2/cbZ9X5KpOLxW1AqCkQDxvw--~B/Zmk9c3RyaW07aD0xMjg7dz0xNzA7YXBwaWQ9eXRhY2h5b24-/https://media.zenfs.com/en/us.finance.gurufocus/6e81bdbdd7aeb9e9aa9aa56ad2e8e47d",
+            "width": 170,
+            "height": 128,
+            "tag": "170x128"
+          }
+        ]
+      },
+      "provider": {
+        "displayName": "GuruFocus.com",
+        "url": "http://www.gurufocus.com/"
+      },
+      "canonicalUrl": {
+        "url": "https://finance.yahoo.com/news/ai-chips-driving-foundry-boom-153301101.html",
+        "site": "finance",
+        "region": "US",
+        "lang": "en-US"
+      },
+      "clickThroughUrl": {
+        "url": "https://finance.yahoo.com/news/ai-chips-driving-foundry-boom-153301101.html",
+        "site": "finance",
+        "region": "US",
+        "lang": "en-US"
+      },
+      "metadata": {
+        "editorsPick": false
+      },
+      "finance": {
+        "premiumFinance": {
+          "isPremiumNews": false,
+          "isPremiumFreeNews": false
+        }
+      },
+      "storyline": null
+    }
+  },
+  {
+    "id": "3775d2fb-5bb8-323d-8bcb-31b46766395a",
+    "content": {
+      "id": "3775d2fb-5bb8-323d-8bcb-31b46766395a",
+      "contentType": "STORY",
+      "title": "This Retail Dividend Stock Rallying in 2025 Beats Big Tech Giants",
+      "description": "",
+      "summary": "Dillard's Shares Keep Climbing as Cash Flow Offsets Slow Sales Growth",
+      "pubDate": "2025-12-22T14:21:56Z",
+      "displayTime": "2025-12-22T14:21:56Z",
+      "isHosted": true,
+      "bypassModal": false,
+      "previewUrl": null,
+      "thumbnail": {
+        "originalUrl": "https://media.zenfs.com/en/us.finance.gurufocus/94c644e7e5e5ea3b3d28dd7dea62c590",
+        "originalWidth": 3800,
+        "originalHeight": 2138,
+        "caption": "",
+        "resolutions": [
+          {
+            "url": "https://s.yimg.com/uu/api/res/1.2/t.y509ESzjW.30iDUh.k3w--~B/aD0yMTM4O3c9MzgwMDthcHBpZD15dGFjaHlvbg--/https://media.zenfs.com/en/us.finance.gurufocus/94c644e7e5e5ea3b3d28dd7dea62c590",
+            "width": 3800,
+            "height": 2138,
+            "tag": "original"
+          },
+          {
+            "url": "https://s.yimg.com/uu/api/res/1.2/XNmeHrFdDeDlNsu7t849CA--~B/Zmk9c3RyaW07aD0xMjg7dz0xNzA7YXBwaWQ9eXRhY2h5b24-/https://media.zenfs.com/en/us.finance.gurufocus/94c644e7e5e5ea3b3d28dd7dea62c590",
+            "width": 170,
+            "height": 128,
+            "tag": "170x128"
+          }
+        ]
+      },
+      "provider": {
+        "displayName": "GuruFocus.com",
+        "url": "http://www.gurufocus.com/"
+      },
+      "canonicalUrl": {
+        "url": "https://finance.yahoo.com/news/retail-dividend-stock-outpaced-big-114339850.html",
+        "site": "finance",
+        "region": "US",
+        "lang": "en-US"
+      },
+      "clickThroughUrl": {
+        "url": "https://finance.yahoo.com/news/retail-dividend-stock-outpaced-big-114339850.html",
+        "site": "finance",
+        "region": "US",
+        "lang": "en-US"
+      },
+      "metadata": {
+        "editorsPick": false
+      },
+      "finance": {
+        "premiumFinance": {
+          "isPremiumNews": false,
+          "isPremiumFreeNews": false
+        }
+      },
+      "storyline": null
+    }
+  }
+]

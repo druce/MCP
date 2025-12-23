@@ -1,0 +1,16 @@
+Wikipedia Summary - AMD
+============================================================
+
+Page Title: AMD
+URL: https://en.wikipedia.org/wiki/AMD
+Retrieved: 2025-12-22 20:33:51
+
+============================================================
+
+Advanced Micro Devices, Inc. (AMD) is an American multinational technology company headquartered in Santa Clara, California, with significant operations in Austin, Texas. It develops central processing units (CPUs), graphics processing units (GPUs), field-programmable gate arrays (FPGAs), system-on-chips (SoCs), and high-performance computer components. AMD serves a wide range of business and consumer markets, including gaming, data centers, artificial intelligence (AI), and embedded systems.
+AMD's main products include microprocessors, motherboard chipsets, embedded processors, and graphics processors for servers, workstations, personal computers, and embedded system applications. The company has also expanded into new markets, such as the data center, gaming, and high-performance computing markets. AMD's processors are used in a wide range of computing devices, including personal computers, servers, laptops, and gaming consoles. While it initially manufactured its own processors, the company later outsourced its manufacturing, after GlobalFoundries was spun off in 2009. Through its Xilinx acquisition in 2022, AMD offers field-programmable gate array (FPGA) products.
+AMD was founded in 1969 by Jerry Sanders and a group of other technology professionals. The company's early products were primarily memory chips and other components for computers. In 1975, AMD entered the microprocessor market, competing with Intel, its primary rival in the industry. In the early 2000s, it experienced significant growth and success, thanks in part to its strong position in the PC market and the success of its Athlon and Opteron processors. However, the company faced challenges in the late 2000s and early 2010s, as it struggled to keep up with Intel in the race to produce faster and more powerful processors.
+In the late 2010s, AMD regained market share by pursuing a penetration pricing strategy and building on the success of its Ryzen processors, which were considerably more competitive with Intel microprocessors in terms of performance whilst offering attractive pricing. In 2022, AMD surpassed Intel by market capitalization for the first time.
+
+============================================================
+Full Article URL: https://en.wikipedia.org/wiki/AMD

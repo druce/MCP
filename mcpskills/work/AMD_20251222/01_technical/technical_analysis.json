@@ -1,0 +1,28 @@
+{
+  "symbol": "AMD",
+  "timestamp": "2025-12-22T20:30:43.782614",
+  "latest_price": 214.9499969482422,
+  "indicators": {
+    "sma_20": 214.00799942016602,
+    "sma_50": 229.74399963378906,
+    "sma_200": 159.17389980316162,
+    "rsi_14": 48.55348342450977,
+    "macd": -4.659115464478731,
+    "macd_signal": -4.497024937029602,
+    "macd_histogram": -0.16209052744912888,
+    "atr_14": 10.472612026650593,
+    "bollinger_upper": 227.10660604414733,
+    "bollinger_middle": 214.00799942016602,
+    "bollinger_lower": 200.9093927961847,
+    "avg_volume_20d": 33957134.5
+  },
+  "trend_signals": {
+    "above_20sma": true,
+    "above_50sma": false,
+    "above_200sma": true,
+    "sma_20_50_bullish": false,
+    "sma_50_200_bullish": true,
+    "macd_bullish": false
+  },
+  "analysis": "Technical Analysis for AMD:\n\nTrend Analysis:\n- Above 20 SMA: \u2705\n- Above 50 SMA: \u274c\n- Above 200 SMA: \u2705\n- 20/50 SMA Bullish Cross: \u274c\n- 50/200 SMA Bullish Cross: \u2705\n\nMomentum:\n- RSI (14): 48.55\n- MACD Bullish: \u274c\n\nLatest Price: $214.95\nAverage True Range (14): 10.47\nAverage Volume (20D): 33,957,134"
+}
