@@ -30,7 +30,7 @@ Strategic initiatives to transition toward a "land-light" operating model (Millr
 ## Stock Chart
 
 
-![Stock Chart](01_technical/chart.png)
+![Stock Chart](chart.png)
 
 *4-year weekly chart showing price action, 13-week and 52-week moving averages, volume, and relative strength vs S&P 500*
 
@@ -83,7 +83,7 @@ Strategic initiatives to transition toward a "land-light" operating model (Millr
 ### Income Statement Flow
 
 
-![Income Statement Sankey](02_fundamental/income_statement_sankey.png)
+![Income Statement Sankey](income_statement_sankey.png)
 
 *Sankey diagram showing revenue flow through cost of revenue, operating expenses, taxes to net income*
 
