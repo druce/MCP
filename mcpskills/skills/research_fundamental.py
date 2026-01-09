@@ -34,6 +34,8 @@ from pathlib import Path
 # Financial data libraries
 import yfinance as yf
 import pandas as pd
+import plotly.graph_objects as go
+import plotly.io as pio
 
 # Load environment for OpenBB
 from dotenv import load_dotenv
@@ -158,6 +160,7 @@ def save_financial_statements(symbol, work_dir):
             income_path = os.path.join(output_dir, 'income_statement.csv')
             income_stmt.to_csv(income_path)
             print(f"✓ Saved income statement to: {income_path}")
+            save_income_statement_sankey(income_stmt, output_dir, symbol)
 
         # Balance sheet
         balance_sheet = ticker.balance_sheet
@@ -180,6 +183,146 @@ def save_financial_statements(symbol, work_dir):
         import traceback
         traceback.print_exc()
         return False
+
+
+def save_income_statement_sankey(income_stmt, output_dir, symbol):
+    """Create a Sankey chart showing revenue flowing to net income."""
+    def get_value(series, keys):
+        for key in keys:
+            if key in series.index:
+                value = series.loc[key]
+                if pd.notna(value):
+                    return float(value)
+        return None
+
+    try:
+        if income_stmt.empty:
+            return
+
+        latest_period = income_stmt.columns[0]
+        period_label = (
+            latest_period.date().isoformat()
+            if hasattr(latest_period, "date")
+            else str(latest_period)
+        )
+        series = income_stmt[latest_period]
+
+        revenue = get_value(series, ["Total Revenue", "TotalRevenue"])
+        if revenue is None:
+            print("⚠ Income statement missing total revenue; skipping Sankey chart.")
+            return
+
+        cost_of_revenue = get_value(series, ["Cost Of Revenue", "CostOfRevenue", "Cost Of Goods Sold"])
+        gross_profit = get_value(series, ["Gross Profit", "GrossProfit"])
+        if gross_profit is None:
+            gross_profit = revenue - (cost_of_revenue or 0.0)
+        if cost_of_revenue is None:
+            cost_of_revenue = max(revenue - gross_profit, 0.0)
+
+        operating_income = get_value(series, ["Operating Income", "OperatingIncome"])
+        operating_expenses = get_value(series, ["Total Operating Expenses", "TotalOperatingExpenses"])
+        if operating_expenses is None:
+            expense_keys = [
+                "Research Development",
+                "Selling General Administrative",
+                "SellingGeneralAdministrative",
+                "Selling And Marketing Expense",
+                "General and Administrative Expense",
+                "Other Operating Expenses",
+            ]
+            expenses = [get_value(series, [key]) for key in expense_keys]
+            expenses = [val for val in expenses if val is not None]
+            if expenses:
+                operating_expenses = float(sum(expenses))
+
+        if operating_income is None and operating_expenses is not None:
+            operating_income = gross_profit - operating_expenses
+        elif operating_expenses is None and operating_income is not None:
+            operating_expenses = max(gross_profit - operating_income, 0.0)
+        elif operating_expenses is None and operating_income is None:
+            operating_expenses = 0.0
+            operating_income = gross_profit
+
+        pre_tax_income = get_value(series, ["Pretax Income", "Income Before Tax", "IncomeBeforeTax"])
+        if pre_tax_income is None:
+            pre_tax_income = operating_income
+
+        other_income_expense = operating_income - pre_tax_income
+        tax_expense = get_value(series, ["Tax Provision", "Income Tax Expense", "IncomeTaxExpense"])
+        if tax_expense is None:
+            net_income_candidate = get_value(series, ["Net Income", "NetIncome", "Net Income Common Stockholders"])
+            if net_income_candidate is not None:
+                tax_expense = max(pre_tax_income - net_income_candidate, 0.0)
+
+        net_income = get_value(series, ["Net Income", "NetIncome", "Net Income Common Stockholders"])
+        if net_income is None:
+            net_income = max(pre_tax_income - (tax_expense or 0.0), 0.0)
+
+        nodes = [
+            "Total Revenue",
+            "Cost of Revenue",
+            "Gross Profit",
+            "Operating Expenses",
+            "Operating Income",
+            "Other Income/(Expense)",
+            "Pre-Tax Income",
+            "Taxes",
+            "Net Income",
+        ]
+        node_index = {name: idx for idx, name in enumerate(nodes)}
+
+        sources = []
+        targets = []
+        values = []
+
+        def add_link(source, target, value):
+            if value is None:
+                return
+            if value <= 0:
+                return
+            sources.append(node_index[source])
+            targets.append(node_index[target])
+            values.append(float(value))
+
+        add_link("Total Revenue", "Cost of Revenue", cost_of_revenue)
+        add_link("Total Revenue", "Gross Profit", gross_profit)
+
+        add_link("Gross Profit", "Operating Expenses", operating_expenses)
+        add_link("Gross Profit", "Operating Income", operating_income)
+
+        if other_income_expense >= 0:
+            add_link("Operating Income", "Other Income/(Expense)", other_income_expense)
+            add_link("Operating Income", "Pre-Tax Income", pre_tax_income)
+        else:
+            add_link("Other Income/(Expense)", "Pre-Tax Income", abs(other_income_expense))
+            add_link("Operating Income", "Pre-Tax Income", operating_income)
+
+        if tax_expense is not None and tax_expense < 0:
+            add_link("Taxes", "Net Income", abs(tax_expense))
+            add_link("Pre-Tax Income", "Net Income", pre_tax_income)
+        else:
+            add_link("Pre-Tax Income", "Taxes", tax_expense)
+            add_link("Pre-Tax Income", "Net Income", net_income)
+
+        fig = go.Figure(
+            data=[
+                go.Sankey(
+                    node=dict(label=nodes, pad=18, thickness=16),
+                    link=dict(source=sources, target=targets, value=values),
+                )
+            ]
+        )
+        fig.update_layout(
+            title=f"{symbol} Income Statement Flow ({period_label})",
+            font=dict(size=12),
+        )
+
+        sankey_path = os.path.join(output_dir, 'income_statement_sankey.html')
+        pio.write_html(fig, sankey_path, include_plotlyjs='cdn')
+        print(f"✓ Saved income statement Sankey to: {sankey_path}")
+
+    except Exception as e:
+        print(f"⚠ Failed to create income statement Sankey: {e}")
 
 
 def get_financial_ratios(symbol):

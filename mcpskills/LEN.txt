@@ -1,0 +1,374 @@
+============================================================
+Stock Research Orchestrator
+============================================================
+Symbol: LEN
+Phases: all
+Date: 2026-01-09 12:15:48
+============================================================
+
+============================================================
+Step 1: Ticker Validation
+============================================================
+✓ Ticker 'LEN' validated
+
+============================================================
+Step 2: Work Directory Setup
+============================================================
+✓ No old directories to clean up
+✓ Created work directory: work/LEN_20260109
+✓ Created metadata file: work/LEN_20260109/00_metadata.json
+
+============================================================
+Step 3: Get Company Overview
+============================================================
+Fetching foundational company data for LEN...
+Getting company overview for LEN...
+✓ Saved company overview to: work/LEN_20260109/02_fundamental/company_overview.json
+  Company: Lennar Corporation
+  Sector: Consumer Cyclical
+  Industry: Residential Construction
+✓ Company overview data ready
+
+============================================================
+Step 4: Execute Research Phases
+============================================================
+Phases to run: technical, fundamental, research, analysis, sec, wikipedia, report, deep, final
+
+============================================================
+Executing 6 data phases in parallel...
+============================================================
+
+============================================================
+Phase: TECHNICAL
+============================================================
+
+============================================================
+Phase: FUNDAMENTAL
+============================================================
+
+============================================================
+Phase: RESEARCH
+============================================================
+
+============================================================
+Phase: ANALYSIS
+============================================================
+
+============================================================
+Phase: SEC
+============================================================
+
+============================================================
+Phase: WIKIPEDIA
+============================================================
+============================================================
+Wikipedia Research Phase
+============================================================
+Symbol: LEN
+Company: Lennar Corporation
+Work Directory: work/LEN_20260109
+============================================================
+Fetching Wikipedia data for Lennar Corporation...
+  Found Wikipedia page: Lennar
+✓ Saved Wikipedia summary to: work/LEN_20260109/06_wikipedia/wikipedia_summary.txt
+✓ Saved Wikipedia metadata to: work/LEN_20260109/06_wikipedia/wikipedia_metadata.json
+
+============================================================
+Wikipedia Research Phase Complete
+============================================================
+Tasks completed: 1/1
+✓ All tasks completed successfully
+
+
+✓ Phase 'wikipedia' completed successfully
+============================================================
+SEC Filings Research Phase
+============================================================
+Symbol: LEN
+Work Directory: work/LEN_20260109
+============================================================
+Downloading 10-K filing for LEN...
+  Fetching latest 10-K from SEC EDGAR...
+  Parsing 10-K filing...
+✓ Saved Item 1 to: work/LEN_20260109/05_sec/10k_item1.txt
+  Length: 1,192 characters
+✓ Saved metadata to: work/LEN_20260109/05_sec/10k_metadata.json
+
+============================================================
+SEC Research Phase Complete
+============================================================
+Tasks completed: 1/1
+✓ All tasks completed successfully
+
+
+✓ Phase 'sec' completed successfully
+============================================================
+Fundamental Analysis Phase
+============================================================
+Symbol: LEN
+Work Directory: work/LEN_20260109
+============================================================
+⊘ Company overview already exists, skipping: work/LEN_20260109/02_fundamental/company_overview.json
+Getting financial statements for LEN...
+✓ Saved income statement to: work/LEN_20260109/02_fundamental/income_statement.csv
+✓ Saved balance sheet to: work/LEN_20260109/02_fundamental/balance_sheet.csv
+✓ Saved cash flow to: work/LEN_20260109/02_fundamental/cash_flow.csv
+Calculating key ratios for LEN...
+
+Looking for peers at: work/LEN_20260109/01_technical/peers_list.json
+  File exists: False
+⊘ No peers list found
+  Continuing with just the main symbol...
+✓ Saved key ratios to: work/LEN_20260109/02_fundamental/key_ratios.csv
+  Columns: Category, Metric, LEN
+  Rows: 28 ratios
+Getting analyst recommendations for LEN...
+✓ Saved analyst recommendations to: work/LEN_20260109/02_fundamental/analyst_recommendations.json
+  Total recommendations: 4
+Getting recent news for LEN...
+✓ Saved news to: work/LEN_20260109/02_fundamental/news.json
+  Total articles: 10
+
+============================================================
+Fundamental Analysis Phase Complete
+============================================================
+Tasks completed: 5/5
+✓ All tasks completed successfully
+
+
+✓ Phase 'fundamental' completed successfully
+============================================================
+Technical Analysis Phase
+============================================================
+Symbol: LEN
+Work Directory: work/LEN_20260109
+============================================================
+Generating stock chart for LEN...
+YF.download() has changed argument auto_adjust default to True
+✓ Saved chart to: work/LEN_20260109/01_technical/chart.png
+Running technical analysis for LEN...
+✓ Saved technical analysis to: work/LEN_20260109/01_technical/technical_analysis.json
+
+Technical Analysis Summary:
+------------------------------------------------------------
+
+Technical Analysis for LEN:
+
+Trend Analysis:
+- Above 20 SMA: ✅
+- Above 50 SMA: ❌
+- Above 200 SMA: ❌
+- 20/50 SMA Bullish Cross: ❌
+- 50/200 SMA Bullish Cross: ✅
+
+Momentum:
+- RSI (14): 58.57
+- MACD Bullish: ✅
+
+Latest Price: $116.96
+Average True Range (14): 3.77
+Average Volume (20D): 3,865,591
+
+------------------------------------------------------------
+Getting peer companies for LEN...
+Auto-detecting peers using OpenBB...
+✓ Saved peers list to: work/LEN_20260109/01_technical/peers_list.json
+✓ Final peer list (10): DHI, CCL, CUK, STLA, ROL, TSCO, PHM, NVR, TOL, GELHY
+
+============================================================
+Technical Analysis Phase Complete
+============================================================
+Tasks completed: 3/3
+✓ All tasks completed successfully
+
+
+✓ Phase 'technical' completed successfully
+============================================================
+Perplexity AI Research Phase
+============================================================
+Symbol: LEN
+Company: Lennar Corporation (LEN)
+Work Directory: work/LEN_20260109
+============================================================
+Researching news stories for Lennar Corporation (LEN)...
+  Querying Perplexity (attempt 1/3)...
+  ✓ Received response (9081 characters)
+✓ Saved news research to: work/LEN_20260109/03_research/news_stories.md
+Researching business profile for Lennar Corporation (LEN)...
+  Querying Perplexity (attempt 1/3)...
+  ✓ Received response (19841 characters)
+✓ Saved business profile to: work/LEN_20260109/03_research/business_profile.md
+Researching executive profiles for Lennar Corporation (LEN)...
+  Querying Perplexity (attempt 1/3)...
+  ✓ Received response (15718 characters)
+✓ Saved executive profiles to: work/LEN_20260109/03_research/executive_profiles.md
+
+============================================================
+Perplexity Research Phase Complete
+============================================================
+Tasks completed: 3/3
+✓ All tasks completed successfully
+
+
+✓ Phase 'research' completed successfully
+============================================================
+Deep Analysis Research Phase
+============================================================
+Symbol: LEN
+Company: Lennar Corporation (LEN)
+Work Directory: work/LEN_20260109
+============================================================
+Analyzing business model for Lennar Corporation (LEN)...
+  Querying Perplexity (attempt 1/3)...
+  ✓ Received response (15448 characters)
+✓ Saved business model analysis to: work/LEN_20260109/04_analysis/business_model_analysis.md
+Analyzing competitive landscape for Lennar Corporation (LEN)...
+  Querying Perplexity (attempt 1/3)...
+  ✓ Received response (14039 characters)
+✓ Saved competitive analysis to: work/LEN_20260109/04_analysis/competitive_analysis.md
+Analyzing recent news and risks for Lennar Corporation (LEN)...
+  Querying Perplexity (attempt 1/3)...
+  ✓ Received response (9767 characters)
+✓ Saved risk analysis to: work/LEN_20260109/04_analysis/risk_analysis.md
+Generating investment thesis for Lennar Corporation (LEN)...
+  Querying Perplexity (attempt 1/3)...
+  ✓ Received response (14309 characters)
+✓ Saved investment thesis to: work/LEN_20260109/04_analysis/investment_thesis.md
+
+============================================================
+Deep Analysis Phase Complete
+============================================================
+Tasks completed: 4/4
+✓ All tasks completed successfully
+
+
+✓ Phase 'analysis' completed successfully
+
+============================================================
+Generating initial research report...
+============================================================
+
+============================================================
+Phase: REPORT
+============================================================
+============================================================
+Report Generation Phase
+============================================================
+Symbol: LEN
+Work Directory: work/LEN_20260109
+Format: markdown
+Template: equity_research_report.md.j2
+============================================================
+Generating markdown report...
+  Using template: equity_research_report.md.j2
+  Symbol: LEN
+  Company: Lennar Corporation
+✓ Saved report to: work/LEN_20260109/research_report.md
+
+============================================================
+Report Generation Phase Complete
+============================================================
+✓ Report generated successfully
+
+
+✓ Phase 'report' completed successfully
+
+============================================================
+Running deep research with Claude API...
+This may take 30-60 seconds with extended thinking enabled...
+============================================================
+
+============================================================
+Phase: DEEP
+============================================================
+============================================================
+Deep Research Phase - Claude Agent SDK with MCP Tools
+============================================================
+Symbol: LEN
+Work Directory: work/LEN_20260109
+Tools Enabled: True
+============================================================
+
+Loading research report...
+✓ Loaded research report (62352 characters)
+✓ Company: Lennar Corporation
+
+Analyzing LEN with Claude Sonnet 4.5...
+Advanced mode (MCP tools enabled)
+
+Configuring MCP servers...
+✓ Loaded 1 MCP server configurations
+  - stock-symbol-server
+
+Initializing Claude Agent SDK client...
+Model: claude-sonnet-4-5
+MCP servers: 1
+✓ Claude Agent SDK client initialized
+Starting agentic research loop...
+This may take several minutes as Claude uses tools...
+✓ Analysis complete (56513 characters)
+✓ Tool usage recorded
+
+Saving outputs...
+✓ Saved: work/LEN_20260109/08_deep_research/deep_research_output.md
+✓ Saved: work/LEN_20260109/08_deep_research/deep_research_thinking.md
+✓ Saved: work/LEN_20260109/08_deep_research/tool_usage.txt
+
+============================================================
+SUCCESS: Deep research completed!
+============================================================
+
+
+✓ Phase 'deep' completed successfully
+
+============================================================
+Assembling final report with multi-format conversion...
+============================================================
+
+============================================================
+Phase: FINAL
+============================================================
+============================================================
+Final Report Assembly Phase
+============================================================
+Symbol: LEN
+Work Directory: work/LEN_20260109
+============================================================
+
+Loading all research data...
+✓ Data loaded
+
+Generating final report...
+✓ Saved: work/LEN_20260109/final_report.md
+
+Converting to additional formats...
+✓ Saved: work/LEN_20260109/final_report.docx (via pandoc)
+✓ Saved: work/LEN_20260109/final_report.html (via pandoc)
+
+============================================================
+SUCCESS: Final report assembly completed!
+============================================================
+
+Outputs:
+  - work/LEN_20260109/final_report.md
+  - work/LEN_20260109/final_report.docx
+  - work/LEN_20260109/final_report.html
+
+
+✓ Phase 'final' completed successfully
+
+============================================================
+Research Complete
+============================================================
+Symbol: LEN
+Work directory: work/LEN_20260109
+Phases completed: 9
+Phases failed: 0
+
+✓ Completed phases: report, deep, final
+
+============================================================
+✓ Research partially or fully completed
+✓ See outputs in: work/LEN_20260109
+(py) drucev@MacBook-Pro-3 ~/projects/MCP/mcpskills (master*) $ date             
+Fri Jan  9 12:26:44 EST 2026

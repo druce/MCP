@@ -222,6 +222,7 @@ def generate_final_report(data, work_dir):
 
     # Render template
     report_content = template.render(**data)
+    report_content = report_content.replace('$', '\\$')
 
     # Save markdown file
     report_path = os.path.join(work_dir, 'final_report.md')

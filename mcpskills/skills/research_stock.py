@@ -496,6 +496,7 @@ def main():
     print("Research Complete")
     print(f"{'='*60}")
     print(f"Symbol: {symbol}")
+    print(f"Completed at: {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}")
     print(f"Work directory: {work_dir}")
     print(f"Phases completed: {success_count}")
     print(f"Phases failed: {failed_count}")
