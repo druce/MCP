@@ -144,54 +144,90 @@ def extract_item1(filing_text):
         str: Item 1 text or None if not found
     """
     try:
+        # First, parse HTML and extract clean text
+        soup = BeautifulSoup(filing_text, 'html.parser')
+
+        # Remove script and style elements
+        for script in soup(["script", "style"]):
+            script.extract()
+
+        # Get text
+        clean_text = soup.get_text()
+
+        # Clean up whitespace
+        lines = (line.strip() for line in clean_text.splitlines())
+        chunks = (phrase.strip() for line in lines for phrase in line.split("  "))
+        clean_text = '\n'.join(chunk for chunk in chunks if chunk)
+
         # Common patterns for Item 1 headers
         patterns = [
             r'(?i)ITEM\s+1[\.\:\s]+BUSINESS',
-            r'(?i)ITEM\s+1[\.\:\s]',
+            r'(?i)ITEM\s+1[\.\:\-\—]+BUSINESS',
             r'(?i)Item 1\.\s+Business',
             r'(?i)Item 1\s+Business',
+            r'(?i)ITEM\s+1\.',
+            r'(?i)Item 1\s*\n',
         ]
 
         # Try to find Item 1 start
         start_pos = None
         for pattern in patterns:
-            match = re.search(pattern, filing_text)
+            match = re.search(pattern, clean_text)
             if match:
                 start_pos = match.start()
+                print(f"  Found Item 1 at position {start_pos}")
                 break
 
         if not start_pos:
+            print(f"  Warning: Could not find Item 1 header")
             return None
 
-        # Find Item 2 to determine end
+        # Find Item 1A or Item 2 to determine end
         item2_patterns = [
             r'(?i)ITEM\s+1A[\.\:\s]+RISK\s+FACTORS',
-            r'(?i)ITEM\s+1A[\.\:\s]',
+            r'(?i)ITEM\s+1A[\.\:\-\—]+RISK',
             r'(?i)Item 1A\.\s+Risk',
+            r'(?i)Item 1A\s+Risk',
+            r'(?i)ITEM\s+1A\.',
             r'(?i)ITEM\s+2[\.\:\s]',
+            r'(?i)Item 2\.',
         ]
 
         end_pos = None
         for pattern in item2_patterns:
-            match = re.search(pattern, filing_text[start_pos:])
+            match = re.search(pattern, clean_text[start_pos+100:])  # Skip first 100 chars to avoid false matches
             if match:
-                end_pos = start_pos + match.start()
+                end_pos = start_pos + 100 + match.start()
+                print(f"  Found end marker at position {end_pos}")
                 break
 
         # If we can't find the end, take a reasonable chunk
         if not end_pos:
-            end_pos = start_pos + 100000  # ~100K characters
+            end_pos = min(start_pos + 100000, len(clean_text))  # ~100K characters or end of text
+            print(f"  No end marker found, using {end_pos - start_pos:,} characters")
 
-        item1_text = filing_text[start_pos:end_pos]
+        item1_text = clean_text[start_pos:end_pos]
 
-        # Clean up the text a bit
+        # Additional cleanup
         # Remove excessive whitespace
         item1_text = re.sub(r'\n\s*\n\s*\n+', '\n\n', item1_text)
 
+        # Remove page numbers and other artifacts
+        item1_text = re.sub(r'^\d+\s*$', '', item1_text, flags=re.MULTILINE)
+
+        # Remove table of contents entries (lines with dots and page numbers)
+        item1_text = re.sub(r'^.*\.{3,}\s*\d+\s*$', '', item1_text, flags=re.MULTILINE)
+
+        # Final whitespace cleanup
+        item1_text = re.sub(r'\n\s*\n\s*\n+', '\n\n', item1_text)
+
+        print(f"  Extracted {len(item1_text):,} characters")
         return item1_text.strip()
 
     except Exception as e:
         print(f"  Warning: Error extracting Item 1: {e}")
+        import traceback
+        traceback.print_exc()
         return None
 
 

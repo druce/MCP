@@ -128,12 +128,12 @@ Using everything found so far and everything you can find by using tools and doi
 Use a straightforward, factual tone throughout the analysis. Focus on data and observable facts rather than speculation."""
 
     print(f"\nCalling Claude API...")
-    print(f"Model: claude-sonnet-4-5-20250929")
+    print(f"Model: claude-sonnet-4.5")
     print(f"Extended thinking: Enabled (10K token budget)")
 
     try:
         message = client.messages.create(
-            model="claude-sonnet-4-5",
+            model="claude-sonnet-4.5",
             max_tokens=16000,
             thinking={
                 "type": "enabled",

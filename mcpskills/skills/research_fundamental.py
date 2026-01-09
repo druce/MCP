@@ -17,6 +17,8 @@ Output:
     - Creates 02_fundamental/ directory in work directory
     - company_overview.json - Company information and metrics
     - income_statement.csv - Income statement data
+    - income_statement_sankey.html - Sankey flow of income statement
+    - income_statement_sankey.png - Sankey flow image
     - balance_sheet.csv - Balance sheet data
     - cash_flow.csv - Cash flow statement
     - key_ratios.json - Financial ratios
@@ -150,27 +152,42 @@ def save_financial_statements(symbol, work_dir):
     try:
         print(f"Getting financial statements for {symbol}...")
 
-        ticker = yf.Ticker(symbol)
         output_dir = os.path.join(work_dir, '02_fundamental')
         os.makedirs(output_dir, exist_ok=True)
 
+        income_stmt = pd.DataFrame()
+        balance_sheet = pd.DataFrame()
+        cash_flow = pd.DataFrame()
+
+        try:
+            ticker = yf.Ticker(symbol)
+            income_stmt = ticker.income_stmt
+            balance_sheet = ticker.balance_sheet
+            cash_flow = ticker.cashflow
+        except Exception as e:
+            print(f"⚠ Failed to fetch statements from yfinance: {e}")
+
         # Income statement
-        income_stmt = ticker.income_stmt
+        income_path = os.path.join(output_dir, 'income_statement.csv')
         if not income_stmt.empty:
-            income_path = os.path.join(output_dir, 'income_statement.csv')
             income_stmt.to_csv(income_path)
             print(f"✓ Saved income statement to: {income_path}")
+        elif os.path.exists(income_path):
+            print(f"⊘ Using existing income statement: {income_path}")
+            income_stmt = pd.read_csv(income_path, index_col=0)
+
+        if not income_stmt.empty:
             save_income_statement_sankey(income_stmt, output_dir, symbol)
+        else:
+            print("⊘ No income statement available; skipping Sankey chart")
 
         # Balance sheet
-        balance_sheet = ticker.balance_sheet
         if not balance_sheet.empty:
             balance_path = os.path.join(output_dir, 'balance_sheet.csv')
             balance_sheet.to_csv(balance_path)
             print(f"✓ Saved balance sheet to: {balance_path}")
 
         # Cash flow
-        cash_flow = ticker.cashflow
         if not cash_flow.empty:
             cashflow_path = os.path.join(output_dir, 'cash_flow.csv')
             cash_flow.to_csv(cashflow_path)
@@ -197,7 +214,9 @@ def save_income_statement_sankey(income_stmt, output_dir, symbol):
 
     try:
         if income_stmt.empty:
-            return
+            return False
+
+        print("Creating income statement Sankey chart...")
 
         latest_period = income_stmt.columns[0]
         period_label = (
@@ -321,8 +340,27 @@ def save_income_statement_sankey(income_stmt, output_dir, symbol):
         pio.write_html(fig, sankey_path, include_plotlyjs='cdn')
         print(f"✓ Saved income statement Sankey to: {sankey_path}")
 
+        image_path = os.path.join(output_dir, 'income_statement_sankey.png')
+        try:
+            print("Saving income statement Sankey image...")
+            fig.write_image(image_path, scale=2)
+            print(f"✓ Saved income statement Sankey image to: {image_path}")
+        except Exception as e:
+            print(f"⚠ Could not save Sankey image: {e}")
+            try:
+                import kaleido
+                print("Attempting to install a compatible Chrome for Kaleido...")
+                kaleido.get_chrome_sync()
+                fig.write_image(image_path, scale=2)
+                print(f"✓ Saved income statement Sankey image to: {image_path}")
+            except Exception as retry_error:
+                print(f"⚠ Sankey image retry failed: {retry_error}")
+
+        return True
+
     except Exception as e:
         print(f"⚠ Failed to create income statement Sankey: {e}")
+        return False
 
 
 def get_financial_ratios(symbol):

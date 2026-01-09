@@ -149,6 +149,11 @@ def load_all_data(work_dir, symbol):
     if os.path.exists(chart_path):
         data['chart_path'] = '01_technical/chart.png'
 
+    # Check for income statement Sankey chart
+    sankey_path = os.path.join(work_dir, '02_fundamental/income_statement_sankey.png')
+    if os.path.exists(sankey_path):
+        data['income_statement_sankey_path'] = '02_fundamental/income_statement_sankey.png'
+
     # Load fundamental data
     overview_path = os.path.join(work_dir, '02_fundamental/company_overview.json')
     if os.path.exists(overview_path):

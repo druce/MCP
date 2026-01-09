@@ -221,7 +221,7 @@ Here is the research report collected so far:
 """
 
     print(f"\nInitializing Claude Agent SDK client...")
-    print(f"Model: claude-sonnet-4-5")
+    print(f"Model: claude-sonnet-4-5-20250929")
     print(f"MCP servers: {len(mcp_servers)}")
 
     try:
@@ -359,12 +359,12 @@ Use a straightforward, factual tone throughout the analysis. Focus on data and o
 """
 
     print(f"\nCalling Claude API...")
-    print(f"Model: claude-sonnet-4-5")
+    print(f"Model: claude-sonnet-4-5-20250929")
     print(f"Extended thinking: Enabled (10K token budget)")
 
     try:
         message = client.messages.create(
-            model="claude-sonnet-4-5",
+            model="claude-sonnet-4-5-20250929",
             max_tokens=16000,
             thinking={
                 "type": "enabled",

@@ -307,6 +307,11 @@ def main():
         default=None,
         help='Comma-separated list of custom peer tickers (e.g., "GM,F,TM,RIVN")'
     )
+    parser.add_argument(
+        '--no-filter-peers',
+        action='store_true',
+        help='Disable automatic peer filtering (filtering is enabled by default)'
+    )
 
     args = parser.parse_args()
 
@@ -424,10 +429,13 @@ def main():
                     print(f"\n⊘ Skipping '{phase_name}' - script not yet implemented")
                     continue
 
-                # Add --peers argument for technical phase if specified
+                # Add --peers and --no-filter-peers arguments for technical phase if specified
                 extra_args = []
-                if phase_name == 'technical' and args.peers:
-                    extra_args = ['--peers', args.peers]
+                if phase_name == 'technical':
+                    if args.peers:
+                        extra_args.extend(['--peers', args.peers])
+                    if args.no_filter_peers:
+                        extra_args.append('--no-filter-peers')
 
                 future = executor.submit(run_phase, phase_name, phase_script, symbol, work_dir, metadata, metadata_lock, extra_args)
                 future_to_phase[future] = phase_name

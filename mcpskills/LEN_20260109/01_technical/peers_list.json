@@ -1,0 +1,26 @@
+{
+  "symbol": [
+    "DHI",
+    "PHM",
+    "NVR",
+    "TOL"
+  ],
+  "name": [
+    "D.R. Horton, Inc.",
+    "PulteGroup, Inc.",
+    "NVR, Inc.",
+    "Toll Brothers, Inc."
+  ],
+  "price": [
+    154.82,
+    130.645,
+    7562.73,
+    145.22
+  ],
+  "market_cap": [
+    45216811255,
+    25465335811,
+    21473842444,
+    13996739841
+  ]
+}

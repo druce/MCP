@@ -317,7 +317,181 @@ Average Volume (20D): {vol_val:,.0f}
         return False
 
 
-def save_peers_list(symbol, work_dir, custom_peers=None):
+def filter_peers_by_industry(symbol, company_name, industry, peers_data):
+    """
+    Use Claude API to filter peers to only true industry peers.
+
+    Args:
+        symbol: Target company ticker
+        company_name: Target company name
+        industry: Target company industry
+        peers_data: Dictionary with 'symbol' and 'name' lists
+
+    Returns:
+        tuple: (filtered_peers_data, rationale_text) or (None, None) on error
+    """
+    try:
+        # Import Anthropic here to avoid loading if not needed
+        from anthropic import Anthropic
+
+        # Build prompt
+        peers_list_text = "\n".join([
+            f"- {sym}: {name}"
+            for sym, name in zip(peers_data['symbol'], peers_data['name'])
+        ])
+
+        # Define structured output schema
+        schema = {
+            "type": "object",
+            "properties": {
+                "filtered_peers": {
+                    "type": "array",
+                    "items": {
+                        "type": "object",
+                        "properties": {
+                            "symbol": {"type": "string"},
+                            "name": {"type": "string"},
+                            "keep": {"type": "boolean"},
+                            "reason": {"type": "string"}
+                        },
+                        "required": ["symbol", "name", "keep", "reason"]
+                    }
+                }
+            },
+            "required": ["filtered_peers"]
+        }
+
+        prompt = f"""I am analyzing {symbol} ({company_name}), which operates in the {industry} industry.
+
+My market data provider gave me this list of potential peer companies:
+
+{peers_list_text}
+
+Please filter this list to include ONLY companies that are:
+1. Primarily engaged in the same or closely adjacent industries as {company_name}
+2. Comparable in business model and operations
+
+Exclude companies that are:
+- In completely different industries
+- Vertically integrated suppliers or customers (not peers)
+
+For EACH company in the list above, you must provide:
+- symbol: the ticker symbol
+- name: the company name
+- keep: true if it's a peer, false if not
+- reason: brief explanation (one sentence)
+
+You must evaluate ALL {len(peers_data['symbol'])} companies from the list."""
+
+        # Call Claude API with structured output
+        api_key = os.environ.get('ANTHROPIC_API_KEY')
+        if not api_key:
+            print("⚠ Warning: ANTHROPIC_API_KEY not set, skipping peer filtering")
+            return None, None
+
+        client = Anthropic(api_key=api_key)
+
+        try:
+            response = client.messages.create(
+                model="claude-sonnet-4-5-20250929",
+                max_tokens=4000,
+                messages=[{
+                    "role": "user",
+                    "content": [
+                        {
+                            "type": "text",
+                            "text": prompt
+                        }
+                    ]
+                }],
+                response_format={
+                    "type": "json_schema",
+                    "json_schema": {
+                        "name": "peer_filter_result",
+                        "strict": True,
+                        "schema": schema
+                    }
+                }
+            )
+        except TypeError:
+            # Fallback if response_format not supported in this SDK version
+            print("  Note: Using prompt-based JSON (SDK doesn't support response_format)")
+            response = client.messages.create(
+                model="claude-sonnet-4-5-20250929",
+                max_tokens=4000,
+                system="You are a financial analyst. Respond ONLY with valid JSON matching the requested schema. Do not include any explanatory text, markdown formatting, or code blocks.",
+                messages=[{
+                    "role": "user",
+                    "content": prompt + f"\n\nRespond with JSON matching this schema:\n{json.dumps(schema, indent=2)}"
+                }]
+            )
+
+        # Parse structured JSON response
+        response_text = response.content[0].text.strip()
+
+        # Remove markdown code blocks if present
+        if response_text.startswith('```'):
+            lines = response_text.split('\n')
+            if lines[0].strip() == '```json':
+                response_text = '\n'.join(lines[1:-1])
+            else:
+                response_text = '\n'.join(lines[1:-1])
+
+        result = json.loads(response_text)
+
+        # Build filtered peers data
+        filtered_symbols = []
+        filtered_names = []
+        filtered_prices = []
+        filtered_market_caps = []
+        rationale_lines = []
+
+        for peer_decision in result['filtered_peers']:
+            symbol_val = peer_decision['symbol']
+            name_val = peer_decision['name']
+            keep = peer_decision['keep']
+            reason = peer_decision['reason']
+
+            # Find index in original data
+            try:
+                idx = peers_data['symbol'].index(symbol_val)
+            except ValueError:
+                print(f"⚠ Warning: {symbol_val} not found in original peers data")
+                continue
+
+            if keep:
+                filtered_symbols.append(peers_data['symbol'][idx])
+                filtered_names.append(peers_data['name'][idx])
+                if 'price' in peers_data:
+                    filtered_prices.append(peers_data['price'][idx])
+                if 'market_cap' in peers_data:
+                    filtered_market_caps.append(peers_data['market_cap'][idx])
+                rationale_lines.append(f"✓ KEEP {symbol_val}: {reason}")
+            else:
+                rationale_lines.append(f"✗ EXCLUDE {symbol_val}: {reason}")
+
+        # Build filtered peers data structure
+        filtered_peers = {
+            'symbol': filtered_symbols,
+            'name': filtered_names
+        }
+        if 'price' in peers_data:
+            filtered_peers['price'] = filtered_prices
+        if 'market_cap' in peers_data:
+            filtered_peers['market_cap'] = filtered_market_caps
+
+        rationale_text = "\n".join(rationale_lines)
+
+        return filtered_peers, rationale_text
+
+    except Exception as e:
+        print(f"⚠ Warning: Could not filter peers: {e}")
+        import traceback
+        traceback.print_exc()
+        return None, None
+
+
+def save_peers_list(symbol, work_dir, custom_peers=None, filter_peers=True):
     """
     Get and save peer companies list.
 
@@ -325,6 +499,7 @@ def save_peers_list(symbol, work_dir, custom_peers=None):
         symbol: Stock ticker symbol
         work_dir: Work directory path
         custom_peers: Optional comma-separated custom peer tickers
+        filter_peers: If True, use Claude API to filter peers by industry
 
     Returns:
         bool: True if successful, False otherwise
@@ -384,12 +559,62 @@ def save_peers_list(symbol, work_dir, custom_peers=None):
         # Print peer symbols
         if 'symbol' in peers_data and isinstance(peers_data['symbol'], list):
             peer_symbols_list = peers_data['symbol']
-            print(f"✓ Final peer list ({len(peer_symbols_list)}): {', '.join(peer_symbols_list[:10])}")
+            print(f"✓ Raw peer list ({len(peer_symbols_list)}): {', '.join(peer_symbols_list[:10])}")
         elif 'results' in peers_data and isinstance(peers_data['results'], list):
             peer_symbols_list = [p.get('symbol', 'N/A') for p in peers_data['results']]
             print(f"✓ Found {len(peer_symbols_list)} peers: {', '.join(peer_symbols_list[:10])}")
         elif 'peers_list' in peers_data:
             print(f"✓ Peers: {', '.join(peers_data['peers_list'][:10])}")
+
+        # Apply peer filtering if requested
+        if filter_peers:
+            print(f"\nFiltering peers using Claude API...")
+
+            # Need company overview for industry classification
+            overview_path = os.path.join(work_dir, '02_fundamental', 'company_overview.json')
+            if os.path.exists(overview_path):
+                with open(overview_path, 'r') as f:
+                    overview = json.load(f)
+
+                company_name = overview.get('company_name', symbol)
+                industry = overview.get('industry', 'Unknown')
+
+                print(f"Target company: {company_name}")
+                print(f"Industry: {industry}")
+
+                # Filter peers
+                filtered_peers, rationale = filter_peers_by_industry(
+                    symbol, company_name, industry, peers_data
+                )
+
+                if filtered_peers:
+                    # Save raw peers as backup
+                    raw_peers_path = os.path.join(output_dir, 'peers_list_raw.json')
+                    with open(raw_peers_path, 'w') as f:
+                        json.dump(peers_data, f, indent=2)
+                    print(f"✓ Saved raw peers to: {raw_peers_path}")
+
+                    # Replace with filtered peers
+                    with open(peers_path, 'w') as f:
+                        json.dump(filtered_peers, f, indent=2)
+                    print(f"✓ Saved filtered peers to: {peers_path}")
+
+                    # Print rationale
+                    print("\nFiltering Results:")
+                    print("-" * 60)
+                    print(rationale)
+                    print("-" * 60)
+
+                    original_count = len(peers_data['symbol']) if 'symbol' in peers_data else 0
+                    filtered_count = len(filtered_peers['symbol'])
+                    print(f"\n✓ Filtered from {original_count} to {filtered_count} peers")
+                    print(f"✓ Final peer list: {', '.join(filtered_peers['symbol'])}")
+                else:
+                    print("⚠ Peer filtering failed, using raw peer list")
+            else:
+                print(f"⚠ Warning: Company overview not found at {overview_path}")
+                print("  Run research_fundamental.py first, or run without --filter-peers")
+                print("  Using raw peer list")
 
         return True
 
@@ -418,6 +643,11 @@ def main():
         '--peers',
         default=None,
         help='Comma-separated list of custom peer tickers to override auto-detection'
+    )
+    parser.add_argument(
+        '--no-filter-peers',
+        action='store_true',
+        help='Disable peer filtering (filtering is enabled by default)'
     )
 
     args = parser.parse_args()
@@ -454,7 +684,8 @@ def main():
         success_count += 1
 
     # Task 3: Get peers list
-    if save_peers_list(symbol, work_dir, args.peers):
+    filter_peers = not args.no_filter_peers  # Filter by default unless --no-filter-peers
+    if save_peers_list(symbol, work_dir, args.peers, filter_peers):
         success_count += 1
 
     # Summary

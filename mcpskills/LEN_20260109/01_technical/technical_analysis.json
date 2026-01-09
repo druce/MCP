@@ -1,0 +1,28 @@
+{
+  "symbol": "LEN",
+  "timestamp": "2026-01-09T12:16:13.923531",
+  "latest_price": 116.95500183105469,
+  "indicators": {
+    "sma_20": 109.15575065612794,
+    "sma_50": 117.57130035400391,
+    "sma_200": 116.95671268463134,
+    "rsi_14": 58.5744453543803,
+    "macd": -2.9831083292062033,
+    "macd_signal": -4.223149498896644,
+    "macd_histogram": 1.240041169690441,
+    "atr_14": 3.7653734294399115,
+    "bollinger_upper": 120.8797932301486,
+    "bollinger_middle": 109.15575065612794,
+    "bollinger_lower": 97.43170808210728,
+    "avg_volume_20d": 3865591.1
+  },
+  "trend_signals": {
+    "above_20sma": true,
+    "above_50sma": false,
+    "above_200sma": false,
+    "sma_20_50_bullish": false,
+    "sma_50_200_bullish": true,
+    "macd_bullish": true
+  },
+  "analysis": "Technical Analysis for LEN:\n\nTrend Analysis:\n- Above 20 SMA: \u2705\n- Above 50 SMA: \u274c\n- Above 200 SMA: \u274c\n- 20/50 SMA Bullish Cross: \u274c\n- 50/200 SMA Bullish Cross: \u2705\n\nMomentum:\n- RSI (14): 58.57\n- MACD Bullish: \u2705\n\nLatest Price: $116.96\nAverage True Range (14): 3.77\nAverage Volume (20D): 3,865,591"
+}

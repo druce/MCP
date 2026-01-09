@@ -79,6 +79,16 @@ Comprehensive analysis of {{ company_name }} ({{ symbol }}) across 12 analytical
 *Peer comparison data not available*
 {% endif %}
 
+### Income Statement Flow
+
+{% if income_statement_sankey_path %}
+![Income Statement Sankey]({{ income_statement_sankey_path }})
+
+*Sankey diagram showing revenue flow through cost of revenue, operating expenses, taxes to net income*
+{% else %}
+*Income statement visualization not available*
+{% endif %}
+
 ---
 
 ## Comprehensive Deep Research Analysis
@@ -90,7 +100,7 @@ Comprehensive analysis of {{ company_name }} ({{ symbol }}) across 12 analytical
 
 This section would contain a comprehensive 12-section analysis covering:
 
-1. Short Summary Overall Assessment
+1. Overall Assessment
 2. Stock Chart Analysis
 3. Technical Indicators
 4. Fundamentals vs Peers

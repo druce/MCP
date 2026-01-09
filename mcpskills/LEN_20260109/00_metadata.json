@@ -1,0 +1,13 @@
+{
+  "symbol": "LEN",
+  "research_date": "2026-01-09",
+  "research_timestamp": "2026-01-09T12:15:55.315187",
+  "phases_completed": [
+    "report",
+    "deep",
+    "final"
+  ],
+  "phases_failed": [],
+  "errors": [],
+  "data_sources": {}
+}

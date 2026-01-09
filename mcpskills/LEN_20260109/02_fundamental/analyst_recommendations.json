@@ -1,0 +1,34 @@
+[
+  {
+    "period": "0m",
+    "strongBuy": 1,
+    "buy": 2,
+    "hold": 9,
+    "sell": 2,
+    "strongSell": 5
+  },
+  {
+    "period": "-1m",
+    "strongBuy": 2,
+    "buy": 3,
+    "hold": 7,
+    "sell": 2,
+    "strongSell": 5
+  },
+  {
+    "period": "-2m",
+    "strongBuy": 2,
+    "buy": 3,
+    "hold": 13,
+    "sell": 0,
+    "strongSell": 1
+  },
+  {
+    "period": "-3m",
+    "strongBuy": 2,
+    "buy": 3,
+    "hold": 13,
+    "sell": 0,
+    "strongSell": 1
+  }
+]
