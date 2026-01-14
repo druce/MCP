@@ -8,9 +8,33 @@ A collection of Claude Code skills for automated equity research and portfolio a
 
 All skills can be run independently or orchestrated together for complex workflows.Quick Start
 
-### Stock Research
+### Quick Start
 ```bash
-# Complete research for a stock (all phases)
+# Clone the git repo including this file into a project directory like mcpskills
+git clone https://github.com/druce/MCP.git
+cd MCP/mcpskills
+
+# Create conda environment, OpenBB needs < 3.14
+conda create --name mcpskills python=3.11
+
+# Activate conda environment
+conda activate mcpskills
+
+# Install Python dependencies
+pip install -r requirements.txt
+
+# TA-Lib requires system library (macOS)
+# for other platforms check https://ta-lib.org/install/
+brew install ta-lib
+export TA_INCLUDE_PATH="$(brew --prefix ta-lib)/include"
+export TA_LIBRARY_PATH="$(brew --prefix ta-lib)/lib"
+
+# Install pandoc for document conversion 
+# optional for last step, otherwise will only create .md, no docx/html)
+# https://pandoc.org/installing.html
+brew install pandoc
+
+### # Complete research for a stock (all phases)
 ./skills/research_stock.py TSLA
 
 # Run specific phases only
@@ -225,19 +249,28 @@ Peer filtering utility - filters and ranks peer companies based on relevance cri
 This project requires **Python 3.11** (for OpenBB compatibility). Use conda for environment management:
 
 ```bash
+# Clone the git repo including this file
+git clone https://github.com/druce/MCP.git
+cd MCP/mcpskills
+
+# Create conda environment, OpenBB needs < 3.14
+conda create --name mcpskills python=3.11
+
 # Activate conda environment
 conda activate mcpskills
 
-# Install dependencies
+# Install Python dependencies
 pip install -r requirements.txt
 
 # TA-Lib requires system library (macOS)
+# for other platforms check https://ta-lib.org/install/
 brew install ta-lib
 export TA_INCLUDE_PATH="$(brew --prefix ta-lib)/include"
 export TA_LIBRARY_PATH="$(brew --prefix ta-lib)/lib"
-pip install TA-Lib
 
-# Optional: Install pandoc for document conversion
+# Install pandoc for document conversion 
+# optional for last step, otherwise will only create .md, no docx/html)
+# https://pandoc.org/installing.html
 brew install pandoc
 ```
 
