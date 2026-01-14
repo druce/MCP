@@ -34,7 +34,11 @@ export TA_LIBRARY_PATH="$(brew --prefix ta-lib)/lib"
 # https://pandoc.org/installing.html
 brew install pandoc
 
-### # Complete research for a stock (all phases)
+# Update API keys
+cp dot-env.txt .env
+# edit file with Claude, Perplexity, OpenBB keys, and SEC email self-reporting
+
+# Complete research for a stock (all phases)
 ./skills/research_stock.py TSLA
 
 # Run specific phases only
