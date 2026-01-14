@@ -17,7 +17,7 @@ This project requires Python 3.11 for OpenBB compatibility. Use conda:
 
 ```bash
 # Activate environment
-conda activate fidelity
+conda activate mcpskills
 
 # Install dependencies
 pip install -r requirements.txt
@@ -239,7 +239,7 @@ mcp install server.py
 ### Creating New Portfolio Skill
 
 1. Follow conventions:
-   - Shebang: `#!/opt/anaconda3/envs/fidelity/bin/python3`
+   - Shebang: `#!/opt/anaconda3/envs/mcpskills/bin/python3`
    - Use argparse for CLI arguments
    - Auto-create output directories
    - Generate dated archives (`filename_YYYYMMDD.ext`)
@@ -272,7 +272,7 @@ mcp install server.py
 
 **"No module named X"**
 ```bash
-conda activate fidelity
+conda activate mcpskills
 pip install -r requirements.txt
 ```
 

@@ -3,6 +3,7 @@ python-dotenv
 anthropic
 claude-agent-sdk
 openai
+finnhub-python
 openbb
 openbb-alpha-vantage
 openbb-benzinga

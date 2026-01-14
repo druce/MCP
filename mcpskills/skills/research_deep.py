@@ -1,4 +1,4 @@
-#!/opt/anaconda3/envs/fidelity/bin/python3
+#!/opt/anaconda3/envs/mcpskills/bin/python3
 """
 Deep Research Phase using Claude Agent SDK with MCP Tools
 
@@ -119,16 +119,35 @@ async def run_deep_research_with_tools(
         tuple: (analysis_output, thinking_process, tool_usage_summary)
     """
     # Load MCP server configurations
-    print("\nConfiguring MCP servers...")
+    print("\n" + "="*60)
+    print("MCP SERVER CONFIGURATION")
+    print("="*60)
     try:
         mcp_servers = load_mcp_server_configs()
-        print(f"✓ Loaded {len(mcp_servers)} MCP server configurations")
-        for server_name in mcp_servers.keys():
-            print(f"  - {server_name}")
-    except Exception as e:
-        print(f"⚠ Warning: Could not load MCP servers: {e}")
-        print("  Continuing with basic mode (no tools)")
+        print(f"✓ Loaded {len(mcp_servers)} MCP server configurations:")
+        for server_name, config in mcp_servers.items():
+            print(f"\n  📡 {server_name}:")
+            print(f"     Type: {config.get('type')}")
+            print(f"     Command: {config.get('command')}")
+            print(f"     Args: {config.get('args', [])}")
+            if config.get('env'):
+                print(f"     Env vars: {list(config['env'].keys())}")
+    except FileNotFoundError as e:
+        print(f"⚠️  Claude Desktop config not found: {e}")
+        print(f"   Expected at: ~/Library/Application Support/Claude/claude_desktop_config.json")
+        print(f"   Continuing in basic mode (no MCP tools)")
         mcp_servers = {}
+    except Exception as e:
+        print(f"⚠️  Could not load MCP servers: {e}")
+        print(f"   Continuing in basic mode (no MCP tools)")
+        import traceback
+        traceback.print_exc()
+        mcp_servers = {}
+
+    if not mcp_servers:
+        print(f"\n⚠️  No MCP servers configured - tools will NOT be available")
+        print(f"   To enable MCP tools, configure servers in Claude Desktop config")
+    print("="*60)
 
     # Create Claude Agent options
     # Note: API key is handled via ~/.claude/ configuration
@@ -139,6 +158,11 @@ async def run_deep_research_with_tools(
         # Auto-approve tool usage for autonomous research
         allowed_tools=["*"],  # Allow all MCP tools
     )
+
+    print(f"\n⚙️  Agent Options:")
+    print(f"  MCP Servers: {list(mcp_servers.keys())}")
+    print(f"  Allowed Tools: {options.allowed_tools}")
+    print(f"  CWD: {options.cwd}")
 
     company_display = company_name if company_name else symbol
 
@@ -227,7 +251,36 @@ Here is the research report collected so far:
     try:
         async with ClaudeSDKClient(options=options) as client:
             print(f"✓ Claude Agent SDK client initialized")
-            print(f"Starting agentic research loop...")
+
+            # Enumerate available MCP tools
+            print(f"\n🔧 Enumerating available MCP tools...")
+            try:
+                # Get available tools from MCP servers
+                available_tools = []
+                if hasattr(client, 'tools'):
+                    available_tools = client.tools
+                elif hasattr(client, 'get_tools'):
+                    available_tools = await client.get_tools()
+                elif hasattr(client, '_tools'):
+                    available_tools = client._tools
+
+                if available_tools:
+                    print(f"✓ Found {len(available_tools)} available tools:")
+                    for tool in available_tools:
+                        if hasattr(tool, 'name'):
+                            tool_name = tool.name
+                            tool_desc = getattr(tool, 'description', 'No description')
+                            print(f"  • {tool_name}: {tool_desc[:80]}")
+                        else:
+                            print(f"  • {tool}")
+                else:
+                    print(f"⚠️  No tools found (tools attribute not available)")
+                    print(f"   Client attributes: {[attr for attr in dir(client) if not attr.startswith('_')]}")
+            except Exception as tool_enum_error:
+                print(f"⚠️  Could not enumerate tools: {tool_enum_error}")
+                print(f"   MCP servers may still work, but tool list unavailable")
+
+            print(f"\n🚀 Starting agentic research loop...")
             print(f"This may take several minutes as Claude uses tools...")
 
             # Send initial query
@@ -240,15 +293,65 @@ Here is the research report collected so far:
 
             async for message in client.receive_response():
                 if isinstance(message, AssistantMessage):
-                    for block in message.content:
+                    print(f"\n📨 Received AssistantMessage with {len(message.content)} blocks")
+
+                    for i, block in enumerate(message.content):
+                        # Debug: print block type and attributes
+                        block_type = type(block).__name__
+                        block_type_attr = getattr(block, 'type', None)
+                        print(f"  📦 Block {i+1}: {block_type} (type={block_type_attr})")
+
+                        # Handle TextBlock
                         if isinstance(block, TextBlock):
                             analysis_blocks.append(block.text)
-                        elif hasattr(block, 'thinking'):
-                            thinking_blocks.append(block.thinking)
-                        elif hasattr(block, 'tool_use'):
-                            tool_info = f"{block.tool_use.name}({block.tool_use.input})"
+                            print(f"    ✓ Text captured ({len(block.text)} chars)")
+
+                        # Handle Thinking blocks (check both ways)
+                        elif (hasattr(block, 'type') and block.type == 'thinking') or block_type == 'ThinkingBlock':
+                            if hasattr(block, 'thinking'):
+                                thinking_blocks.append(block.thinking)
+                                print(f"    💭 Thinking captured ({len(block.thinking)} chars)")
+                            else:
+                                print(f"    ⚠️  ThinkingBlock has no 'thinking' attribute")
+
+                        # Handle Tool Use blocks (check multiple ways)
+                        elif (hasattr(block, 'type') and block.type == 'tool_use') or \
+                             block_type == 'ToolUseBlock' or \
+                             hasattr(block, 'tool_use'):
+
+                            # Extract tool info
+                            if hasattr(block, 'name'):
+                                # Direct attributes (ToolUseBlock)
+                                tool_name = block.name
+                                tool_input = getattr(block, 'input', {})
+                                tool_id = getattr(block, 'id', 'unknown')
+                            elif hasattr(block, 'tool_use'):
+                                # Nested tool_use object
+                                tool_name = block.tool_use.name
+                                tool_input = block.tool_use.input
+                                tool_id = getattr(block.tool_use, 'id', 'unknown')
+                            else:
+                                tool_name = 'unknown'
+                                tool_input = {}
+                                tool_id = 'unknown'
+
+                            tool_info = f"{tool_name}(id={tool_id[:8]}, input={str(tool_input)[:60]}...)"
                             tool_usage.append(tool_info)
-                            print(f"  🔧 Tool used: {tool_info}")
+                            print(f"    🔧 Tool call: {tool_name}")
+                            print(f"       ID: {tool_id}")
+                            print(f"       Input: {str(tool_input)[:100]}")
+
+                        # Handle Tool Result blocks
+                        elif (hasattr(block, 'type') and block.type == 'tool_result') or \
+                             block_type == 'ToolResultBlock':
+                            tool_id = getattr(block, 'tool_use_id', 'unknown')
+                            result_preview = str(getattr(block, 'content', ''))[:100]
+                            print(f"    🎯 Tool result for ID {tool_id[:8]}: {result_preview}...")
+
+                        else:
+                            # Unknown block type - detailed debugging
+                            print(f"    ⚠️  Unknown block type: {block_type}")
+                            print(f"       Attributes: {[attr for attr in dir(block) if not attr.startswith('_')]}")
 
             analysis = "\n\n".join(analysis_blocks)
             thinking = "\n\n---\n\n".join(thinking_blocks)
@@ -382,11 +485,22 @@ Use a straightforward, factual tone throughout the analysis. Focus on data and o
         thinking_blocks = []
         text_blocks = []
 
+        print(f"\n📦 Processing {len(message.content)} content blocks...")
+
         for block in message.content:
+            block_type = block.type
+            print(f"  Block type: {block_type}")
+
             if block.type == "thinking":
                 thinking_blocks.append(block.thinking)
+                print(f"  💭 Captured thinking block ({len(block.thinking)} chars)")
             elif block.type == "text":
                 text_blocks.append(block.text)
+                print(f"  📝 Captured text block ({len(block.text)} chars)")
+            else:
+                print(f"  ⚠️  Unknown block type: {block_type}")
+
+        print(f"\n✓ Extracted {len(text_blocks)} text blocks and {len(thinking_blocks)} thinking blocks")
 
         analysis = "\n\n".join(text_blocks)
         thinking = "\n\n---\n\n".join(thinking_blocks)
@@ -412,15 +526,25 @@ def save_outputs(work_dir, analysis, thinking, tool_summary=None):
     # Save thinking process
     thinking_path = os.path.join(output_dir, 'deep_research_thinking.md')
     with open(thinking_path, 'w') as f:
-        f.write(f"# Extended Thinking Process\n\n{thinking}")
+        f.write(f"# Extended Thinking Process\n\n")
+        if thinking and thinking.strip():
+            f.write(thinking)
+        else:
+            f.write("No extended thinking was captured.\n\n")
+            f.write("This could mean:\n")
+            f.write("- The model didn't generate thinking output\n")
+            f.write("- Extended thinking was not enabled in the API call\n")
+            f.write("- Thinking blocks were filtered/redacted by safety systems\n")
     print(f"✓ Saved: {thinking_path}")
 
-    # Save tool usage summary (NEW)
-    if tool_summary:
-        tool_path = os.path.join(output_dir, 'tool_usage.txt')
-        with open(tool_path, 'w') as f:
+    # Save tool usage summary
+    tool_path = os.path.join(output_dir, 'tool_usage.txt')
+    with open(tool_path, 'w') as f:
+        if tool_summary:
             f.write(tool_summary)
-        print(f"✓ Saved: {tool_path}")
+        else:
+            f.write("Tools used (0):\nNo MCP tools were used (basic mode or tools not available)")
+    print(f"✓ Saved: {tool_path}")
 
     return True
 

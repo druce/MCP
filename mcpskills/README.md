@@ -320,6 +320,11 @@ brew install pandoc
   - [Perplexity API Documentation](https://docs.perplexity.ai/)
   - Note: API access is billed separately from Pro subscription
 
+- **Finnhub API**: Create a free account and generate an API key at [https://finnhub.io/dashboard](https://finnhub.io/dashboard)
+  - [Finnhub API Documentation](https://finnhub.io/docs/api)
+  - Note: Free tier provides 60 API calls per minute
+  - Used for peer company detection (optional - can use `--peers` flag for custom list)
+
 - **SEC EDGAR**: No API key needed, just provide your company name and email address for the User-Agent header (required by SEC)
 
 ### Dependencies
@@ -332,6 +337,7 @@ brew install pandoc
 **Stock Research - Data Gathering:**
 - yfinance (stock data and fundamentals)
 - openbb (OpenBB Platform for financial data)
+- finnhub-python (for peer company detection)
 - numpy
 - plotly >= 5.0 (for chart generation)
 - talib (TA-Lib for technical indicators)

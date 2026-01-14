@@ -11,7 +11,7 @@
 
 ## Build, Test, and Development Commands
 
-- `conda activate fidelity` activates the Python 3.11 environment used by the skills and server.
+- `conda activate mcpskills` activates the Python 3.11 environment used by the skills and server.
 - `pip install -r requirements.txt` installs Python dependencies.
 - `python server.py` starts the MCP server locally; `mcp run server.py` runs via the MCP CLI.
 - `./skills/research_stock.py TSLA --phases all` runs the full 7-phase research pipeline for a ticker.

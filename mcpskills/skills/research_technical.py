@@ -1,4 +1,4 @@
-#!/opt/anaconda3/envs/fidelity/bin/python3
+#!/opt/anaconda3/envs/mcpskills/bin/python3
 """
 Technical Analysis Research Phase
 
@@ -540,11 +540,98 @@ def save_peers_list(symbol, work_dir, custom_peers=None, filter_peers=True):
                 'price': prices,
                 'market_cap': market_caps
             }
+        elif os.getenv('FINNHUB_API_KEY'):
+            # Priority 2: Use Finnhub auto-detection
+            print(f"Auto-detecting peers using Finnhub...")
+
+            import finnhub
+            finnhub_api_key = os.getenv('FINNHUB_API_KEY')
+            finnhub_client = finnhub.Client(api_key=finnhub_api_key)
+
+            try:
+                # Get peer tickers (uses GICS sub-industry classification by default)
+                peer_symbols = finnhub_client.company_peers(symbol)
+
+                # Remove the target symbol if it's in the list
+                peer_symbols = [s for s in peer_symbols if s != symbol]
+
+                if not peer_symbols:
+                    print(f"⚠ Finnhub returned no peers, trying OpenBB fallback...")
+                    raise Exception("No peers found from Finnhub")
+
+                print(f"  Found {len(peer_symbols)} potential peers: {', '.join(peer_symbols[:5])}...")
+
+                # Enrich with yfinance data
+                peers_data = {
+                    'symbol': [],
+                    'name': [],
+                    'price': [],
+                    'market_cap': []
+                }
+
+                for peer in peer_symbols[:15]:  # Limit to top 15
+                    try:
+                        ticker = yf.Ticker(peer)
+                        info = ticker.info
+
+                        peers_data['symbol'].append(peer)
+                        peers_data['name'].append(info.get('longName', peer))
+                        price = info.get('currentPrice') or info.get('regularMarketPrice', 0.0)
+                        peers_data['price'].append(float(price) if price else 0.0)
+                        peers_data['market_cap'].append(info.get('marketCap', 0))
+
+                    except Exception as e:
+                        print(f"  ⚠ Could not fetch data for {peer}: {e}")
+                        continue
+
+                print(f"  ✓ Enriched {len(peers_data['symbol'])} peers with market data")
+
+            except Exception as e:
+                print(f"⚠ Finnhub failed: {e}")
+                # Fall through to OpenBB fallback
+                if os.getenv('OPENBB_PAT'):
+                    print(f"  Trying OpenBB/FMP fallback...")
+                    try:
+                        peers_result = obb.equity.compare.peers(symbol=symbol, provider='fmp')
+                        peers_data = peers_result.to_dict()
+                        print(f"  ✓ OpenBB/FMP returned peers")
+                    except Exception as obb_error:
+                        print(f"  ⚠ OpenBB/FMP also failed: {obb_error}")
+                        print(f"  Proceeding with empty peers list")
+                        peers_data = {'symbol': [], 'name': [], 'price': [], 'market_cap': []}
+                else:
+                    print(f"  No fallback available, proceeding with empty peers list")
+                    peers_data = {'symbol': [], 'name': [], 'price': [], 'market_cap': []}
+
+        elif os.getenv('OPENBB_PAT'):
+            # Priority 3: Use OpenBB/FMP (existing behavior)
+            print(f"Auto-detecting peers using OpenBB/FMP...")
+            print(f"⚠ Note: FMP peers endpoint may require paid subscription")
+            print(f"   Consider setting FINNHUB_API_KEY in .env for free alternative")
+
+            try:
+                peers_result = obb.equity.compare.peers(symbol=symbol, provider='fmp')
+                peers_data = peers_result.to_dict()
+                print(f"  ✓ OpenBB/FMP returned peers")
+
+            except Exception as e:
+                print(f"⚠ OpenBB/FMP failed: {e}")
+                print(f"  This likely means FMP peers endpoint requires paid subscription")
+                print(f"  Proceeding with empty peers list")
+                peers_data = {'symbol': [], 'name': [], 'price': [], 'market_cap': []}
+
         else:
-            # Use OpenBB auto-detection (existing behavior)
-            print(f"Auto-detecting peers using OpenBB...")
-            peers_result = obb.equity.compare.peers(symbol=symbol, provider='fmp')
-            peers_data = peers_result.to_dict()
+            # Priority 4: No peer detection methods available
+            print(f"⚠ No peer detection method configured")
+            print(f"")
+            print(f"  Options for future runs:")
+            print(f"  1. Provide custom peers: --peers 'SYM1,SYM2,SYM3'")
+            print(f"  2. Set FINNHUB_API_KEY in .env (recommended - free tier)")
+            print(f"     Get free API key at: https://finnhub.io/register")
+            print(f"  3. Set OPENBB_PAT in .env (note: FMP peers requires paid subscription)")
+            print(f"")
+            print(f"  Proceeding with empty peers list...")
+            peers_data = {'symbol': [], 'name': [], 'price': [], 'market_cap': []}
 
         # Save to file (same for both paths)
         output_dir = os.path.join(work_dir, '01_technical')

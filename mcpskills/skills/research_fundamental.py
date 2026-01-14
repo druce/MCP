@@ -1,4 +1,4 @@
-#!/opt/anaconda3/envs/fidelity/bin/python3
+#!/opt/anaconda3/envs/mcpskills/bin/python3
 """
 Fundamental Analysis Research Phase
 

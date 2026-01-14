@@ -9,7 +9,7 @@ Skills are organized into two categories:
 2. **Securities Research Skills** - Research individual securities with comprehensive data gathering and analysis
 
 All skills follow a consistent architecture:
-- Standalone executable Python scripts (`#!/opt/anaconda3/envs/fidelity/bin/python3`)
+- Standalone executable Python scripts (`#!/opt/anaconda3/envs/mcpskills/bin/python3`)
 - Command-line arguments via argparse
 - Self-contained with comprehensive error handling
 - Create output directories as needed
@@ -34,7 +34,7 @@ Aggregates Fidelity portfolio positions from multiple CSV exports into a single 
 ./skills/aggregate_positions.py --import-dir import --output-dir data
 
 # Or with explicit python
-/opt/anaconda3/envs/fidelity/bin/python3 skills/aggregate_positions.py
+/opt/anaconda3/envs/mcpskills/bin/python3 skills/aggregate_positions.py
 ```
 
 **Arguments:**
@@ -137,7 +137,7 @@ Creates interactive HTML sunburst chart showing portfolio allocation by category
 ./skills/visualize_allocation.py --data-dir data --output-dir dataviz
 
 # Or with explicit python
-/opt/anaconda3/envs/fidelity/bin/python3 skills/visualize_allocation.py
+/opt/anaconda3/envs/mcpskills/bin/python3 skills/visualize_allocation.py
 ```
 
 **Arguments:**
@@ -953,7 +953,7 @@ fund_data = read_fundamentals('work/TSLA_20251220')
 ## Requirements
 
 **Environment:**
-- Python 3.11+ (conda environment: `fidelity`)
+- Python 3.11+ (conda environment: `mcpskills`)
 - Environment variables (stored in `.env` file):
   - `OPENBB_PAT` - OpenBB Personal Access Token (for ticker lookup, fundamentals, ratios)
   - `PERPLEXITY_API_KEY` - Perplexity AI API key (for qualitative research and analysis)
@@ -990,7 +990,7 @@ fund_data = read_fundamentals('work/TSLA_20251220')
 **Installation:**
 ```bash
 # Activate conda environment
-conda activate fidelity
+conda activate mcpskills
 
 # Install core data gathering dependencies
 pip install pandas plotly yfinance openbb numpy TA-Lib openai sec-edgar-downloader beautifulsoup4 wikipedia-api python-dotenv
@@ -1035,7 +1035,7 @@ To create a new skill:
 1. **Create the Python file** in the `skills/` directory
 2. **Use the standard structure:**
    ```python
-   #!/opt/anaconda3/envs/fidelity/bin/python3
+   #!/opt/anaconda3/envs/mcpskills/bin/python3
    """
    Skill Name and Purpose
 
