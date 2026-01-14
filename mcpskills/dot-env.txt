@@ -1,0 +1,23 @@
+# OpenBB Platform Personal Access Token
+# Get yours at: https://my.openbb.co/app/platform/pat
+# Requires free OpenBB account
+OPENBB_PAT='your_openbb_pat_here'
+
+# SEC EDGAR credentials (required for SEC filings)
+# Your company name and email for SEC API User-Agent
+SEC_USER='your_email@example.com'
+SEC_FIRM='YourCompanyName'
+
+# Anthropic Claude API key (required for deep research phase)
+# Get yours at: https://console.anthropic.com/
+ANTHROPIC_API_KEY='your_anthropic_api_key_here'
+
+# Perplexity AI API key (required for research and analysis phases)
+# Get yours at: https://www.perplexity.ai/settings/api
+PERPLEXITY_API_KEY='your_perplexity_key_here'
+
+
+
+
+
+

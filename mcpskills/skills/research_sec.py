@@ -52,6 +52,15 @@ def fetch_10k_item1(symbol, work_dir):
     try:
         print(f"Downloading 10-K filing for {symbol}...")
 
+        # Get SEC credentials from environment
+        sec_firm = os.getenv('SEC_FIRM')
+        sec_user = os.getenv('SEC_USER')
+
+        if not sec_firm or not sec_user:
+            print(f"❌ ERROR: SEC_FIRM and SEC_USER must be set in .env file")
+            print(f"   SEC requires User-Agent with company name and email")
+            return False
+
         output_dir = os.path.join(work_dir, '05_sec')
         os.makedirs(output_dir, exist_ok=True)
 
@@ -59,9 +68,9 @@ def fetch_10k_item1(symbol, work_dir):
         temp_dir = os.path.join(output_dir, 'temp_download')
         os.makedirs(temp_dir, exist_ok=True)
 
-        # Initialize downloader with company name and email
+        # Initialize downloader with company name and email from environment
         # SEC requires User-Agent with contact info
-        dl = Downloader("FidelityResearch", "research@example.com", temp_dir)
+        dl = Downloader(sec_firm, sec_user, temp_dir)
 
         # Download the latest 10-K
         print(f"  Fetching latest 10-K from SEC EDGAR...")

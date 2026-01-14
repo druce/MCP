@@ -28,12 +28,50 @@ from pathlib import Path
 from concurrent.futures import ProcessPoolExecutor, as_completed
 from multiprocessing import Manager
 
+# Load environment variables from .env
+from dotenv import load_dotenv
+load_dotenv()
+
 # Import company overview function for early execution
 sys.path.insert(0, os.path.dirname(__file__))
 from research_fundamental import save_company_overview
 
 # Constants
 WORK_DIR = 'work'
+
+# Define required API keys for each phase
+PHASE_API_KEYS = {
+    'technical': ['OPENBB_PAT'],
+    'fundamental': ['OPENBB_PAT'],
+    'research': ['PERPLEXITY_API_KEY'],
+    'analysis': ['PERPLEXITY_API_KEY'],
+    'sec': ['SEC_FIRM', 'SEC_USER'],  # SEC requires company name and email
+    'wikipedia': [],  # No API key needed
+    'report': [],  # No API key needed
+    'deep': ['ANTHROPIC_API_KEY'],
+    'final': []  # No API key needed
+}
+
+
+def validate_api_keys(phases_to_run):
+    """
+    Validate that required API keys are present for the phases to run.
+
+    Args:
+        phases_to_run: List of phase names
+
+    Returns:
+        tuple: (success: bool, missing_keys: list)
+    """
+    missing_keys = set()
+
+    for phase in phases_to_run:
+        required_keys = PHASE_API_KEYS.get(phase, [])
+        for key in required_keys:
+            if not os.getenv(key):
+                missing_keys.add(key)
+
+    return len(missing_keys) == 0, sorted(missing_keys)
 
 
 def validate_ticker(symbol):
@@ -382,8 +420,26 @@ def main():
         print(f"Available phases: {', '.join(all_phases.keys())}")
         return 1
 
+    # Validate API keys for phases to run
     print(f"\n{'='*60}")
-    print("Step 3: Get Company Overview")
+    print("Step 3: API Key Validation")
+    print(f"{'='*60}")
+
+    valid_keys, missing_keys = validate_api_keys(phases_to_run)
+    if not valid_keys:
+        print(f"\n❌ ERROR: Required API keys are missing:")
+        for key in missing_keys:
+            print(f"  - {key}")
+        print(f"\nPlease add the missing keys to your .env file and try again.")
+        print(f"Example .env entry:")
+        for key in missing_keys:
+            print(f"  {key}=your_key_here")
+        return 1
+
+    print(f"✓ All required API keys are present")
+
+    print(f"\n{'='*60}")
+    print("Step 4: Get Company Overview")
     print(f"{'='*60}")
     print(f"Fetching foundational company data for {symbol}...")
 
@@ -394,11 +450,11 @@ def main():
         print(f"⚠ Warning: Could not fetch company overview, continuing with other phases...")
 
     print(f"\n{'='*60}")
-    print("Step 4: Execute Research Phases")
+    print("Step 5: Execute Research Phases")
     print(f"{'='*60}")
     print(f"Phases to run: {', '.join(phases_to_run)}")
 
-    # Step 6: Execute phases in parallel
+    # Execute phases in parallel
     success_count = 0
     failed_count = 0
 
@@ -474,7 +530,7 @@ def main():
         if os.path.exists(phase_script):
             print(f"\n{'='*60}")
             print("Running deep research with Claude API...")
-            print("This may take 30-60 seconds with extended thinking enabled...")
+            print("This may take a few minutes with extended thinking enabled...")
             print(f"{'='*60}")
             success = run_phase('deep', phase_script, symbol, work_dir, metadata)
             if success:
@@ -499,7 +555,7 @@ def main():
         else:
             print(f"\n⊘ Skipping 'final' - script not yet implemented")
 
-    # Step 7: Final summary
+    # Step 6: Final summary
     print(f"\n{'='*60}")
     print("Research Complete")
     print(f"{'='*60}")

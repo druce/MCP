@@ -4,14 +4,9 @@ A collection of Claude Code skills for automated equity research and portfolio a
 
 ## Overview
 
-This project contains **two distinct but related systems** using a **skills-based architecture** where each skill is a standalone executable Python script:
+**Stock Research Skills** - Automated equity research report generation using multi-phase data gathering and AI-powered analysis
 
-1. **Stock Research Skills** - Automated equity research report generation using multi-phase data gathering and AI-powered analysis
-2. **Portfolio Management Skills** - Fidelity portfolio aggregation, categorization, and visualization tools
-
-All skills can be run independently or orchestrated together for complex workflows.
-
-## Quick Start
+All skills can be run independently or orchestrated together for complex workflows.Quick Start
 
 ### Stock Research
 ```bash
@@ -23,19 +18,6 @@ All skills can be run independently or orchestrated together for complex workflo
 
 # With custom peer companies
 ./skills/research_stock.py TSLA --peers "GM,F,TM,RIVN"
-```
-
-### Portfolio Management
-```bash
-# 1. Export CSV files from Fidelity and place them in import/
-# 2. Run aggregation skill
-./skills/aggregate_positions.py
-
-# 3. Update security mappings if needed
-# Edit data/security_mapping.csv to categorize securities
-
-# 4. Generate visualization
-./skills/visualize_allocation.py
 ```
 
 ## Project Structure
@@ -56,7 +38,7 @@ mcpskills/
 │       ├── final_report.md
 │       ├── final_report.docx
 │       └── final_report.html
-├── import/              # Fidelity CSV exports (Portfolio_Positions_*.csv)
+├── import/              # Fidelity CSV exports for portfolio analysis (Portfolio_Positions_*.csv)
 ├── data/                # Aggregated portfolio data and mappings
 │   ├── aggregate_positions.csv
 │   ├── aggregate_positions_YYYYMMDD.csv
@@ -236,145 +218,6 @@ Final report assembly phase - combines all research into polished final report w
 #### 11. filter_peers.py
 Peer filtering utility - filters and ranks peer companies based on relevance criteria.
 
-### Supporting Library
-
-**agent_tools.py** - Data loading library for agent-based workflows (not a standalone skill). Provides simple functions for loading research data from work directories.
-
----
-
-## Portfolio Management Skills
-
-### Available Skills
-
-#### 1. aggregate_positions.py
-
-Consolidates positions from multiple Fidelity accounts into a single aggregated view.
-
-```bash
-./skills/aggregate_positions.py
-```
-
-**Features:**
-- Combines 5 account types (Individual-TOD, ROTH IRA, Rollover IRA, SEP-IRA, Traditional IRA)
-- Normalizes cash positions (FDRXX**, Pending Activity → Cash)
-- Handles short positions correctly (negative values)
-- Creates dated archives automatically
-- Calculates weighted average cost basis
-
-**Output:**
-- `data/aggregate_positions.csv` (current)
-- `data/aggregate_positions_YYYYMMDD.csv` (archive)
-
-#### 2. visualize_allocation.py
-
-Creates interactive sunburst chart showing hierarchical allocation.
-
-```bash
-./skills/visualize_allocation.py
-```
-
-**Features:**
-- 4-level drill-down: L1 (Economic Factor) → L2 (Region/Asset Class) → L3 (Sub-category) → L4 (Specific) → Symbol
-- Interactive hover details (value, percentage, quantity, price)
-- Color-coded by L1 category (GROWTH/DEFLATION/INFLATION/CASH)
-- Standalone HTML (no server required)
-- Handles negative positions (short sales)
-
-**Output:**
-- `dataviz/allocation_sunburst_YYYYMMDD.html`
-
-## Category Hierarchy
-
-Portfolio positions are categorized using an economic factor-based framework:
-
-**L1: Economic Factors**
-- **GROWTH** - Assets that grow with economic expansion (stocks, equity funds)
-- **DEFLATION** - Assets that perform well in deflation (treasuries, preferred stocks)
-- **INFLATION** - Assets that protect against inflation (TIPS)
-- **CASH** - Liquid reserves and money market positions
-
-**Example Hierarchy:**
-```
-GROWTH
-├── US
-│   ├── LARGECAP → OAKMX
-│   ├── SMALLCAP → FTHSX
-│   └── INDIVIDUAL → INTC, TSLA
-├── INTERNATIONAL
-│   ├── DEVELOPED → OAKIX
-│   ├── EMERGINGMARKETS → FDEM
-│   └── CHINA → KWEB
-└── SPECIAL
-    ├── CLEANENERGY → GRID
-    └── INFRASTRUCTURE → SRVR
-
-DEFLATION
-├── TREASURY
-│   ├── INTERMEDIATE → VGIT
-│   └── LONGTERM → VGLT
-└── PREFERRED
-    ├── BANKS → BACPRB, JPMPRC
-    ├── INSURANCE → METPRE
-    └── FINANCIAL → SCHWPRD
-
-INFLATION
-└── TIPS
-    ├── SHORT → VTIP
-    └── BROAD → TIP, VIPSX
-
-CASH
-└── Cash (money market, pending activity)
-```
-
-### Planned Portfolio Skills
-
-Future skills for portfolio restructuring:
-
-#### 3. analyze_allocation.py
-Compare actual vs target allocations, identify rebalancing needs
-
-#### 4. optimize_rebalance.py
-Generate optimal trade orders to reach target allocation
-
-#### 5. analyze_trends.py
-Track allocation changes over time using archived snapshots
-
-#### 6. analyze_risk.py
-Analyze portfolio risk metrics and concentration
-
-#### 7. track_performance.py
-Calculate returns and compare to benchmarks
-
-## Configuration Files
-
-### security_mapping.csv
-Maps each security symbol to its category hierarchy:
-
-```csv
-Symbol,L1,L2,L3,L4
-OAKMX,GROWTH,US,LARGECAP,
-VGIT,DEFLATION,TREASURY,INTERMEDIATE,
-VTIP,INFLATION,TIPS,SHORT,
-Cash,CASH,,,
-```
-
-**Maintenance:**
-- Add new row when purchasing new security
-- Update categories if security changes character
-- L1 values must be: GROWTH, DEFLATION, INFLATION, or CASH
-- L2-L4 are optional but help with organization
-
-### target_allocation.csv (future)
-Will define target allocation percentages:
-
-```csv
-Category,Target_Pct
-GROWTH,50.0
-DEFLATION,25.0
-INFLATION,25.0
-CASH,0.0
-```
-
 ## Development
 
 ### Python Environment
@@ -383,7 +226,7 @@ This project requires **Python 3.11** (for OpenBB compatibility). Use conda for 
 
 ```bash
 # Activate conda environment
-conda activate fidelity
+conda activate mcpskills
 
 # Install dependencies
 pip install -r requirements.txt
@@ -400,22 +243,47 @@ brew install pandoc
 
 ### Required API Keys
 
-Set these in `.env` file in project root:
+#### Setup Instructions
 
-```bash
-# OpenBB Platform (for ticker lookup and financial ratios)
-OPENBB_PAT=your_openbb_pat_here
+1. **Copy the template file** to create your `.env` file:
+   ```bash
+   cp dot-env.txt .env
+   ```
 
-# Perplexity AI (for qualitative research and analysis phases)
-PERPLEXITY_API_KEY=your_perplexity_key_here
+2. **Add your API keys** to the `.env` file. Open it in a text editor and replace the empty strings with your actual keys:
+   ```bash
+   # OpenBB Platform Personal Access Token
+   # Get yours at: https://my.openbb.co/app/platform/pat
+   OPENBB_PAT='your_openbb_pat_here'
+   
+   # SEC EDGAR credentials (required for SEC filings)
+   # Your company name and email for SEC API User-Agent
+   SEC_USER='your_email@example.com'
+   SEC_FIRM='YourCompanyName'
+   
+   # Anthropic Claude API key (required for deep research phase)
+   # Get yours at: https://console.anthropic.com/
+   ANTHROPIC_API_KEY='your_anthropic_api_key_here'
+   
+   # Perplexity AI API key (required for research and analysis phases)
+   # Get yours at: https://www.perplexity.ai/settings/api
+   PERPLEXITY_API_KEY='your_perplexity_key_here'
+   ```
 
-# Anthropic API (for deep research phase with Claude Sonnet 4.5)
-ANTHROPIC_API_KEY=your_anthropic_api_key_here
+#### Where to Get API Keys
 
-# Optional: SEC API identifiers
-SEC_FIRM=your_firm_name
-SEC_USER=your_email@example.com
-```
+- **OpenBB Platform PAT**: Create a free account and generate a Personal Access Token at [https://my.openbb.co/app/platform/pat](https://my.openbb.co/app/platform/pat)
+  - [OpenBB Platform Documentation](https://docs.openbb.co/platform)
+
+- **Anthropic Claude API**: Sign up and create an API key at [https://console.anthropic.com/](https://console.anthropic.com/)
+  - [Claude API Documentation](https://docs.anthropic.com/claude/reference/getting-started-with-the-api)
+  - Note: Includes free credits to get started, then pay-as-you-go pricing
+
+- **Perplexity AI API**: Create an account and generate an API key at [https://www.perplexity.ai/settings/api](https://www.perplexity.ai/settings/api)
+  - [Perplexity API Documentation](https://docs.perplexity.ai/)
+  - Note: API access is billed separately from Pro subscription
+
+- **SEC EDGAR**: No API key needed, just provide your company name and email address for the User-Agent header (required by SEC)
 
 ### Dependencies
 
@@ -447,11 +315,13 @@ SEC_USER=your_email@example.com
 **Portfolio Management:**
 - plotly >= 5.0 (for visualizations)
 
-### MCP Server Configuration
+### MCP Server Configuration (Optional)
 
-The deep research phase (`research_deep.py`) can use MCP servers for real-time data access. Configure in `~/Library/Application Support/Claude/claude_desktop_config.json`:
+The deep research phase (`research_deep.py`) can optionally use MCP servers for real-time data access. This is **not required** for basic research workflows.
 
-Supported servers:
+If you want to enable MCP servers for enhanced deep research capabilities, configure them in `~/Library/Application Support/Claude/claude_desktop_config.json`:
+
+**Supported MCP servers:**
 - `stock-symbol-server` - Local server.py with financial tools
 - `alphavantage` - Alpha Vantage financial data
 - `yfinance` - Yahoo Finance data
@@ -459,13 +329,15 @@ Supported servers:
 - `perplexity-ask` - AI-powered search
 - `wikipedia` - Company information
 
+**Note:** The deep research phase works without MCP servers by using the initial research report as context. MCP servers enhance results by providing real-time data access during the deep research analysis.
+
 See CLAUDE.md for details on MCP server setup.
 
 ### Creating New Skills
 
 Skills should follow these conventions:
 
-1. **Shebang:** `#!/opt/anaconda3/envs/fidelity/bin/python3`
+1. **Shebang:** `#!/opt/anaconda3/envs/mcpskills/bin/python3`
 2. **Executable:** `chmod +x skills/your_skill.py`
 3. **Docstring:** Include usage instructions at top of file
 4. **Arguments:** Use argparse for directory paths and options
@@ -499,97 +371,15 @@ Complete equity research for a stock:
    ```bash
    # Update just the report with a different template
    ./skills/research_report.py TSLA --work-dir work/TSLA_20251220 --template analyst_report.md.j2
-
+   
    # Re-run deep research
    ./skills/research_deep.py TSLA --work-dir work/TSLA_20251220
-
+   
    # Regenerate final report
    ./skills/research_final.py TSLA --work-dir work/TSLA_20251220
    ```
 
-### Portfolio Management Workflow
 
-Regular portfolio review:
-
-1. **Export data from Fidelity** (weekly/monthly)
-   - Download CSV for each account
-   - Place files in `import/`
-
-2. **Aggregate positions**
-   ```bash
-   ./skills/aggregate_positions.py
-   ```
-
-3. **Update mappings** (if new securities purchased)
-   - Edit `data/security_mapping.csv`
-   - Add new rows for new symbols
-
-4. **Generate visualization**
-   ```bash
-   ./skills/visualize_allocation.py
-   ```
-
-5. **Review allocation**
-   - Open `dataviz/allocation_sunburst_YYYYMMDD.html` in browser
-   - Drill down through categories
-   - Identify areas needing rebalancing
-
-### Portfolio Restructuring
-
-When rebalancing or restructuring:
-
-1. Run allocation analysis to identify needs (future skill)
-2. Use optimizer to generate trade recommendations (future skill)
-3. Review trades for tax implications
-4. Execute trades in Fidelity
-5. Export new CSV files and re-aggregate
-6. Generate new visualization to confirm changes
-
-## Special Cases
-
-### Short Positions
-Short positions (e.g., TSLA short) are handled correctly with negative values:
-- Quantity is negative
-- Value is negative
-- Reduces category total appropriately
-- Visualization uses absolute value for sizing but displays actual value
-
-### Cash Positions
-Multiple cash representations are normalized:
-- `FDRXX**` (Fidelity money market) → Cash
-- `Pending Activity` → Cash
-- `Cash` → Cash
-- Quantity is set equal to current value for cash positions
-
-### Multiple Accounts
-Positions are aggregated across all account types:
-- Same symbol in different accounts are summed
-- Cost basis is averaged by total cost / total quantity
-- Position type uses first non-null value
-
-## Cost Considerations
-
-### Stock Research Costs
-
-API usage costs per stock research run (all phases):
-
-- **Perplexity AI** (~$0.36 per stock)
-  - research_perplexity.py: ~18K tokens (3 queries)
-  - research_analysis.py: ~18K tokens (4 queries)
-  - Total: ~36K tokens @ $0.01/1K tokens
-
-- **Anthropic Claude API** (~$1-2 per stock with deep research)
-  - research_deep.py with MCP tools: ~$1-2
-  - Basic mode (no tools): ~$0.50-1
-
-**Cost optimization tips:**
-- Skip `analysis` phase for quick research (saves ~$0.18)
-- Skip `deep` phase to use template-based reports only (saves ~$1-2)
-- Use `--phases` flag to run only needed phases
-
-### Portfolio Management Costs
-
-No API costs - all portfolio skills run locally with free data sources.
 
 ## File Locations
 
@@ -597,12 +387,6 @@ No API costs - all portfolio skills run locally with free data sources.
 - **Skills:** `skills/research_*.py` - Research phase scripts
 - **Templates:** `templates/*.md.j2` - Jinja2 report templates
 - **Work Output:** `work/{SYMBOL}_{YYYYMMDD}/` - Per-stock research directories
-
-**Portfolio Management:**
-- **Skills:** `skills/aggregate_positions.py`, `skills/visualize_allocation.py`
-- **Data:** `data/` - Aggregated positions and mappings
-- **Visualizations:** `dataviz/` - Interactive HTML charts
-- **Import:** `import/` - Fidelity CSV exports
 
 **Documentation:**
 - **skills/README.md** - Comprehensive skill documentation (1000+ lines)
@@ -619,11 +403,6 @@ No API costs - all portfolio skills run locally with free data sources.
 - Report generation works with partial data if phases fail
 - Deep research phase requires claude-agent-sdk and configured MCP servers
 - Multi-format export requires pandoc (preferred) or python libraries (fallback)
-
-**Portfolio Management:**
-- Cash positions automatically normalized (FDRXX**, Pending Activity → Cash)
-- Short positions handled correctly with negative values
-- Cost basis weighted by total cost / total quantity across accounts
 
 ## Related Files
 
