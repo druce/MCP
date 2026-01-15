@@ -11,19 +11,21 @@ The server follows the Model Context Protocol specification as defined at:
 https://modelcontextprotocol.io/
 
 Example:
-    To start the server:
+    To start the server (from the mcpskills directory):
     ```
-    python server.py
+    python ./server.py
     ```
 
 Install into claude_desktop_config.json with:
-$ mcp install server.py
+$ mcp install ./server.py
 
 Run for debugging with:
-$ LOGLEVEL=DEBUG mcp dev server.py
+$ LOGLEVEL=DEBUG mcp dev ./server.py
 
 Run for production with (or just use in Claude Desktop):
-$ mcp run server.py
+$ mcp run ./server.py
+
+Note: Use ./server.py to explicitly run this server in the mcpskills directory
 
 Additional complementary MCP servers:
 - yahoo-finance-mcp: https://github.com/Alex2Yang97/yahoo-finance-mcp.git

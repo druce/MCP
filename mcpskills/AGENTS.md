@@ -13,7 +13,7 @@
 
 - `conda activate mcpskills` activates the Python 3.11 environment used by the skills and server.
 - `pip install -r requirements.txt` installs Python dependencies.
-- `python server.py` starts the MCP server locally; `mcp run server.py` runs via the MCP CLI.
+- `python ./server.py` starts the MCP server locally; `mcp run ./server.py` runs via the MCP CLI (use `./` to run the server in this directory, not the parent).
 - `./skills/research_stock.py TSLA --phases all` runs the full 7-phase research pipeline for a ticker.
 - `./skills/aggregate_positions.py` aggregates Fidelity CSVs into `data/` (created on demand).
 - `./skills/visualize_allocation.py` generates `dataviz/allocation_sunburst_YYYYMMDD.html` from aggregated data.

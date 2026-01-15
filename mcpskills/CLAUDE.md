@@ -32,13 +32,27 @@ pip install TA-Lib
 ## Required API Keys
 
 Set these in `.env` file:
-- `TIINGO_API_KEY` - Historical market data
-- `OPENBB_PAT` - OpenBB Platform access
+
+**Core (Required):**
+- `PERPLEXITY_API_KEY` - Deep research analysis
 - `SEC_FIRM` - SEC API firm identifier
 - `SEC_USER` - SEC API user email
-- `PERPLEXITY_API_KEY` - Deep research analysis
-- `ANTHROPIC_API_KEY` - Claude API (optional)
-- `OPENAI_API_KEY` - OpenAI API (optional)
+
+**Data Sources (Prioritized Fallback):**
+- `FINNHUB_API_KEY` - **Recommended** - Free tier for peer lookup and symbol validation
+  - Get free key at: https://finnhub.io/register
+- `OPENBB_PAT` - Optional fallback for peer lookup (note: FMP peers may require paid subscription)
+  - Only needed if Finnhub is not configured
+
+**Optional:**
+- `TIINGO_API_KEY` - Historical market data (currently unused, reserved for future use)
+- `ANTHROPIC_API_KEY` - Claude API (for testing)
+- `OPENAI_API_KEY` - OpenAI API (for testing)
+
+**Data Source Priority:**
+- Symbol validation/lookup: yfinance → Finnhub → OpenBB+FMP
+- Peer lookup: Finnhub → OpenBB+FMP
+- Fundamental data: yfinance (primary)
 
 ## Stock Research Skills System
 
@@ -69,8 +83,15 @@ The research system uses a **7-phase pipeline** orchestrated by `research_stock.
 
 ### Phase Dependencies
 
-- **Phase 1 (Technical)** must run first - generates peer list needed by fundamental phase
-- **Phases 2-6** can run in any order or in parallel
+**CRITICAL DEPENDENCY:**
+- **Phase 1 (Technical)** MUST run before Phase 2 (Fundamental)
+  - Technical generates `01_technical/peers_list.json`
+  - Fundamental needs this peer list to compare financial ratios
+  - The orchestrator enforces this by running technical sequentially first
+  - If running phases manually, always run technical before fundamental
+
+**Other Dependencies:**
+- **Phases 3-6** (Research, Analysis, SEC, Wikipedia) can run in any order or in parallel
 - **Phase 7 (Report)** must run last - consumes all prior phase outputs
 
 ### Work Directory Structure
@@ -121,11 +142,17 @@ Templates have access to all data from phases 1-6 via variables like `technical_
 
 ### Key Technical Details
 
-**Data Fetching:**
-- OpenBB provides fundamental data via `obb` global object
-- yfinance provides market data and technical indicators
-- TA-Lib calculates technical indicators (SMA, RSI, MACD, etc.)
-- Perplexity AI performs deep research via API calls
+**Data Fetching (Multi-Provider Fallback):**
+- **Symbol validation/lookup**: yfinance → Finnhub → OpenBB+FMP
+  - `lookup_ticker.py` implements automatic fallback
+- **Peer lookup**: Finnhub → OpenBB+FMP
+  - `research_technical.py` implements automatic fallback
+  - Finnhub uses GICS sub-industry classification
+  - Peer data enriched with yfinance market info
+- **Fundamental data**: yfinance (primary)
+  - `research_fundamental.py` uses yfinance exclusively
+- **Technical indicators**: TA-Lib (SMA, RSI, MACD, etc.)
+- **Deep research**: Perplexity AI via API calls
 
 **Phase Tracking:**
 - `00_metadata.json` tracks completed phases
@@ -216,15 +243,17 @@ The `server.py` file implements an MCP server using FastMCP for Claude Desktop i
 
 **Running:**
 ```bash
-# Development
-LOGLEVEL=DEBUG mcp dev server.py
+# Development (from mcpskills directory)
+LOGLEVEL=DEBUG mcp dev ./server.py
 
 # Production
-mcp run server.py
+mcp run ./server.py
 
 # Claude Desktop integration
-mcp install server.py
+mcp install ./server.py
 ```
+
+Note: Use `./server.py` to explicitly run the server in the current directory (mcpskills), not the one in the parent MCP directory.
 
 ## Development Workflow
 

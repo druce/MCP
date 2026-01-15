@@ -166,8 +166,8 @@ async def run_deep_research_with_tools(
 
     company_display = company_name if company_name else symbol
 
-    # Enhanced prompt for hybrid mode
-    prompt = f"""I have collected comprehensive information on {company_display} (symbol {symbol}) in the research_report.md file provided below.
+    # Enhanced prompt for hybrid mode (will be updated with tools list)
+    prompt_template = f"""I have collected comprehensive information on {company_display} (symbol {symbol}) in the research_report.md file provided below.
 
 You have access to powerful financial research tools through MCP servers. Use these tools to:
 - Fill gaps in the provided research
@@ -237,6 +237,8 @@ Write a comprehensive report on {symbol} in the straightforward factual style of
 
 Use a straightforward, factual tone throughout the analysis. Focus on data and observable facts rather than speculation.
 
+{{TOOLS_SECTION}}
+
 ---
 
 Here is the research report collected so far:
@@ -254,6 +256,9 @@ Here is the research report collected so far:
 
             # Enumerate available MCP tools
             print(f"\n🔧 Enumerating available MCP tools...")
+            available_tools_list = []
+            tools_description = ""
+
             try:
                 # Get available tools from MCP servers
                 available_tools = []
@@ -271,20 +276,40 @@ Here is the research report collected so far:
                             tool_name = tool.name
                             tool_desc = getattr(tool, 'description', 'No description')
                             print(f"  • {tool_name}: {tool_desc[:80]}")
+                            available_tools_list.append(f"{tool_name}: {tool_desc}")
                         else:
                             print(f"  • {tool}")
+                            available_tools_list.append(str(tool))
+
+                    # Create tools description for prompt
+                    tools_description = "\n\nAVAILABLE MCP TOOLS:\n" + "\n".join(
+                        f"- {tool}" for tool in available_tools_list
+                    ) + "\n\nUse these tools extensively to enhance your research.\n"
                 else:
                     print(f"⚠️  No tools found (tools attribute not available)")
                     print(f"   Client attributes: {[attr for attr in dir(client) if not attr.startswith('_')]}")
+                    tools_description = "\n\n⚠️  No MCP tools available for this analysis.\n"
+
             except Exception as tool_enum_error:
                 print(f"⚠️  Could not enumerate tools: {tool_enum_error}")
                 print(f"   MCP servers may still work, but tool list unavailable")
+                import traceback
+                traceback.print_exc()
+                tools_description = "\n\n⚠️  Could not enumerate MCP tools, but they may still be available.\n"
 
             print(f"\n🚀 Starting agentic research loop...")
             print(f"This may take several minutes as Claude uses tools...")
 
+            # Insert tools description into prompt
+            final_prompt = prompt_template.replace("{TOOLS_SECTION}", tools_description)
+
+            # Debug: Show prompt length
+            print(f"\n📝 Prompt length: {len(final_prompt)} characters")
+            if available_tools_list:
+                print(f"   Including {len(available_tools_list)} MCP tools in prompt")
+
             # Send initial query
-            await client.query(prompt)
+            await client.query(final_prompt)
 
             # Collect response and thinking
             analysis_blocks = []
@@ -336,7 +361,13 @@ Here is the research report collected so far:
                                 tool_id = 'unknown'
 
                             tool_info = f"{tool_name}(id={tool_id[:8]}, input={str(tool_input)[:60]}...)"
-                            tool_usage.append(tool_info)
+                            tool_usage.append({
+                                'type': 'call',
+                                'name': tool_name,
+                                'id': tool_id,
+                                'input': tool_input,
+                                'timestamp': datetime.now().isoformat()
+                            })
                             print(f"    🔧 Tool call: {tool_name}")
                             print(f"       ID: {tool_id}")
                             print(f"       Input: {str(tool_input)[:100]}")
@@ -345,8 +376,28 @@ Here is the research report collected so far:
                         elif (hasattr(block, 'type') and block.type == 'tool_result') or \
                              block_type == 'ToolResultBlock':
                             tool_id = getattr(block, 'tool_use_id', 'unknown')
-                            result_preview = str(getattr(block, 'content', ''))[:100]
-                            print(f"    🎯 Tool result for ID {tool_id[:8]}: {result_preview}...")
+                            content = getattr(block, 'content', '')
+                            is_error = getattr(block, 'is_error', False)
+
+                            # Check for errors in result
+                            if is_error or (hasattr(block, 'status') and block.status == 'error'):
+                                error_msg = str(content)[:200]
+                                print(f"    ❌ Tool error for ID {tool_id[:8]}: {error_msg}")
+                                tool_usage.append({
+                                    'type': 'error',
+                                    'id': tool_id,
+                                    'error': error_msg,
+                                    'timestamp': datetime.now().isoformat()
+                                })
+                            else:
+                                result_preview = str(content)[:100]
+                                print(f"    🎯 Tool result for ID {tool_id[:8]}: {result_preview}...")
+                                tool_usage.append({
+                                    'type': 'result',
+                                    'id': tool_id,
+                                    'preview': result_preview,
+                                    'timestamp': datetime.now().isoformat()
+                                })
 
                         else:
                             # Unknown block type - detailed debugging
@@ -355,7 +406,45 @@ Here is the research report collected so far:
 
             analysis = "\n\n".join(analysis_blocks)
             thinking = "\n\n---\n\n".join(thinking_blocks)
-            tool_summary = f"Tools used ({len(tool_usage)}):\n" + "\n".join(f"- {t}" for t in tool_usage)
+
+            # Generate detailed tool usage summary
+            if tool_usage:
+                tool_calls = [t for t in tool_usage if t.get('type') == 'call']
+                tool_errors = [t for t in tool_usage if t.get('type') == 'error']
+                tool_results = [t for t in tool_usage if t.get('type') == 'result']
+
+                summary_lines = [
+                    f"MCP TOOL USAGE SUMMARY",
+                    f"=" * 60,
+                    f"Total tool calls: {len(tool_calls)}",
+                    f"Successful results: {len(tool_results)}",
+                    f"Errors: {len(tool_errors)}",
+                    f"",
+                    f"TOOL CALLS:",
+                    f"-" * 60
+                ]
+
+                for call in tool_calls:
+                    summary_lines.append(f"\n• {call['name']} (ID: {call['id'][:8]})")
+                    summary_lines.append(f"  Time: {call['timestamp']}")
+                    summary_lines.append(f"  Input: {str(call['input'])[:100]}...")
+
+                if tool_errors:
+                    summary_lines.append(f"\n\nERRORS:")
+                    summary_lines.append(f"-" * 60)
+                    for error in tool_errors:
+                        summary_lines.append(f"\n❌ Tool ID {error['id'][:8]}")
+                        summary_lines.append(f"   Time: {error['timestamp']}")
+                        summary_lines.append(f"   Error: {error['error']}")
+
+                tool_summary = "\n".join(summary_lines)
+            else:
+                tool_summary = "No MCP tools were used in this analysis."
+
+            print(f"\n✓ Analysis complete:")
+            print(f"  - Analysis output: {len(analysis)} characters")
+            print(f"  - Thinking blocks: {len(thinking_blocks)}")
+            print(f"  - Tool calls: {len([t for t in tool_usage if t.get('type') == 'call'])}")
 
             return analysis, thinking, tool_summary
 

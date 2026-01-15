@@ -1,28 +1,43 @@
-# OpenBB Platform Personal Access Token
-# Get yours at: https://my.openbb.co/app/platform/pat
-# Requires free OpenBB account
-OPENBB_PAT='your_openbb_pat_here'
+# ============================================================================
+# REQUIRED API KEYS
+# ============================================================================
 
 # SEC EDGAR credentials (required for SEC filings)
 # Your company name and email for SEC API User-Agent
 SEC_USER='your_email@example.com'
 SEC_FIRM='YourCompanyName'
 
-# Anthropic Claude API key (required for deep research phase)
-# Get yours at: https://console.anthropic.com/
-ANTHROPIC_API_KEY='your_anthropic_api_key_here'
-
 # Perplexity AI API key (required for research and analysis phases)
 # Get yours at: https://www.perplexity.ai/settings/api
 PERPLEXITY_API_KEY='your_perplexity_key_here'
 
-# Finnhub API (for peer company detection in technical analysis phase)
-# Get yours at: https://finnhub.io/dashboard
-# Note: Optional - can use --peers flag for custom peer list
+# ============================================================================
+# RECOMMENDED API KEYS
+# ============================================================================
+
+# Finnhub API (RECOMMENDED - free tier for peer lookup and symbol validation)
+# Get yours at: https://finnhub.io/register
+# Provides 60 API calls per minute on free tier
+# Used as primary source for peer detection and symbol search
 FINNHUB_API_KEY='your_finnhub_api_key_here'
 
+# ============================================================================
+# OPTIONAL API KEYS
+# ============================================================================
 
+# Anthropic Claude API key (optional - for deep research phase)
+# Get yours at: https://console.anthropic.com/
+ANTHROPIC_API_KEY='your_anthropic_api_key_here'
 
+# OpenBB Platform Personal Access Token (optional - fallback for peer lookup)
+# Get yours at: https://my.openbb.co/app/platform/pat
+# Note: FMP peers endpoint may require paid subscription
+# Only needed if Finnhub is not configured
+OPENBB_PAT='your_openbb_pat_here'
 
-
-
+# ============================================================================
+# DATA SOURCE PRIORITY
+# ============================================================================
+# Symbol validation/lookup: yfinance → Finnhub → OpenBB+FMP
+# Peer lookup: Finnhub → OpenBB+FMP
+# Fundamental data: yfinance (primary)

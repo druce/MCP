@@ -2,7 +2,7 @@
 """
 Fundamental Analysis Research Phase
 
-Performs fundamental analysis using financial data from yfinance and OpenBB.
+Performs fundamental analysis using financial data from yfinance.
 
 Usage:
     ./skills/research_fundamental.py SYMBOL [--work-dir DIR]
@@ -39,12 +39,9 @@ import pandas as pd
 import plotly.graph_objects as go
 import plotly.io as pio
 
-# Load environment for OpenBB
+# Load environment variables
 from dotenv import load_dotenv
 load_dotenv()
-
-# OpenBB for additional data
-from openbb import obb
 
 
 def save_company_overview(symbol, work_dir):
@@ -504,8 +501,17 @@ def save_key_ratios(symbol, work_dir):
                 import traceback
                 traceback.print_exc()
         else:
-            print(f"⊘ No peers list found")
-            print("  Continuing with just the main symbol...")
+            print(f"\n⚠️  WARNING: No peers list found")
+            print(f"  The technical phase must run BEFORE fundamental to generate the peer list.")
+            print(f"  Expected file: {peers_path}")
+            print(f"")
+            print(f"  To fix this:")
+            print(f"  1. Run technical phase first: ./skills/research_technical.py {symbol} --work-dir {work_dir}")
+            print(f"  2. Then run fundamental phase: ./skills/research_fundamental.py {symbol} --work-dir {work_dir}")
+            print(f"  OR use the orchestrator: ./skills/research_stock.py {symbol}")
+            print(f"")
+            print(f"  Continuing with just {symbol} (no peer comparison available)...")
+            print()
 
         # Get ratios for each peer
         peers_dflist = []

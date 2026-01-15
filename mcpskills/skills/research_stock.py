@@ -454,20 +454,47 @@ def main():
     print(f"{'='*60}")
     print(f"Phases to run: {', '.join(phases_to_run)}")
 
-    # Execute phases in parallel
+    # Execute phases with dependencies
     success_count = 0
     failed_count = 0
 
     # Separate phases into groups for sequential execution
-    data_phases = [p for p in phases_to_run if p not in ['report', 'deep', 'final']]
+    # IMPORTANT: Technical phase MUST run first (generates peers list needed by fundamental)
+    technical_phase = 'technical' in phases_to_run
+    other_data_phases = [p for p in phases_to_run if p not in ['technical', 'report', 'deep', 'final']]
     report_phase = 'report' in phases_to_run
     deep_phase = 'deep' in phases_to_run
     final_phase = 'final' in phases_to_run
 
-    # Execute data phases in parallel (if any)
-    if data_phases:
+    # Execute technical phase FIRST (sequential) - generates peers list
+    if technical_phase:
         print(f"\n{'='*60}")
-        print(f"Executing {len(data_phases)} data phases in parallel...")
+        print("Executing technical phase (sequential - generates peer list)...")
+        print(f"{'='*60}")
+
+        phase_script = all_phases['technical']
+        if os.path.exists(phase_script):
+            # Add --peers and --no-filter-peers arguments for technical phase if specified
+            extra_args = []
+            if args.peers:
+                extra_args.extend(['--peers', args.peers])
+            if args.no_filter_peers:
+                extra_args.append('--no-filter-peers')
+
+            success = run_phase('technical', phase_script, symbol, work_dir, metadata, metadata_lock=None, extra_args=extra_args)
+            if success:
+                success_count += 1
+            else:
+                failed_count += 1
+                print(f"\n⚠️  Warning: Technical phase failed - fundamental phase may have incomplete peer data")
+        else:
+            print(f"\n⊘ Skipping 'technical' - script not yet implemented")
+
+    # Execute remaining data phases in parallel (if any)
+    if other_data_phases:
+        print(f"\n{'='*60}")
+        print(f"Executing {len(other_data_phases)} remaining data phases in parallel...")
+        print(f"(Technical phase already completed - peer list available)")
         print(f"{'='*60}")
 
         # Create a multiprocessing-compatible lock
@@ -475,9 +502,9 @@ def main():
         metadata_lock = manager.Lock()
 
         with ProcessPoolExecutor(max_workers=6) as executor:
-            # Submit all data phase tasks
+            # Submit all remaining data phase tasks
             future_to_phase = {}
-            for phase_name in data_phases:
+            for phase_name in other_data_phases:
                 phase_script = all_phases[phase_name]
 
                 # Check if phase script exists
@@ -485,15 +512,8 @@ def main():
                     print(f"\n⊘ Skipping '{phase_name}' - script not yet implemented")
                     continue
 
-                # Add --peers and --no-filter-peers arguments for technical phase if specified
-                extra_args = []
-                if phase_name == 'technical':
-                    if args.peers:
-                        extra_args.extend(['--peers', args.peers])
-                    if args.no_filter_peers:
-                        extra_args.append('--no-filter-peers')
-
-                future = executor.submit(run_phase, phase_name, phase_script, symbol, work_dir, metadata, metadata_lock, extra_args)
+                # No extra args for other phases
+                future = executor.submit(run_phase, phase_name, phase_script, symbol, work_dir, metadata, metadata_lock, [])
                 future_to_phase[future] = phase_name
 
             # Collect results as they complete
